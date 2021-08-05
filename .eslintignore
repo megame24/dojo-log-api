@@ -1,0 +1,8 @@
+node_modules/*
+build/*
+coverage/*
+**/*.d.ts
+**/*.test.ts
+src/types
+jest.config.js
+**/database
