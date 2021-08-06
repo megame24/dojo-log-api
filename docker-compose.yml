@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  dojo-log-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    image: dojo-log-api
+    volumes:
+      - .:/usr/src/app
+    container_name: dojo_log_api
+    environment:
+      - NODE_ENV=development
+    ports:
+      - '3000:3000'
+    command: npm run dev
+    
