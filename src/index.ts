@@ -1,4 +1,4 @@
-import express, { Application, Request, Response, NextFunction } from "express";
+import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import morgan from "morgan";
 
@@ -12,7 +12,7 @@ app.use(cors());
 if (!IS_PRODUCTION) app.use(morgan("dev"));
 
 app.use("/", (req: Request, res: Response) => {
-  return res.json("Welcome to dojolog");
+  return res.json("Welcome to dojolog!!!");
 });
 
 app.listen(PORT, () => {
