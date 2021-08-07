@@ -20,27 +20,19 @@ export class LoginUserViaEmailImpl implements LoginUserViaEmail {
   ) {}
 
   async execute(loginUserDTO: LoginUserDTO): Promise<string> {
-    try {
-      const user = await this.userRepo.getUserByEmail(loginUserDTO.email);
+    const user = await this.userRepo.getUserByEmail(loginUserDTO.email);
 
-      const passwordMatch = await this.securityService.compare(
-        loginUserDTO.password,
-        <string>user.password
-      );
-      if (!passwordMatch)
-        throw AppError.unauthorizedError("Authentication failed");
+    const passwordMatch = await this.securityService.compare(
+      loginUserDTO.password,
+      <string>user.password
+    );
+    if (!passwordMatch)
+      throw AppError.unauthorizedError("Authentication failed");
 
-      const authToken = this.securityService.generateToken({
-        id: user.id,
-        username: user.username,
-      });
-      return authToken;
-    } catch (error) {
-      if (error.statusCode && error.statusCode !== 500) {
-        throw AppError.unauthorizedError("Authentication failed");
-      } else {
-        throw error;
-      }
-    }
+    const authToken = this.securityService.generateToken({
+      id: user.id,
+      username: user.username,
+    });
+    return authToken;
   }
 }
