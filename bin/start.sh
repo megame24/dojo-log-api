@@ -1,6 +1,6 @@
 #! /bin/bash
 
-read -p "Build image? (n/y): " BUILD_IMAGE
+read -p "Build image? Y/N (press enter for No): " BUILD_IMAGE
 
 if [[ $BUILD_IMAGE == [yY] || $BUILD_IMAGE == [yY][eE][sS] ]]
 then
@@ -8,9 +8,3 @@ then
 fi
 
 docker-compose up -d
-
-if [[ $BUILD_IMAGE != [yY] && $BUILD_IMAGE != [yY][eE][sS] ]]
-then
-  echo "Installing npm packages..."
-  docker exec dojo_log_api bash -c "npm i"
-fi
