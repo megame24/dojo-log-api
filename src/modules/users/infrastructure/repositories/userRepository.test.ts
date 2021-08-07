@@ -1,7 +1,15 @@
 import { UserRepoImpl } from "./userRepository";
-import { mockUserModel } from "../../testUtils";
+import {
+  MockSecurityService,
+  mockUserModel,
+  MockUUIDService,
+} from "../../testUtils";
 
-const userRepo = new UserRepoImpl(mockUserModel);
+const userRepo = new UserRepoImpl(
+  mockUserModel,
+  new MockSecurityService(),
+  new MockUUIDService()
+);
 const user: any = {
   id: "random_uuid",
   name: "Mr. Krabs",
