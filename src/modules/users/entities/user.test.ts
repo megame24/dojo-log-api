@@ -1,17 +1,19 @@
 import User from "./user";
 import { MockSecurityService, MockUUIDService } from "../testUtils";
 
-const validUserProps = {
+const validCreateUserProps = {
   name: "Mr. crabs",
   email: "test@test.com",
   username: "test124",
   password: "P@ssw0rd",
   role: "USER",
+  isPasswordHashed: false,
+  isPasswordRequired: true,
 };
 
-const createUser = (userProps: any) => {
+const createUser = (createUserProps: any) => {
   return User.create(
-    userProps,
+    createUserProps,
     new MockSecurityService(),
     new MockUUIDService()
   );
@@ -19,12 +21,12 @@ const createUser = (userProps: any) => {
 
 describe("Creating a user entity", () => {
   it("Should throw an error if name is not provided", async () => {
-    const invalidUserProps = { ...validUserProps, name: "" };
+    const invalidCreateUserProps = { ...validCreateUserProps, name: "" };
     let user;
     let error;
 
     try {
-      user = await createUser(invalidUserProps);
+      user = await createUser(invalidCreateUserProps);
     } catch (err) {
       error = err;
     }
@@ -33,12 +35,12 @@ describe("Creating a user entity", () => {
     expect(user).toBeUndefined();
   });
   it("Should throw an error if name doesn't have a length greater than 1 and less than 255", async () => {
-    const invalidUserProps1 = { ...validUserProps, name: "a" };
+    const invalidCreateUserProps1 = { ...validCreateUserProps, name: "a" };
     let user1;
     let error1;
 
     try {
-      user1 = await createUser(invalidUserProps1);
+      user1 = await createUser(invalidCreateUserProps1);
     } catch (err) {
       error1 = err;
     }
@@ -48,8 +50,8 @@ describe("Creating a user entity", () => {
     );
     expect(user1).toBeUndefined();
 
-    const invalidUserProps2 = {
-      ...validUserProps,
+    const invalidCreateUserProps2 = {
+      ...validCreateUserProps,
       name:
         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
@@ -60,7 +62,7 @@ describe("Creating a user entity", () => {
     let error2;
 
     try {
-      user2 = await createUser(invalidUserProps2);
+      user2 = await createUser(invalidCreateUserProps2);
     } catch (err) {
       error2 = err;
     }
@@ -71,12 +73,12 @@ describe("Creating a user entity", () => {
     expect(user2).toBeUndefined();
   });
   it("Should throw an error if email is not provided", async () => {
-    const invalidUserProps = { ...validUserProps, email: "" };
+    const invalidCreateUserProps = { ...validCreateUserProps, email: "" };
     let user;
     let error;
 
     try {
-      user = await createUser(invalidUserProps);
+      user = await createUser(invalidCreateUserProps);
     } catch (err) {
       error = err;
     }
@@ -85,12 +87,15 @@ describe("Creating a user entity", () => {
     expect(user).toBeUndefined();
   });
   it("Should throw an error if email is invalid", async () => {
-    const invalidUserProps = { ...validUserProps, email: "invalid@email" };
+    const invalidCreateUserProps = {
+      ...validCreateUserProps,
+      email: "invalid@email",
+    };
     let user;
     let error;
 
     try {
-      user = await createUser(invalidUserProps);
+      user = await createUser(invalidCreateUserProps);
     } catch (err) {
       error = err;
     }
@@ -99,12 +104,12 @@ describe("Creating a user entity", () => {
     expect(user).toBeUndefined();
   });
   it("Should throw an error if username is not provided", async () => {
-    const invalidUserProps = { ...validUserProps, username: "" };
+    const invalidCreateUserProps = { ...validCreateUserProps, username: "" };
     let user;
     let error;
 
     try {
-      user = await createUser(invalidUserProps);
+      user = await createUser(invalidCreateUserProps);
     } catch (err) {
       error = err;
     }
@@ -113,12 +118,12 @@ describe("Creating a user entity", () => {
     expect(user).toBeUndefined();
   });
   it("Should throw an error if username doesn't have a length greater than 1 and less than 255", async () => {
-    const invalidUserProps1 = { ...validUserProps, username: "a" };
+    const invalidCreateUserProps1 = { ...validCreateUserProps, username: "a" };
     let user1;
     let error1;
 
     try {
-      user1 = await createUser(invalidUserProps1);
+      user1 = await createUser(invalidCreateUserProps1);
     } catch (err) {
       error1 = err;
     }
@@ -128,8 +133,8 @@ describe("Creating a user entity", () => {
     );
     expect(user1).toBeUndefined();
 
-    const invalidUserProps2 = {
-      ...validUserProps,
+    const invalidCreateUserProps2 = {
+      ...validCreateUserProps,
       username:
         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" +
@@ -140,7 +145,7 @@ describe("Creating a user entity", () => {
     let error2;
 
     try {
-      user2 = await createUser(invalidUserProps2);
+      user2 = await createUser(invalidCreateUserProps2);
     } catch (err) {
       error2 = err;
     }
@@ -151,12 +156,12 @@ describe("Creating a user entity", () => {
     expect(user2).toBeUndefined();
   });
   it("Should throw an error if password is not provided", async () => {
-    const invalidUserProps = { ...validUserProps, password: "" };
+    const invalidCreateUserProps = { ...validCreateUserProps, password: "" };
     let user;
     let error;
 
     try {
-      user = await createUser(invalidUserProps);
+      user = await createUser(invalidCreateUserProps);
     } catch (err) {
       error = err;
     }
@@ -165,12 +170,15 @@ describe("Creating a user entity", () => {
     expect(user).toBeUndefined();
   });
   it("Should throw an error if password is not provided", async () => {
-    const invalidUserProps = { ...validUserProps, password: "password1" };
+    const invalidCreateUserProps = {
+      ...validCreateUserProps,
+      password: "password1",
+    };
     let user;
     let error;
 
     try {
-      user = await createUser(invalidUserProps);
+      user = await createUser(invalidCreateUserProps);
     } catch (err) {
       error = err;
     }
@@ -182,12 +190,15 @@ describe("Creating a user entity", () => {
     expect(user).toBeUndefined();
   });
   it("Should throw an error if an invalid role is provided", async () => {
-    const invalidUserProps = { ...validUserProps, role: "SUPER AWESOME USER" };
+    const invalidCreateUserProps = {
+      ...validCreateUserProps,
+      role: "SUPER AWESOME USER",
+    };
     let user;
     let error;
 
     try {
-      user = await createUser(invalidUserProps);
+      user = await createUser(invalidCreateUserProps);
     } catch (err) {
       error = err;
     }
@@ -200,16 +211,16 @@ describe("Creating a user entity", () => {
     let error;
 
     try {
-      user = await createUser(validUserProps);
+      user = await createUser(validCreateUserProps);
     } catch (err) {
       error = err;
     }
 
     expect(user.id).toEqual("this_is_a_random_uuid");
-    expect(user.name).toEqual(validUserProps.name);
-    expect(user.email).toEqual(validUserProps.email);
+    expect(user.name).toEqual(validCreateUserProps.name);
+    expect(user.email).toEqual(validCreateUserProps.email);
     expect(user.password).toEqual("hashed-password");
-    expect(user.username).toEqual(validUserProps.username);
+    expect(user.username).toEqual(validCreateUserProps.username);
     expect(user.role).toEqual("USER");
     expect(user.verified).toEqual(false);
     expect(error).toBeUndefined();
@@ -221,25 +232,23 @@ describe("Creating a user entity", () => {
     try {
       user = await User.create(
         {
-          name: validUserProps.name,
-          username: validUserProps.username,
-          email: validUserProps.email,
-        },
-        new MockSecurityService(),
-        new MockUUIDService(),
-        {
+          name: validCreateUserProps.name,
+          username: validCreateUserProps.username,
+          email: validCreateUserProps.email,
           isPasswordHashed: false,
           isPasswordRequired: false,
-        }
+        },
+        new MockSecurityService(),
+        new MockUUIDService()
       );
     } catch (err) {
       error = err;
     }
 
     expect(user.id).toEqual("this_is_a_random_uuid");
-    expect(user.name).toEqual(validUserProps.name);
-    expect(user.email).toEqual(validUserProps.email);
-    expect(user.username).toEqual(validUserProps.username);
+    expect(user.name).toEqual(validCreateUserProps.name);
+    expect(user.email).toEqual(validCreateUserProps.email);
+    expect(user.username).toEqual(validCreateUserProps.username);
     expect(user.role).toEqual("USER");
     expect(user.verified).toEqual(false);
     expect(error).toBeUndefined();

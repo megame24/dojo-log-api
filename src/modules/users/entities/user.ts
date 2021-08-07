@@ -17,7 +17,7 @@ export interface UserProps {
   verified?: boolean;
 }
 
-export interface UserConfig {
+export interface CreateUserProps extends UserProps {
   isPasswordHashed: boolean;
   isPasswordRequired: boolean;
 }
@@ -32,11 +32,6 @@ export default class User {
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!”#$%&'()*+,\-./:;<=>?@[\]^_`{|}~]).{8,}$/;
   private static emailRegEx =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-  private static userConfigDefault = {
-    isPasswordHashed: false,
-    isPasswordRequired: true,
-  };
 
   private constructor(private props: UserProps) {}
 
@@ -143,12 +138,11 @@ export default class User {
   }
 
   static async create(
-    userProps: UserProps,
+    createUserProps: CreateUserProps,
     securityService: SecurityService,
-    uuidService: UUIDService,
-    userConfig: UserConfig = this.userConfigDefault
+    uuidService: UUIDService
   ): Promise<User> {
-    const props = { ...userProps };
+    const props = { ...createUserProps };
 
     if (!props.id) {
       props.id = uuidService.generate();
@@ -161,12 +155,12 @@ export default class User {
 
     this.validateProp(props.username, this.validateUsername);
 
-    if (userConfig.isPasswordRequired) {
+    if (props.isPasswordRequired) {
       this.validateProp(props.password, this.validatePassword);
     } else {
       props.password = undefined;
     }
-    if (!userConfig.isPasswordHashed && props.password) {
+    if (!props.isPasswordHashed && props.password) {
       props.password = await securityService.hash(props.password);
     }
 

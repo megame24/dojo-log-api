@@ -8,6 +8,7 @@ export class MockUserRepo implements UserRepo {
   emailExists = jest.fn();
   usernameExists = jest.fn();
   create = jest.fn();
+  getUserByEmail = jest.fn();
 }
 
 export class MockSecurityService implements SecurityService {

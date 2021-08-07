@@ -1,4 +1,4 @@
-import User from "../entities/user";
+import User, { CreateUserProps } from "../entities/user";
 import AppError from "../../shared/core/AppError";
 import { SecurityService } from "../infrastructure/services/securityService";
 import { UUIDService } from "../infrastructure/services/uuidService";
@@ -13,7 +13,8 @@ export interface RegisterUserDTO {
   name: string;
 }
 
-export interface RegisterUserViaEmail extends UseCase<RegisterUserDTO, void> {
+export interface RegisterUserViaEmail
+  extends UseCase<RegisterUserDTO, Promise<string>> {
   execute: (registerUserDTO: RegisterUserDTO) => Promise<string>;
 }
 
@@ -37,8 +38,13 @@ export class RegisterUserViaEmailImpl implements RegisterUserViaEmail {
       throw AppError.badRequestError("User with that username already exists");
     }
 
+    const createUserProps: CreateUserProps = {
+      ...registerUserDTO,
+      isPasswordHashed: false,
+      isPasswordRequired: true,
+    };
     const user = await User.create(
-      registerUserDTO,
+      createUserProps,
       this.securityService,
       this.uuidService
     );
