@@ -5,7 +5,9 @@ const { Role } = require("./json/enums.json");
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    static associate(models) {}
+    static associate(models) {
+      User.hasMany(models.PersistentToken, { foreignKey: "userId" });
+    }
   }
   User.init(
     {

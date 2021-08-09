@@ -4,7 +4,9 @@ import {
   MockUserRepo,
   MockUUIDService,
   MockEmailService,
+  MockPersistentTokenRepo,
 } from "../testUtils";
+import User from "../entities/user";
 
 const mockUserRepo = new MockUserRepo();
 
@@ -12,7 +14,8 @@ const registerUserViaEmail = new RegisterUserViaEmailImpl(
   new MockSecurityService(),
   new MockUUIDService(),
   mockUserRepo,
-  new MockEmailService()
+  new MockEmailService(),
+  new MockPersistentTokenRepo()
 );
 
 const registerUserDTO = {
@@ -62,15 +65,20 @@ describe("Registering a user via email", () => {
       error = err;
     }
 
-    expect(mockUserRepo.create).toBeCalledWith({
-      id: "this_is_a_random_uuid",
-      name: "Mr. Taiemo",
-      email: "email@test.com",
-      username: "user1234",
-      password: "hashed-password",
-      role: "USER",
-      verified: false,
-    });
+    const user = await User.create(
+      {
+        id: "this_is_a_random_uuid",
+        name: "Mr. Taiemo",
+        email: "email@test.com",
+        username: "user1234",
+        password: "P@ssw0rd",
+        isPasswordHashed: false,
+        isPasswordRequired: true,
+      },
+      new MockSecurityService(),
+      new MockUUIDService()
+    );
+    expect(mockUserRepo.create).toBeCalledWith(user);
     expect(error).toBeUndefined();
   });
 });
