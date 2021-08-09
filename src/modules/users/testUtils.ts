@@ -1,4 +1,5 @@
 import { EmailService } from "../shared/infrastructure/services/emailService";
+import { PersistentTokenRepo } from "./infrastructure/repositories/persistentTokenRepo";
 import { UserRepo } from "./infrastructure/repositories/userRepository";
 import { SecurityService } from "./infrastructure/services/securityService";
 import { UUIDService } from "./infrastructure/services/uuidService";
@@ -9,6 +10,13 @@ export class MockUserRepo implements UserRepo {
   usernameExists = jest.fn();
   create = jest.fn();
   getUserByEmail = jest.fn();
+  update = jest.fn();
+}
+
+export class MockPersistentTokenRepo implements PersistentTokenRepo {
+  create = jest.fn();
+  getByUserIdAndToken = jest.fn();
+  delete = jest.fn();
 }
 
 export class MockSecurityService implements SecurityService {
@@ -44,5 +52,5 @@ export const mockUserModel = {
 };
 
 export class MockEmailService implements EmailService {
-  sendWelcomeEmail = jest.fn();
+  sendVerificationMail = jest.fn();
 }

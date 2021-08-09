@@ -1,9 +1,12 @@
+import PersistentToken from "../../../users/entities/persistentToken";
+
 export interface EmailService {
-  sendWelcomeEmail: (email: string) => void;
+  sendVerificationMail: (email: string, token: PersistentToken) => void;
 }
 
 export class EmailServiceImpl implements EmailService {
-  async sendWelcomeEmail(email: string) {
-    console.log(email);
+  async sendVerificationMail(email: string, token: PersistentToken) {
+    // send <url>/token.userId/token.token
+    console.log(email, token);
   }
 }

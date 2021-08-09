@@ -5,6 +5,10 @@ import { UUIDService } from "../infrastructure/services/uuidService";
 import { UserRepo } from "../infrastructure/repositories/userRepository";
 import { UseCase } from "../../shared/core/types";
 import { EmailService } from "../../shared/infrastructure/services/emailService";
+import PersistentToken, {
+  PersistentTokenProps,
+} from "../entities/persistentToken";
+import { PersistentTokenRepo } from "../infrastructure/repositories/persistentTokenRepo";
 
 export interface RegisterUserDTO {
   username: string;
@@ -23,7 +27,8 @@ export class RegisterUserViaEmailImpl implements RegisterUserViaEmail {
     private securityService: SecurityService,
     private uuidService: UUIDService,
     private userRepo: UserRepo,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private persistentTokenRepo: PersistentTokenRepo
   ) {}
 
   async execute(registerUserDTO: RegisterUserDTO): Promise<string> {
@@ -48,18 +53,20 @@ export class RegisterUserViaEmailImpl implements RegisterUserViaEmail {
       this.securityService,
       this.uuidService
     );
+    await this.userRepo.create(user);
 
-    await this.userRepo.create({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      username: user.username,
-      password: user.password,
-      role: user.role,
-      verified: user.verified,
-    });
+    const persistentTokenProps: PersistentTokenProps = {
+      userId: <string>user.id,
+    };
+    const verificationToken = PersistentToken.create(
+      persistentTokenProps,
+      this.securityService
+    );
+    await this.persistentTokenRepo.create(verificationToken);
 
-    await this.emailService.sendWelcomeEmail(user.email);
+    // explore moving this out of here and triggering something to call this!!!!!
+    // like a notification domain use case that kicks off after create
+    await this.emailService.sendVerificationMail(user.email, verificationToken);
 
     const authToken = this.securityService.generateToken({
       id: user.id,

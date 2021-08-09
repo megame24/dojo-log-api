@@ -1,4 +1,3 @@
-import AppError from "../../../shared/core/AppError";
 import {
   LoginUserViaEmail,
   LoginUserDTO,
@@ -16,13 +15,9 @@ export default class LoginUserViaEmailController {
 
     try {
       const authToken = await this.loginUserViaEmail.execute(loginUserDTO);
-      return res.status(201).json({ authToken });
+      return res.status(200).json({ authToken });
     } catch (error) {
-      if (error.statusCode && error.statusCode !== 500) {
-        next(AppError.unauthorizedError("Authentication failed"));
-      } else {
-        next(error);
-      }
+      next(error);
     }
   }
 }
