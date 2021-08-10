@@ -29,7 +29,11 @@ describe("Register user via email controller test", () => {
   });
 
   it("Should call register user via email use case and return 201 when there's no error", async () => {
-    mockRegisterUserViaEmail.execute.mockResolvedValueOnce(undefined);
+    // improve mock return value
+    mockRegisterUserViaEmail.execute.mockResolvedValueOnce({
+      authToken: "random token",
+      user: {},
+    });
 
     await registerUserViaEmailController.execute(req, res, next);
 

@@ -1,3 +1,4 @@
 {
-  "Role": ["ADMIN", "USER"]
+  "Role": ["ADMIN", "USER"],
+  "TokenType": ["verification", "resetPassword"]
 }

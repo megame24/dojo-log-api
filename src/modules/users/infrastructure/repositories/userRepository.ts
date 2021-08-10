@@ -1,5 +1,5 @@
 import AppError from "../../../shared/core/AppError";
-import User, { CreateUserProps, UserProps } from "../../entities/user";
+import User, { CreateUserProps } from "../../entities/user";
 import { SecurityService } from "../services/securityService";
 import { UUIDService } from "../services/uuidService";
 
@@ -15,6 +15,7 @@ export interface UserRepo {
     email: string,
     config?: GetUserConfig
   ) => Promise<User | null>;
+  getUserById: (id: string, config?: GetUserConfig) => Promise<User | null>;
   update: (userId: string, payload: Partial<CreateUserProps>) => void;
 }
 
@@ -51,7 +52,7 @@ export class UserRepoImpl implements UserRepo {
 
   async create(user: User) {
     try {
-      const userProps: UserProps = {
+      const userProps = {
         id: user.id,
         name: user.name,
         email: user.email,
@@ -72,7 +73,7 @@ export class UserRepoImpl implements UserRepo {
     const user: User | null = await this.getUser({ where: { id: userId } });
     if (!user) throw AppError.notFoundError("User not found");
 
-    const updateUserProps: CreateUserProps = {
+    const updateUserProps = {
       id: user.id,
       name: user.name,
       email: user.email,
@@ -87,7 +88,6 @@ export class UserRepoImpl implements UserRepo {
       updateUserProps.isPasswordRequired = true;
       updateUserProps.isPasswordHashed = false;
     }
-    console.log(updateUserProps);
     const updatedUser = await User.create(
       updateUserProps,
       this.securityService,
@@ -148,6 +148,12 @@ export class UserRepoImpl implements UserRepo {
     config?: GetUserConfig
   ): Promise<User | null> {
     const queryOption = { where: { email } };
+
+    return this.getUser(queryOption, config);
+  }
+
+  async getUserById(id = "", config?: GetUserConfig): Promise<User | null> {
+    const queryOption = { where: { id } };
 
     return this.getUser(queryOption, config);
   }

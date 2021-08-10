@@ -1,7 +1,13 @@
 import { SecurityService } from "../infrastructure/services/securityService";
 
-export interface PersistentTokenProps {
+export enum TokenType {
+  verification = "verification",
+  resetPassword = "resetPassword",
+}
+
+interface PersistentTokenProps {
   userId: string;
+  type: TokenType;
   token?: string;
 }
 
@@ -16,6 +22,10 @@ export default class PersistentToken {
     return this.props.token;
   }
 
+  get type(): TokenType {
+    return this.props.type;
+  }
+
   static create(
     props: PersistentTokenProps,
     securityService: SecurityService
@@ -23,13 +33,14 @@ export default class PersistentToken {
     if (!props.token) {
       props.token = securityService.generateToken(
         { userId: props.userId },
-        "1h"
+        process.env.VERIFICATION_TOKEN_EXPIRES_IN
       );
     }
 
     return new PersistentToken({
       userId: props.userId,
       token: props.token,
+      type: props.type,
     });
   }
 }

@@ -7,16 +7,16 @@ import {
   userRepoImpl,
 } from "../infrastructure/repositories";
 import { RegisterUserViaEmailImpl } from "./registerUserViaEmail";
-import { emailServiceImpl } from "../../shared/infrastructure/services";
 import { LoginUserViaEmailImpl } from "./loginUserViaEmail";
 import { VerifyUserImpl } from "./verifyUser";
+import { AuthenticateUserImpl } from "./authenticateUser";
+import { SendVerificationImpl } from "./sendVerification";
+import { emailServiceImpl } from "../../shared/infrastructure/services";
 
 export const registerUserViaEmailImpl = new RegisterUserViaEmailImpl(
   securityServiceImpl,
   uuidServiceImpl,
-  userRepoImpl,
-  emailServiceImpl,
-  persistentTokenRepoImpl
+  userRepoImpl
 );
 
 export const loginUserViaEmailImpl = new LoginUserViaEmailImpl(
@@ -28,4 +28,15 @@ export const verifyUserImpl = new VerifyUserImpl(
   userRepoImpl,
   persistentTokenRepoImpl,
   securityServiceImpl
+);
+
+export const authenticateUserImpl = new AuthenticateUserImpl(
+  userRepoImpl,
+  securityServiceImpl
+);
+
+export const sendVerificationImpl = new SendVerificationImpl(
+  persistentTokenRepoImpl,
+  securityServiceImpl,
+  emailServiceImpl
 );

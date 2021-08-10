@@ -8,7 +8,7 @@ export interface SecurityService {
 export class SecurityServiceImpl implements SecurityService {
   private saltRounds = 10;
   private tokenSecret = process.env.TOKEN_SECRET;
-  private tokenExpiresIn = process.env.TOKEN_EXPIRES_IN;
+  private tokenExpiresIn = process.env.AUTH_TOKEN_EXPIRES_IN;
 
   constructor(private bcrypt: any, private jwt: any) {}
 

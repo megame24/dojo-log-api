@@ -3,7 +3,7 @@ import { SecurityService } from "../infrastructure/services/securityService";
 import { UserRepo } from "../infrastructure/repositories/userRepository";
 import { UseCase } from "../../shared/core/types";
 
-export interface LoginUserDTO {
+interface LoginUserDTO {
   email: string;
   password: string;
 }
