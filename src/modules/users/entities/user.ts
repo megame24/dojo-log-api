@@ -2,12 +2,12 @@ import AppError from "../../shared/core/AppError";
 import { SecurityService } from "../infrastructure/services/securityService";
 import { UUIDService } from "../infrastructure/services/uuidService";
 
-export enum Role {
+enum Role {
   ADMIN = "ADMIN",
   USER = "USER",
 }
 
-export interface UserProps {
+interface UserProps {
   id?: string;
   name: string;
   email: string;

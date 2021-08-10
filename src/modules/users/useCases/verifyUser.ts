@@ -4,7 +4,7 @@ import { PersistentTokenRepo } from "../infrastructure/repositories/persistentTo
 import { UserRepo } from "../infrastructure/repositories/userRepository";
 import { SecurityService } from "../infrastructure/services/securityService";
 
-export interface VerifyUserDTO {
+interface VerifyUserDTO {
   userId: string;
   token: string;
 }
@@ -31,6 +31,6 @@ export class VerifyUserImpl implements VerifyUser {
     if (!verificationToken) throw AppError.unauthorizedError();
 
     await this.userRepo.update(userId, { verified: true });
-    await this.persistentTokenRepo.delete(verificationToken);
+    await this.persistentTokenRepo.deleteOne(verificationToken);
   }
 }

@@ -3,20 +3,29 @@ import {
   registerUserViaEmailController,
   loginUserViaEmailController,
   verifyUserController,
-} from "../../interfaceAdapters/controllers";
+  sendVerificationController,
+} from "../../adapters/controllers";
+import {
+  authenticateUserMiddleware,
+  sendVerificationMiddleware,
+} from "../../adapters/middleware";
 
 const userRouter = express.Router();
 
-userRouter.post("/register", (req, res, next) =>
-  registerUserViaEmailController.execute(req, res, next)
+userRouter.post(
+  "/register",
+  registerUserViaEmailController.execute,
+  sendVerificationMiddleware.execute
 );
 
-userRouter.post("/login", (req, res, next) =>
-  loginUserViaEmailController.execute(req, res, next)
-);
+userRouter.post("/login", loginUserViaEmailController.execute);
 
-userRouter.put("/:id/verify/:token", (req, res, next) =>
-  verifyUserController.execute(req, res, next)
+userRouter.put("/:id/verify/:token", verifyUserController.execute);
+
+userRouter.get(
+  "/:id/send-verification",
+  authenticateUserMiddleware.execute,
+  sendVerificationController.execute
 );
 
 export { userRouter };

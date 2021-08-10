@@ -1,4 +1,7 @@
 "use strict";
+
+const { TokenType } = require("../models/json/enums.json");
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("PersistentTokens", {
@@ -21,6 +24,10 @@ module.exports = {
       token: {
         allowNull: false,
         type: Sequelize.STRING,
+      },
+      type: {
+        type: Sequelize.ENUM(TokenType),
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

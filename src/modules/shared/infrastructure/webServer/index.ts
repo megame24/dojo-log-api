@@ -1,6 +1,9 @@
 import express, { Application, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import morgan from "morgan";
+import dotenv from "dotenv";
+dotenv.config();
+
 import appRouter from "../routes";
 import AppError from "../../core/AppError";
 
@@ -10,7 +13,9 @@ const app: Application = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
+
+app.use(cors()); // make this more restrictive!!!!!
+
 if (!IS_PRODUCTION) app.use(morgan("dev"));
 
 app.use(appRouter);
