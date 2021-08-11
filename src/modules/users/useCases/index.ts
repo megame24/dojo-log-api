@@ -12,6 +12,7 @@ import { VerifyUserImpl } from "./verifyUser";
 import { AuthenticateUserImpl } from "./authenticateUser";
 import { SendVerificationImpl } from "./sendVerification";
 import { emailServiceImpl } from "../../shared/infrastructure/services";
+import { ForgotPasswordImpl } from "./forgotPassword";
 
 export const registerUserViaEmailImpl = new RegisterUserViaEmailImpl(
   securityServiceImpl,
@@ -37,6 +38,13 @@ export const authenticateUserImpl = new AuthenticateUserImpl(
 
 export const sendVerificationImpl = new SendVerificationImpl(
   persistentTokenRepoImpl,
+  securityServiceImpl,
+  emailServiceImpl
+);
+
+export const forgotPasswordImpl = new ForgotPasswordImpl(
+  persistentTokenRepoImpl,
+  userRepoImpl,
   securityServiceImpl,
   emailServiceImpl
 );

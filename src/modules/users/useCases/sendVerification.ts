@@ -9,9 +9,8 @@ interface SendVerificationDTO {
   email: string;
 }
 
-export interface SendVerification
-  extends UseCase<SendVerificationDTO, Promise<void>> {
-  execute: (sendVerificationDTO: SendVerificationDTO) => Promise<void>;
+export interface SendVerification extends UseCase<SendVerificationDTO, void> {
+  execute: (sendVerificationDTO: SendVerificationDTO) => void;
 }
 
 export class SendVerificationImpl implements SendVerification {
