@@ -4,6 +4,7 @@ import {
   loginUserViaEmailController,
   verifyUserController,
   sendVerificationController,
+  forgotPasswordController,
 } from "../../adapters/controllers";
 import {
   authenticateUserMiddleware,
@@ -27,5 +28,7 @@ userRouter.get(
   authenticateUserMiddleware.execute,
   sendVerificationController.execute
 );
+
+userRouter.post("/forgot-password", forgotPasswordController.execute);
 
 export { userRouter };

@@ -14,7 +14,7 @@ export default class SendVerificationController extends BaseAdapter {
 
     try {
       await this.sendVerification.execute(sendVerificationDTO);
-      res.status(200).json({ message: "Verification sent" });
+      res.status(200).json({ message: "Verification mail sent" });
     } catch (error) {
       next(error);
     }
