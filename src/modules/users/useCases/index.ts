@@ -13,6 +13,7 @@ import { AuthenticateUserImpl } from "./authenticateUser";
 import { SendVerificationImpl } from "./sendVerification";
 import { emailServiceImpl } from "../../shared/infrastructure/services";
 import { ForgotPasswordImpl } from "./forgotPassword";
+import { ResetPasswordImpl } from "./resetPassword";
 
 export const registerUserViaEmailImpl = new RegisterUserViaEmailImpl(
   securityServiceImpl,
@@ -47,4 +48,10 @@ export const forgotPasswordImpl = new ForgotPasswordImpl(
   userRepoImpl,
   securityServiceImpl,
   emailServiceImpl
+);
+
+export const resetPasswordImpl = new ResetPasswordImpl(
+  userRepoImpl,
+  persistentTokenRepoImpl,
+  securityServiceImpl
 );

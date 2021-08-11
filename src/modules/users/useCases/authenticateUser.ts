@@ -23,7 +23,7 @@ export class AuthenticateUserImpl implements AuthenticateUser {
     const { token } = authenticateUserDTO;
 
     const validToken = this.securityService.verifyToken(token);
-    if (!validToken) throw AppError.badRequestError("Expired token");
+    if (!validToken) throw AppError.badRequestError("Invalid token");
     const { id } = validToken;
 
     const user = await this.userRepo.getUserById(id);
