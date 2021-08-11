@@ -5,6 +5,7 @@ import {
   verifyUserController,
   sendVerificationController,
   forgotPasswordController,
+  resetPasswordController,
 } from "../../adapters/controllers";
 import {
   authenticateUserMiddleware,
@@ -30,5 +31,7 @@ userRouter.get(
 );
 
 userRouter.post("/forgot-password", forgotPasswordController.execute);
+
+userRouter.put("/:id/reset-password/:token", resetPasswordController.execute);
 
 export { userRouter };

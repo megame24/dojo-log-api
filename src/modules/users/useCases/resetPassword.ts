@@ -4,24 +4,25 @@ import { PersistentTokenRepo } from "../infrastructure/repositories/persistentTo
 import { UserRepo } from "../infrastructure/repositories/userRepository";
 import { SecurityService } from "../infrastructure/services/securityService";
 
-interface VerifyUserDTO {
+interface ResetPasswordDTO {
   userId: string;
   token: string;
+  password: string;
 }
 
-export interface VerifyUser extends UseCase<VerifyUserDTO, void> {
-  execute: (verifyUserDTO: VerifyUserDTO) => void;
+export interface ResetPassword extends UseCase<ResetPasswordDTO, void> {
+  execute: (resetPasswordDTO: ResetPasswordDTO) => void;
 }
 
-export class VerifyUserImpl implements VerifyUser {
+export class ResetPasswordImpl implements ResetPassword {
   constructor(
     private userRepo: UserRepo,
     private persistentTokenRepo: PersistentTokenRepo,
     private securityService: SecurityService
   ) {}
 
-  async execute(verifyUserDTO: VerifyUserDTO) {
-    const { token, userId } = verifyUserDTO;
+  async execute(resetPasswordDTO: ResetPasswordDTO) {
+    const { token, userId, password } = resetPasswordDTO;
 
     const validToken = this.securityService.verifyToken(token);
     if (!validToken) throw AppError.badRequestError("Invalid token");
@@ -30,7 +31,7 @@ export class VerifyUserImpl implements VerifyUser {
       await this.persistentTokenRepo.getByUserIdAndToken(userId, token);
     if (!verificationToken) throw AppError.unauthorizedError();
 
-    await this.userRepo.update(userId, { verified: true });
+    await this.userRepo.update(userId, { password });
     await this.persistentTokenRepo.deleteOne(verificationToken);
   }
 }
