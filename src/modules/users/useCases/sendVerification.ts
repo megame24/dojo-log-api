@@ -3,6 +3,7 @@ import { EmailService } from "../../shared/infrastructure/services/emailService"
 import PersistentToken, { TokenType } from "../entities/persistentToken";
 import { PersistentTokenRepo } from "../infrastructure/repositories/persistentTokenRepo";
 import { SecurityService } from "../infrastructure/services/securityService";
+import { UUIDService } from "../infrastructure/services/uuidService";
 
 interface SendVerificationDTO {
   id: string;
@@ -17,7 +18,8 @@ export class SendVerificationImpl implements SendVerification {
   constructor(
     private persistentTokenRepo: PersistentTokenRepo,
     private securityService: SecurityService,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private uuidService: UUIDService
   ) {}
 
   async execute(sendVerificationDTO: SendVerificationDTO) {
@@ -34,7 +36,8 @@ export class SendVerificationImpl implements SendVerification {
     };
     const verificationToken = PersistentToken.create(
       persistentTokenProps,
-      this.securityService
+      this.securityService,
+      this.uuidService
     );
     await this.persistentTokenRepo.create(verificationToken);
 

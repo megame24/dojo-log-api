@@ -84,7 +84,7 @@ export class UserRepoImpl implements UserRepo {
       isPasswordRequired: false,
       ...payload,
     };
-    if (payload.password) {
+    if ("password" in payload) {
       updateUserProps.isPasswordRequired = true;
       updateUserProps.isPasswordHashed = false;
     }

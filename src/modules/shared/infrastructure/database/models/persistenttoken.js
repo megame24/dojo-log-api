@@ -10,6 +10,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   PersistentToken.init(
     {
+      id: {
+        allowNull: false,
+        primaryKey: true,
+        type: DataTypes.UUID,
+      },
       token: {
         type: DataTypes.STRING,
         allowNull: false,
