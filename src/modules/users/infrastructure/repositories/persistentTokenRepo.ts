@@ -1,6 +1,7 @@
 import AppError from "../../../shared/core/AppError";
 import PersistentToken, { TokenType } from "../../entities/persistentToken";
 import { SecurityService } from "../services/securityService";
+import { UUIDService } from "../services/uuidService";
 
 interface DeleteManyQueryOption {
   userId: string;
@@ -20,12 +21,14 @@ export interface PersistentTokenRepo {
 export class PersistentTokenRepoImpl implements PersistentTokenRepo {
   constructor(
     private PersistentTokenModel: any,
-    private securityService: SecurityService
+    private securityService: SecurityService,
+    private uuidService: UUIDService
   ) {}
 
   async create(persistentToken: PersistentToken) {
     try {
       const persistentTokenProps = {
+        id: persistentToken.id,
         userId: persistentToken.userId,
         token: persistentToken.token,
         type: persistentToken.type,
@@ -82,11 +85,13 @@ export class PersistentTokenRepoImpl implements PersistentTokenRepo {
       if (!tokenData) return null;
       return PersistentToken.create(
         {
+          id: tokenData.id,
           userId: tokenData.userId,
           token: tokenData.token,
           type: tokenData.type,
         },
-        this.securityService
+        this.securityService,
+        this.uuidService
       );
     } catch (error) {
       throw AppError.internalServerError(

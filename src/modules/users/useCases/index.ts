@@ -40,14 +40,16 @@ export const authenticateUserImpl = new AuthenticateUserImpl(
 export const sendVerificationImpl = new SendVerificationImpl(
   persistentTokenRepoImpl,
   securityServiceImpl,
-  emailServiceImpl
+  emailServiceImpl,
+  uuidServiceImpl
 );
 
 export const forgotPasswordImpl = new ForgotPasswordImpl(
   persistentTokenRepoImpl,
   userRepoImpl,
   securityServiceImpl,
-  emailServiceImpl
+  emailServiceImpl,
+  uuidServiceImpl
 );
 
 export const resetPasswordImpl = new ResetPasswordImpl(

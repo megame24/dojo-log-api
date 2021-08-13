@@ -1,4 +1,5 @@
 import { SecurityService } from "../infrastructure/services/securityService";
+import { UUIDService } from "../infrastructure/services/uuidService";
 
 export enum TokenType {
   verification = "verification",
@@ -6,6 +7,7 @@ export enum TokenType {
 }
 
 interface PersistentTokenProps {
+  id?: string;
   userId: string;
   type: TokenType;
   token?: string;
@@ -13,6 +15,10 @@ interface PersistentTokenProps {
 
 export default class PersistentToken {
   private constructor(private props: PersistentTokenProps) {}
+
+  get id(): string | undefined {
+    return this.props.id;
+  }
 
   get userId(): string {
     return this.props.userId;
@@ -28,8 +34,13 @@ export default class PersistentToken {
 
   static create(
     props: PersistentTokenProps,
-    securityService: SecurityService
+    securityService: SecurityService,
+    uuidService: UUIDService
   ): PersistentToken {
+    if (!props.id) {
+      props.id = uuidService.generate();
+    }
+
     if (!props.token) {
       props.token = securityService.generateToken(
         { userId: props.userId },
@@ -37,10 +48,6 @@ export default class PersistentToken {
       );
     }
 
-    return new PersistentToken({
-      userId: props.userId,
-      token: props.token,
-      type: props.type,
-    });
+    return new PersistentToken(props);
   }
 }

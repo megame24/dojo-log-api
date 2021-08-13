@@ -13,5 +13,6 @@ export const userRepoImpl = new UserRepoImpl(
 
 export const persistentTokenRepoImpl = new PersistentTokenRepoImpl(
   PersistentToken,
-  securityServiceImpl
+  securityServiceImpl,
+  uuidServiceImpl
 );

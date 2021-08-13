@@ -7,7 +7,7 @@ export default class AuthenticateUserMiddleware extends BaseAdapter {
   }
 
   async execute(req: any, res: any, next: any) {
-    const token = req.headers["authorization"];
+    const token = req.headers["token"];
     const authenticateUserDTO = { token };
 
     try {

@@ -5,6 +5,7 @@ import PersistentToken, { TokenType } from "../entities/persistentToken";
 import { PersistentTokenRepo } from "../infrastructure/repositories/persistentTokenRepo";
 import { UserRepo } from "../infrastructure/repositories/userRepository";
 import { SecurityService } from "../infrastructure/services/securityService";
+import { UUIDService } from "../infrastructure/services/uuidService";
 
 interface ForgotPasswordDTO {
   email: string;
@@ -19,7 +20,8 @@ export class ForgotPasswordImpl implements ForgotPassword {
     private persistentTokenRepo: PersistentTokenRepo,
     private userRepo: UserRepo,
     private securityService: SecurityService,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private uuidService: UUIDService
   ) {}
 
   async execute(forgotPasswordDTO: ForgotPasswordDTO) {
@@ -37,7 +39,8 @@ export class ForgotPasswordImpl implements ForgotPassword {
     const persistentTokenProps = { userId, type: TokenType.resetPassword };
     const verificationToken = PersistentToken.create(
       persistentTokenProps,
-      this.securityService
+      this.securityService,
+      this.uuidService
     );
     await this.persistentTokenRepo.create(verificationToken);
 

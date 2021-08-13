@@ -7,9 +7,8 @@ module.exports = {
     await queryInterface.createTable("PersistentTokens", {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
       },
       userId: {
         allowNull: false,
