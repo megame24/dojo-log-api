@@ -1,7 +1,4 @@
-import {
-  securityServiceImpl,
-  uuidServiceImpl,
-} from "../infrastructure/services";
+import { securityServiceImpl } from "../infrastructure/services";
 import {
   persistentTokenRepoImpl,
   userRepoImpl,
@@ -11,7 +8,10 @@ import { LoginUserViaEmailImpl } from "./loginUserViaEmail";
 import { VerifyUserImpl } from "./verifyUser";
 import { AuthenticateUserImpl } from "./authenticateUser";
 import { SendVerificationImpl } from "./sendVerification";
-import { emailServiceImpl } from "../../shared/infrastructure/services";
+import {
+  emailServiceImpl,
+  uuidServiceImpl,
+} from "../../shared/infrastructure/services";
 import { ForgotPasswordImpl } from "./forgotPassword";
 import { ResetPasswordImpl } from "./resetPassword";
 

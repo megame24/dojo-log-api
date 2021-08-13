@@ -1,7 +1,7 @@
 import AppError from "../../../shared/core/AppError";
+import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
 import User, { CreateUserProps } from "../../entities/user";
 import { SecurityService } from "../services/securityService";
-import { UUIDService } from "../services/uuidService";
 
 interface GetUserConfig {
   includePassword: boolean;
