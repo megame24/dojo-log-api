@@ -1,7 +1,8 @@
 import models from "../../../shared/infrastructure/database/models";
 import { UserRepoImpl } from "./userRepository";
-import { securityServiceImpl, uuidServiceImpl } from "../services";
+import { securityServiceImpl } from "../services";
 import { PersistentTokenRepoImpl } from "./persistentTokenRepo";
+import { uuidServiceImpl } from "../../../shared/infrastructure/services";
 
 const { User, PersistentToken } = <any>models;
 

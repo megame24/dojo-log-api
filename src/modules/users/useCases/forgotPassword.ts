@@ -1,11 +1,11 @@
 import AppError from "../../shared/core/AppError";
 import { UseCase } from "../../shared/core/types";
 import { EmailService } from "../../shared/infrastructure/services/emailService";
+import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import PersistentToken, { TokenType } from "../entities/persistentToken";
 import { PersistentTokenRepo } from "../infrastructure/repositories/persistentTokenRepo";
 import { UserRepo } from "../infrastructure/repositories/userRepository";
 import { SecurityService } from "../infrastructure/services/securityService";
-import { UUIDService } from "../infrastructure/services/uuidService";
 
 interface ForgotPasswordDTO {
   email: string;

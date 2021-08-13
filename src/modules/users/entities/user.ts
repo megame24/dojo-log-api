@@ -1,6 +1,6 @@
 import AppError from "../../shared/core/AppError";
+import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import { SecurityService } from "../infrastructure/services/securityService";
-import { UUIDService } from "../infrastructure/services/uuidService";
 
 enum Role {
   ADMIN = "ADMIN",
