@@ -1,7 +1,7 @@
 import RegisterUserViaEmailController from "./registerUserViaEmailController";
 import { MockRegisterUserViaEmail } from "../../testUtils";
-import AppError from "../../../shared/core/AppError";
-import { next, res } from "../../../shared/core/testUtils";
+import AppError from "../../../shared/AppError";
+import { mockNext, mockRes } from "../../../shared/testUtils";
 
 const mockRegisterUserViaEmail = new MockRegisterUserViaEmail();
 const registerUserViaEmailController = new RegisterUserViaEmailController(
@@ -18,14 +18,14 @@ const req = {
 };
 
 describe("Register user via email controller test", () => {
-  it("When there's an error, should call next middleware function call with the error", async () => {
+  it("When there's an error, should call mockNext middleware function call with the error", async () => {
     mockRegisterUserViaEmail.execute.mockRejectedValueOnce(
       AppError.badRequestError()
     );
 
-    await registerUserViaEmailController.execute(req, res, next);
+    await registerUserViaEmailController.execute(req, mockRes, mockNext);
 
-    expect(next).toBeCalledWith(AppError.badRequestError());
+    expect(mockNext).toBeCalledWith(AppError.badRequestError());
   });
 
   it("Should call register user via email use case and return 201 when there's no error", async () => {
@@ -35,9 +35,9 @@ describe("Register user via email controller test", () => {
       user: {},
     });
 
-    await registerUserViaEmailController.execute(req, res, next);
+    await registerUserViaEmailController.execute(req, mockRes, mockNext);
 
     expect(mockRegisterUserViaEmail.execute).toBeCalledWith(req.body);
-    expect(res.status).toBeCalledWith(201);
+    expect(mockRes.status).toBeCalledWith(201);
   });
 });

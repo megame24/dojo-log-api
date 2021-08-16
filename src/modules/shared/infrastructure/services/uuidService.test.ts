@@ -1,4 +1,4 @@
-import { mockUUUIDv4 } from "../../../users/testUtils";
+import { mockUUUIDv4 } from "../../testUtils";
 import { UUIDServiceImpl } from "./uuidService";
 
 describe("UUID service test", () => {

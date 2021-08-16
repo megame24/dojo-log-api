@@ -1,4 +1,4 @@
-import { BaseAdapter } from "../../../shared/core/types";
+import { BaseAdapter } from "../../../shared/types";
 import { LoginUserViaEmail } from "../../useCases/loginUserViaEmail";
 
 export default class LoginUserViaEmailController extends BaseAdapter {

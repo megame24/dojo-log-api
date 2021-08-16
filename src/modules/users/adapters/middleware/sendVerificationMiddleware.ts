@@ -1,4 +1,4 @@
-import { BaseAdapter } from "../../../shared/core/types";
+import { BaseAdapter } from "../../../shared/types";
 import { SendVerification } from "../../useCases/sendVerification";
 
 export default class SendVerificationMiddleware extends BaseAdapter {

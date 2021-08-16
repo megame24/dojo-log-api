@@ -1,7 +1,7 @@
-import AppError from "../../shared/core/AppError";
-import { SecurityService } from "../infrastructure/services/securityService";
+import { SecurityService } from "../infrastructure/services/security/securityService";
 import { UserRepo } from "../infrastructure/repositories/userRepository";
-import { UseCase } from "../../shared/core/types";
+import AppError from "../../shared/AppError";
+import { UseCase } from "../../shared/types";
 
 interface LoginUserDTO {
   email: string;

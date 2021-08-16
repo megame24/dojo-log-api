@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import appRouter from "../routes";
-import AppError from "../../core/AppError";
+import AppError from "../../AppError";
 
 const PORT = process.env.PORT || 3000;
 const IS_PRODUCTION = process.env.NODE_ENV === "production";

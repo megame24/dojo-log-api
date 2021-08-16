@@ -1,4 +1,4 @@
-import { BaseAdapter } from "../../../shared/core/types";
+import { BaseAdapter } from "../../../shared/types";
 import { RegisterUserViaEmail } from "../../useCases/registerUserViaEmail";
 
 export default class RegisterUserViaEmailController extends BaseAdapter {

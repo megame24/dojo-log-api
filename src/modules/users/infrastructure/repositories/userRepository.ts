@@ -1,17 +1,19 @@
-import AppError from "../../../shared/core/AppError";
+import AppError from "../../../shared/AppError";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
 import User, { CreateUserProps } from "../../entities/user";
-import { SecurityService } from "../services/securityService";
+import { SecurityService } from "../services/security/securityService";
 
 interface GetUserConfig {
   includePassword: boolean;
 }
 
 export interface UserRepo {
-  emailExists: (email: string) => Promise<boolean>;
-  usernameExists: (username: string) => Promise<boolean>;
   create: (user: User) => void;
   getUserByEmail: (
+    email: string,
+    config?: GetUserConfig
+  ) => Promise<User | null>;
+  getUserByUsername: (
     email: string,
     config?: GetUserConfig
   ) => Promise<User | null>;
@@ -25,30 +27,6 @@ export class UserRepoImpl implements UserRepo {
     private securityService: SecurityService,
     private uuidService: UUIDService
   ) {}
-
-  async emailExists(email = ""): Promise<boolean> {
-    try {
-      const user = await this.UserModel.findOne({
-        where: { email },
-      });
-      if (!user) return false;
-      return true;
-    } catch (error) {
-      throw AppError.internalServerError("Error retrieving email", error);
-    }
-  }
-
-  async usernameExists(username = ""): Promise<boolean> {
-    try {
-      const user = await this.UserModel.findOne({
-        where: { username },
-      });
-      if (!user) return false;
-      return true;
-    } catch (error) {
-      throw AppError.internalServerError("Error retrieving username", error);
-    }
-  }
 
   async create(user: User) {
     try {
@@ -148,6 +126,15 @@ export class UserRepoImpl implements UserRepo {
     config?: GetUserConfig
   ): Promise<User | null> {
     const queryOption = { where: { email } };
+
+    return this.getUser(queryOption, config);
+  }
+
+  async getUserByUsername(
+    username = "",
+    config?: GetUserConfig
+  ): Promise<User | null> {
+    const queryOption = { where: { username } };
 
     return this.getUser(queryOption, config);
   }

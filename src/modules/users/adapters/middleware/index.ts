@@ -1,5 +1,10 @@
-import { authenticateUserImpl, sendVerificationImpl } from "../../useCases";
+import {
+  authenticateUserImpl,
+  checkEndpointPermissionsImpl,
+  sendVerificationImpl,
+} from "../../useCases";
 import AuthenticateUserMiddleware from "./authenticateUserMiddleware";
+import CheckEndpointPermissionsMiddleware from "./checkEndpointPermissionsMiddleware";
 import SendVerificationMiddleware from "./sendVerificationMiddleware";
 
 export const authenticateUserMiddleware = new AuthenticateUserMiddleware(
@@ -9,3 +14,6 @@ export const authenticateUserMiddleware = new AuthenticateUserMiddleware(
 export const sendVerificationMiddleware = new SendVerificationMiddleware(
   sendVerificationImpl
 );
+
+export const checkEndpointPermissionsMiddleware =
+  new CheckEndpointPermissionsMiddleware(checkEndpointPermissionsImpl);

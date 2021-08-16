@@ -9,4 +9,10 @@ export abstract class BaseAdapter {
   execute(req: any, res: any, next: any) {
     // implement me
   }
+
+  executeWrapper(props: any) {
+    return (req: any, res: any, next: any) => {
+      // implement me
+    };
+  }
 }

@@ -19,7 +19,10 @@ export default class AppError extends Error {
     return new AppError(message, 401, rawError);
   }
 
-  static forbiddenError(message = "Forbidden", rawError = null): AppError {
+  static forbiddenError(
+    message = "Permission denied",
+    rawError = null
+  ): AppError {
     return new AppError(message, 403, rawError);
   }
 
