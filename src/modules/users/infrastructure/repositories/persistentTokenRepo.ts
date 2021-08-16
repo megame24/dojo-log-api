@@ -1,7 +1,7 @@
-import AppError from "../../../shared/core/AppError";
+import AppError from "../../../shared/AppError";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
 import PersistentToken, { TokenType } from "../../entities/persistentToken";
-import { SecurityService } from "../services/securityService";
+import { SecurityService } from "../services/security/securityService";
 
 interface DeleteManyQueryOption {
   userId: string;

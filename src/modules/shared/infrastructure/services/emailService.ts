@@ -1,4 +1,4 @@
-import PersistentToken from "../../../users/entities/persistentToken";
+import { PersistentToken } from "../../../users/api";
 
 export interface EmailService {
   sendVerificationMail: (email: string, token: PersistentToken) => void;

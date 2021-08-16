@@ -1,5 +1,5 @@
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
-import { SecurityService } from "../infrastructure/services/securityService";
+import { SecurityService } from "../infrastructure/services/security/securityService";
 
 export enum TokenType {
   verification = "verification",

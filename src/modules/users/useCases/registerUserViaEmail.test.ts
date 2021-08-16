@@ -24,7 +24,8 @@ const registerUserDTO = {
 describe("Registering a user via email", () => {
   it("Should throw a 400 error when email already exists", async () => {
     let error;
-    mockUserRepo.emailExists.mockResolvedValueOnce(true);
+    // improve mock!!!
+    mockUserRepo.getUserByEmail.mockResolvedValueOnce({});
 
     try {
       await registerUserViaEmail.execute(registerUserDTO);
@@ -38,7 +39,8 @@ describe("Registering a user via email", () => {
 
   it("Should throw a 400 error when username already exists", async () => {
     let error;
-    mockUserRepo.usernameExists.mockResolvedValueOnce(true);
+    // improve mock!!!
+    mockUserRepo.getUserByUsername.mockResolvedValueOnce({});
 
     try {
       await registerUserViaEmail.execute(registerUserDTO);
@@ -52,8 +54,8 @@ describe("Registering a user via email", () => {
 
   it("Should call create on userRepo when all checks pass", async () => {
     let error;
-    mockUserRepo.emailExists.mockResolvedValueOnce(false);
-    mockUserRepo.usernameExists.mockResolvedValueOnce(false);
+    mockUserRepo.getUserByEmail.mockResolvedValueOnce(null);
+    mockUserRepo.getUserByUsername.mockResolvedValueOnce(null);
 
     try {
       await registerUserViaEmail.execute(registerUserDTO);

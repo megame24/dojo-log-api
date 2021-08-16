@@ -14,6 +14,7 @@ import {
 } from "../../shared/infrastructure/services";
 import { ForgotPasswordImpl } from "./forgotPassword";
 import { ResetPasswordImpl } from "./resetPassword";
+import { CheckEndpointPermissionsImpl } from "./checkEndpointPermissions";
 
 export const registerUserViaEmailImpl = new RegisterUserViaEmailImpl(
   securityServiceImpl,
@@ -34,7 +35,8 @@ export const verifyUserImpl = new VerifyUserImpl(
 
 export const authenticateUserImpl = new AuthenticateUserImpl(
   userRepoImpl,
-  securityServiceImpl
+  securityServiceImpl,
+  uuidServiceImpl
 );
 
 export const sendVerificationImpl = new SendVerificationImpl(
@@ -57,3 +59,5 @@ export const resetPasswordImpl = new ResetPasswordImpl(
   persistentTokenRepoImpl,
   securityServiceImpl
 );
+
+export const checkEndpointPermissionsImpl = new CheckEndpointPermissionsImpl();

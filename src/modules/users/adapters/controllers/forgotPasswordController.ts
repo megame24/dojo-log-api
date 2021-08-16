@@ -1,4 +1,4 @@
-import { BaseAdapter } from "../../../shared/core/types";
+import { BaseAdapter } from "../../../shared/types";
 import { ForgotPassword } from "../../useCases/forgotPassword";
 
 export default class ForgotPasswordController extends BaseAdapter {

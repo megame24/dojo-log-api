@@ -16,3 +16,6 @@ interface CreateLogbookProps extends BaseLogbookProps {
   goals?: any[];
   logs?: any[];
 }
+
+// idea
+// have a getLiteLogbook repo method!!!!

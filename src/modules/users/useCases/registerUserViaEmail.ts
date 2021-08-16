@@ -1,9 +1,9 @@
 import User from "../entities/user";
-import AppError from "../../shared/core/AppError";
-import { SecurityService } from "../infrastructure/services/securityService";
+import { SecurityService } from "../infrastructure/services/security/securityService";
 import { UserRepo } from "../infrastructure/repositories/userRepository";
-import { UseCase } from "../../shared/core/types";
+import AppError from "../../shared/AppError";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
+import { UseCase } from "../../shared/types";
 
 interface RegisterUserDTO {
   username: string;
@@ -30,14 +30,16 @@ export class RegisterUserViaEmailImpl implements RegisterUserViaEmail {
   ) {}
 
   async execute(registerUserDTO: RegisterUserDTO): Promise<ReturnValue> {
-    const emailExists = await this.userRepo.emailExists(registerUserDTO.email);
-    if (emailExists) {
+    const userWithSameEmail = await this.userRepo.getUserByEmail(
+      registerUserDTO.email
+    );
+    if (userWithSameEmail) {
       throw AppError.badRequestError("User with that email already exists");
     }
-    const usernameExists = await this.userRepo.usernameExists(
+    const userWithSameUsername = await this.userRepo.getUserByUsername(
       registerUserDTO.username
     );
-    if (usernameExists) {
+    if (userWithSameUsername) {
       throw AppError.badRequestError("User with that username already exists");
     }
 

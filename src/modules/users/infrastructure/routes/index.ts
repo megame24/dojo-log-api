@@ -1,37 +1,8 @@
 import express from "express";
-import {
-  registerUserViaEmailController,
-  loginUserViaEmailController,
-  verifyUserController,
-  sendVerificationController,
-  forgotPasswordController,
-  resetPasswordController,
-} from "../../adapters/controllers";
-import {
-  authenticateUserMiddleware,
-  sendVerificationMiddleware,
-} from "../../adapters/middleware";
+import { userRouter } from "./userRoutes";
 
-const userRouter = express.Router();
+const userModuleRouter = express.Router();
 
-userRouter.post(
-  "/register",
-  registerUserViaEmailController.execute,
-  sendVerificationMiddleware.execute
-);
+userModuleRouter.use("/users", userRouter);
 
-userRouter.post("/login", loginUserViaEmailController.execute);
-
-userRouter.put("/:id/verify/:token", verifyUserController.execute);
-
-userRouter.get(
-  "/:id/send-verification",
-  authenticateUserMiddleware.execute,
-  sendVerificationController.execute
-);
-
-userRouter.post("/forgot-password", forgotPasswordController.execute);
-
-userRouter.put("/:id/reset-password/:token", resetPasswordController.execute);
-
-export { userRouter };
+export default userModuleRouter;

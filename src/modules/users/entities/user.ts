@@ -1,10 +1,11 @@
-import AppError from "../../shared/core/AppError";
+import AppError from "../../shared/AppError";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
-import { SecurityService } from "../infrastructure/services/securityService";
+import { SecurityService } from "../infrastructure/services/security/securityService";
 
-enum Role {
+export enum Role {
   ADMIN = "ADMIN",
   USER = "USER",
+  GUEST = "GUEST",
 }
 
 interface UserProps {

@@ -1,4 +1,4 @@
-import { BaseAdapter } from "../../../shared/core/types";
+import { BaseAdapter } from "../../../shared/types";
 import { ResetPassword } from "../../useCases/resetPassword";
 
 export default class ResetPasswordController extends BaseAdapter {

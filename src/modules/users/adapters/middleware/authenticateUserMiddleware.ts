@@ -1,4 +1,4 @@
-import { BaseAdapter } from "../../../shared/core/types";
+import { BaseAdapter } from "../../../shared/types";
 import { AuthenticateUser } from "../../useCases/authenticateUser";
 
 export default class AuthenticateUserMiddleware extends BaseAdapter {

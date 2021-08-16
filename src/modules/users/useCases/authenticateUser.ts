@@ -1,8 +1,9 @@
-import AppError from "../../shared/core/AppError";
-import { UseCase } from "../../shared/core/types";
-import User from "../entities/user";
+import AppError from "../../shared/AppError";
+import { UUIDService } from "../../shared/infrastructure/services/uuidService";
+import { UseCase } from "../../shared/types";
+import User, { Role } from "../entities/user";
 import { UserRepo } from "../infrastructure/repositories/userRepository";
-import { SecurityService } from "../infrastructure/services/securityService";
+import { SecurityService } from "../infrastructure/services/security/securityService";
 
 interface AuthenticateUserDTO {
   token: string;
@@ -16,11 +17,30 @@ export interface AuthenticateUser
 export class AuthenticateUserImpl implements AuthenticateUser {
   constructor(
     private userRepo: UserRepo,
-    private securityService: SecurityService
+    private securityService: SecurityService,
+    private uuidService: UUIDService
   ) {}
 
   async execute(authenticateUserDTO: AuthenticateUserDTO): Promise<User> {
     const { token } = authenticateUserDTO;
+
+    if (!token) {
+      const dateString = new Date().toISOString();
+      const guestUserProps = {
+        name: "Guest User",
+        email: `guestuser@dojolog.api`,
+        username: dateString,
+        role: Role.GUEST,
+        isPasswordHashed: false,
+        isPasswordRequired: false,
+      };
+      const guestUser = User.create(
+        guestUserProps,
+        this.securityService,
+        this.uuidService
+      );
+      return guestUser;
+    }
 
     const validToken = this.securityService.verifyToken(token);
     if (!validToken) throw AppError.badRequestError("Invalid token");

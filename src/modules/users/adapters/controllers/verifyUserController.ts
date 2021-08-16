@@ -1,4 +1,4 @@
-import { BaseAdapter } from "../../../shared/core/types";
+import { BaseAdapter } from "../../../shared/types";
 import { VerifyUser } from "../../useCases/verifyUser";
 
 export default class VerifyUserController extends BaseAdapter {
