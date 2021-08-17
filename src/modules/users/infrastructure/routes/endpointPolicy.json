@@ -1,0 +1,13 @@
+{
+  "ADMIN": {},
+  "USER": {
+    "/users/:id/send-verification": ["GET"]
+  },
+  "GUEST": {
+    "/users/register": ["POST"],
+    "/users/login": ["POST"],
+    "/users/:id/verify/:token": ["PUT"],
+    "/users/forgot-password": ["POST"],
+    "/users/:id/reset-password/:token": ["PUT"]
+  }
+}

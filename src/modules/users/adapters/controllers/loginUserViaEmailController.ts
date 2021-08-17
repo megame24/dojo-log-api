@@ -1,7 +1,7 @@
-import { BaseAdapter } from "../../../shared/types";
+import Adapter from "../../../shared/adapters/adapter";
 import { LoginUserViaEmail } from "../../useCases/loginUserViaEmail";
 
-export default class LoginUserViaEmailController extends BaseAdapter {
+export default class LoginUserViaEmailController extends Adapter {
   constructor(private loginUserViaEmail: LoginUserViaEmail) {
     super();
   }

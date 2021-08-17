@@ -1,9 +1,9 @@
 import AppError from "../../shared/AppError";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
-import { UseCase } from "../../shared/types";
+import UseCase from "../../shared/useCases/useCase";
 import User, { Role } from "../entities/user";
 import { UserRepo } from "../infrastructure/repositories/userRepository";
-import { SecurityService } from "../infrastructure/services/security/securityService";
+import { SecurityService } from "../infrastructure/services/securityService";
 
 interface AuthenticateUserDTO {
   token: string;

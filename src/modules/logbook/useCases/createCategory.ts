@@ -1,6 +1,6 @@
 import AppError from "../../shared/AppError";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
-import { UseCase } from "../../shared/types";
+import UseCase from "../../shared/useCases/useCase";
 import Category from "../entities/category";
 import { CategoryRepo } from "../infrastructure/repositories/categoryRepo";
 

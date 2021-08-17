@@ -1,7 +1,7 @@
-import { BaseAdapter } from "../../../shared/types";
+import Adapter from "../../../shared/adapters/adapter";
 import { ResetPassword } from "../../useCases/resetPassword";
 
-export default class ResetPasswordController extends BaseAdapter {
+export default class ResetPasswordController extends Adapter {
   constructor(private resetPassword: ResetPassword) {
     super();
   }

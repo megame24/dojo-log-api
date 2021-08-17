@@ -30,11 +30,13 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   if (!IS_PRODUCTION) console.log(error); // explore a better logger
 
   if (error instanceof AppError) {
-    return res.status(error.statusCode).json(error.message);
+    return res.status(error.statusCode).json({ message: error.message });
   }
 
   const unhandledError = AppError.internalServerError();
-  return res.status(unhandledError.statusCode).json(unhandledError.message);
+  return res
+    .status(unhandledError.statusCode)
+    .json({ message: unhandledError.message });
 });
 
 app.listen(PORT, () => {

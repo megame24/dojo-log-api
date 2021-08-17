@@ -1,7 +1,7 @@
-import { BaseAdapter } from "../../../shared/types";
+import Adapter from "../../../shared/adapters/adapter";
 import { SendVerification } from "../../useCases/sendVerification";
 
-export default class SendVerificationMiddleware extends BaseAdapter {
+export default class SendVerificationMiddleware extends Adapter {
   constructor(private sendVerification: SendVerification) {
     super();
   }

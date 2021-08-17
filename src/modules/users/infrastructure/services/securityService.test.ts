@@ -1,4 +1,4 @@
-import { mockBcrypt, mockJwt } from "../../../testUtils";
+import { mockBcrypt, mockJwt } from "../../testUtils";
 import { SecurityServiceImpl } from "./securityService";
 
 const securityServiceImpl = new SecurityServiceImpl(mockBcrypt, mockJwt);

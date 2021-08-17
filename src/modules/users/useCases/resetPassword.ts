@@ -1,8 +1,8 @@
 import AppError from "../../shared/AppError";
-import { UseCase } from "../../shared/types";
+import UseCase from "../../shared/useCases/useCase";
 import { PersistentTokenRepo } from "../infrastructure/repositories/persistentTokenRepo";
 import { UserRepo } from "../infrastructure/repositories/userRepository";
-import { SecurityService } from "../infrastructure/services/security/securityService";
+import { SecurityService } from "../infrastructure/services/securityService";
 
 interface ResetPasswordDTO {
   userId: string;

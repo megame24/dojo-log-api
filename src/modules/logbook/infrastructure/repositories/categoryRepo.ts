@@ -41,7 +41,8 @@ export class CategoryRepoImpl implements CategoryRepo {
     return Category.create(categoryProps, this.uuidService);
   }
 
-  async getCategoryByName(name: string): Promise<Category | null> {
+  async getCategoryByName(name = ""): Promise<Category | null> {
+    name = name.toLowerCase();
     const queryOption = { where: { name } };
 
     return this.getCategory(queryOption);

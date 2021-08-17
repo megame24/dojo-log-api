@@ -1,6 +1,6 @@
-import AppError from "../../shared/AppError";
+import Entity, { ValidationResult } from "../../shared/entities/entity";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
-import { SecurityService } from "../infrastructure/services/security/securityService";
+import { SecurityService } from "../infrastructure/services/securityService";
 
 export enum Role {
   ADMIN = "ADMIN",
@@ -23,18 +23,15 @@ export interface CreateUserProps extends UserProps {
   isPasswordRequired: boolean;
 }
 
-interface ValidationResult {
-  isValid: boolean;
-  message: string;
-}
-
-export default class User {
+export default class User extends Entity {
   private static passwordRegEx =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!”#$%&'()*+,\-./:;<=>?@[\]^_`{|}~]).{8,}$/;
   private static emailRegEx =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  private constructor(private props: UserProps) {}
+  private constructor(private props: UserProps) {
+    super();
+  }
 
   get id(): string | undefined {
     return this.props.id;
@@ -74,7 +71,7 @@ export default class User {
         message: "Name length must be greater than 1 and less than 255",
       };
     }
-    return { isValid: true, message: "" };
+    return User.validValidationResult;
   }
 
   private static validateEmail(email: string): ValidationResult {
@@ -84,7 +81,7 @@ export default class User {
     if (!User.emailRegEx.test(email)) {
       return { isValid: false, message: "Invalid email" };
     }
-    return { isValid: true, message: "" };
+    return User.validValidationResult;
   }
 
   private static formatEmail(email: string): string {
@@ -101,7 +98,7 @@ export default class User {
         message: "Username length must be greater than 1 and less than 255",
       };
     }
-    return { isValid: true, message: "" };
+    return User.validValidationResult;
   }
 
   private static validatePassword(
@@ -118,24 +115,12 @@ export default class User {
           "uppercase letter, one lowercase letter, one number, and a special character",
       };
     }
-    return { isValid: true, message: "" };
+    return User.validValidationResult;
   }
 
   private static validateRole(role: Role): ValidationResult {
-    if (!Role[role]) {
-      return { isValid: false, message: "Invalid role" };
-    }
-    return { isValid: true, message: "" };
-  }
-
-  private static validateProp<T>(
-    prop: T,
-    validator: (prop: T) => ValidationResult
-  ) {
-    const validationResult = validator(prop);
-    if (!validationResult.isValid) {
-      throw AppError.badRequestError(validationResult.message);
-    }
+    if (!Role[role]) return { isValid: false, message: "Invalid role" };
+    return User.validValidationResult;
   }
 
   static async create(
@@ -144,10 +129,6 @@ export default class User {
     uuidService: UUIDService
   ): Promise<User> {
     const props = { ...createUserProps };
-
-    if (!props.id) {
-      props.id = uuidService.generate();
-    }
 
     this.validateProp(props.name, this.validateName);
 
@@ -161,14 +142,19 @@ export default class User {
     } else {
       props.password = undefined;
     }
-    if (!props.isPasswordHashed && props.password) {
-      props.password = await securityService.hash(props.password);
-    }
 
     if (props.role) {
       this.validateProp(props.role, this.validateRole);
     } else {
       props.role = Role.USER;
+    }
+
+    if (!props.id) {
+      props.id = uuidService.generate();
+    }
+
+    if (!props.isPasswordHashed && props.password) {
+      props.password = await securityService.hash(props.password);
     }
 
     if (!props.verified) {

@@ -1,5 +1,6 @@
+import Entity, { ValidationResult } from "../../shared/entities/entity";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
-import { SecurityService } from "../infrastructure/services/security/securityService";
+import { SecurityService } from "../infrastructure/services/securityService";
 
 export enum TokenType {
   verification = "verification",
@@ -13,8 +14,10 @@ interface PersistentTokenProps {
   token?: string;
 }
 
-export default class PersistentToken {
-  private constructor(private props: PersistentTokenProps) {}
+export default class PersistentToken extends Entity {
+  private constructor(private props: PersistentTokenProps) {
+    super();
+  }
 
   get id(): string | undefined {
     return this.props.id;
@@ -31,12 +34,26 @@ export default class PersistentToken {
   get type(): TokenType {
     return this.props.type;
   }
+  private static validateType(type: TokenType): ValidationResult {
+    if (!TokenType[type])
+      return { isValid: false, message: "Invalid token type" };
+    return PersistentToken.validValidationResult;
+  }
+
+  private static validateUserId(userId: string): ValidationResult {
+    if (!userId) return { isValid: false, message: "userId is required" };
+    return PersistentToken.validValidationResult;
+  }
 
   static create(
     props: PersistentTokenProps,
     securityService: SecurityService,
     uuidService: UUIDService
   ): PersistentToken {
+    this.validateProp(props.type, this.validateType);
+
+    this.validateProp(props.userId, this.validateUserId);
+
     if (!props.id) {
       props.id = uuidService.generate();
     }

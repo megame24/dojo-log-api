@@ -1,6 +1,8 @@
 import express from "express";
+import categoryRouter from "./categoryRoutes";
 
-const logbookRouter = express.Router();
+const logbookModuleRouter = express.Router();
 
-logbookRouter.post("/");
-// protectedRoute(logbookRouter.post, "/needs-auth", controller, tailMiddleware);
+logbookModuleRouter.use("/categories", categoryRouter);
+
+export default logbookModuleRouter;
