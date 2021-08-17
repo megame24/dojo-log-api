@@ -8,48 +8,48 @@ import {
   resetPasswordController,
 } from "../../adapters/controllers";
 import {
-  checkEndpointPermissionsMiddleware,
+  endpointPermissionsMiddleware,
   sendVerificationMiddleware,
 } from "../../adapters/middleware";
-import endpointPolicy from "../services/security/endpointPolicy.json";
+import endpointPolicy from "./endpointPolicy.json";
 
 const userRouter = express.Router();
 
 userRouter.post(
   "/register",
-  checkEndpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   registerUserViaEmailController.execute,
   sendVerificationMiddleware.execute
 );
 
 userRouter.post(
   "/login",
-  checkEndpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   loginUserViaEmailController.execute
 );
 
 userRouter.put(
   "/:id/verify/:token",
-  checkEndpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   verifyUserController.execute
 );
 
 userRouter.get(
   "/:id/send-verification",
-  checkEndpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   sendVerificationController.execute
 );
 
 userRouter.post(
   "/forgot-password",
-  checkEndpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   forgotPasswordController.execute
 );
 
 userRouter.put(
   "/:id/reset-password/:token",
-  checkEndpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   resetPasswordController.execute
 );
 
-export { userRouter };
+export default userRouter;

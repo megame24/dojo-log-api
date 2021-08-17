@@ -1,7 +1,7 @@
-import { BaseAdapter } from "../../../shared/types";
+import Adapter from "../../../shared/adapters/adapter";
 import { VerifyUser } from "../../useCases/verifyUser";
 
-export default class VerifyUserController extends BaseAdapter {
+export default class VerifyUserController extends Adapter {
   constructor(private verifyUser: VerifyUser) {
     super();
   }

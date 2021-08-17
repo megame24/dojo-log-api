@@ -1,7 +1,7 @@
-import { BaseAdapter } from "../../../shared/types";
+import Adapter from "../../../shared/adapters/adapter";
 import { AuthenticateUser } from "../../useCases/authenticateUser";
 
-export default class AuthenticateUserMiddleware extends BaseAdapter {
+export default class AuthenticateUserMiddleware extends Adapter {
   constructor(private authenticateUser: AuthenticateUser) {
     super();
   }

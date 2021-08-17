@@ -1,9 +1,9 @@
 import { EmailService } from "../../shared/infrastructure/services/emailService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
-import { UseCase } from "../../shared/types";
+import UseCase from "../../shared/useCases/useCase";
 import PersistentToken, { TokenType } from "../entities/persistentToken";
 import { PersistentTokenRepo } from "../infrastructure/repositories/persistentTokenRepo";
-import { SecurityService } from "../infrastructure/services/security/securityService";
+import { SecurityService } from "../infrastructure/services/securityService";
 
 interface SendVerificationDTO {
   id: string;

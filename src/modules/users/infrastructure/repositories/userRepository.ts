@@ -1,7 +1,7 @@
 import AppError from "../../../shared/AppError";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
 import User, { CreateUserProps } from "../../entities/user";
-import { SecurityService } from "../services/security/securityService";
+import { SecurityService } from "../services/securityService";
 
 interface GetUserConfig {
   includePassword: boolean;
@@ -125,6 +125,7 @@ export class UserRepoImpl implements UserRepo {
     email = "",
     config?: GetUserConfig
   ): Promise<User | null> {
+    email = email.toLowerCase();
     const queryOption = { where: { email } };
 
     return this.getUser(queryOption, config);

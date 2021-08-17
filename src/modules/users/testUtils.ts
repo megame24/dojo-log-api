@@ -2,7 +2,7 @@ import { EmailService } from "../shared/infrastructure/services/emailService";
 import { UUIDService } from "../shared/infrastructure/services/uuidService";
 import { PersistentTokenRepo } from "./infrastructure/repositories/persistentTokenRepo";
 import { UserRepo } from "./infrastructure/repositories/userRepository";
-import { SecurityService } from "./infrastructure/services/security/securityService";
+import { SecurityService } from "./infrastructure/services/securityService";
 import { RegisterUserViaEmail } from "./useCases/registerUserViaEmail";
 
 export class MockUserRepo implements UserRepo {

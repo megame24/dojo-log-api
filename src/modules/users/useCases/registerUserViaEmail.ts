@@ -1,9 +1,9 @@
 import User from "../entities/user";
-import { SecurityService } from "../infrastructure/services/security/securityService";
+import { SecurityService } from "../infrastructure/services/securityService";
 import { UserRepo } from "../infrastructure/repositories/userRepository";
 import AppError from "../../shared/AppError";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
-import { UseCase } from "../../shared/types";
+import UseCase from "../../shared/useCases/useCase";
 
 interface RegisterUserDTO {
   username: string;

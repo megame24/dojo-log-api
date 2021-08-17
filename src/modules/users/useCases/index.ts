@@ -14,7 +14,7 @@ import {
 } from "../../shared/infrastructure/services";
 import { ForgotPasswordImpl } from "./forgotPassword";
 import { ResetPasswordImpl } from "./resetPassword";
-import { CheckEndpointPermissionsImpl } from "./checkEndpointPermissions";
+import { EndpointPermissionsImpl } from "./endpointPermissions";
 
 export const registerUserViaEmailImpl = new RegisterUserViaEmailImpl(
   securityServiceImpl,
@@ -60,4 +60,4 @@ export const resetPasswordImpl = new ResetPasswordImpl(
   securityServiceImpl
 );
 
-export const checkEndpointPermissionsImpl = new CheckEndpointPermissionsImpl();
+export const endpointPermissionsImpl = new EndpointPermissionsImpl();

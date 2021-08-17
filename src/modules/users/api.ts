@@ -1,5 +1,13 @@
 import userModuleRouter from "./infrastructure/routes";
 import PersistentToken from "./entities/persistentToken";
-import { authenticateUserMiddleware } from "./adapters/middleware";
+import {
+  authenticateUserMiddleware,
+  endpointPermissionsMiddleware,
+} from "./adapters/middleware";
 
-export { userModuleRouter, PersistentToken, authenticateUserMiddleware };
+export {
+  userModuleRouter,
+  PersistentToken,
+  authenticateUserMiddleware,
+  endpointPermissionsMiddleware,
+};
