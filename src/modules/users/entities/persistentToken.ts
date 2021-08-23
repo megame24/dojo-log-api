@@ -15,8 +15,11 @@ interface PersistentTokenProps {
 }
 
 export default class PersistentToken extends Entity {
-  private constructor(private props: PersistentTokenProps) {
-    super();
+  private constructor(
+    private props: PersistentTokenProps,
+    uuidService: UUIDService
+  ) {
+    super(props, uuidService);
   }
 
   get id(): string | undefined {
@@ -40,23 +43,16 @@ export default class PersistentToken extends Entity {
     return PersistentToken.validValidationResult;
   }
 
-  private static validateUserId(userId: string): ValidationResult {
-    if (!userId) return { isValid: false, message: "userId is required" };
-    return PersistentToken.validValidationResult;
-  }
-
   static create(
     props: PersistentTokenProps,
     securityService: SecurityService,
     uuidService: UUIDService
   ): PersistentToken {
     this.validateProp(props.type, this.validateType);
-
-    this.validateProp(props.userId, this.validateUserId);
-
-    if (!props.id) {
-      props.id = uuidService.generate();
-    }
+    this.validateProp(
+      { key: "userId", value: props.userId },
+      this.isRequiredValidation
+    );
 
     if (!props.token) {
       props.token = securityService.generateToken(
@@ -65,6 +61,6 @@ export default class PersistentToken extends Entity {
       );
     }
 
-    return new PersistentToken(props);
+    return new PersistentToken(props, uuidService);
   }
 }
