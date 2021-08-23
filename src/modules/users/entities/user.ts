@@ -29,8 +29,8 @@ export default class User extends Entity {
   private static emailRegEx =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  private constructor(private props: UserProps) {
-    super();
+  private constructor(private props: UserProps, uuidService: UUIDService) {
+    super(props, uuidService);
   }
 
   get id(): string | undefined {
@@ -61,19 +61,6 @@ export default class User extends Entity {
     return this.props.verified;
   }
 
-  private static validateName(name: string): ValidationResult {
-    if (!name) {
-      return { isValid: false, message: "Name is required" };
-    }
-    if (name.length < 2 || name.length >= 255) {
-      return {
-        isValid: false,
-        message: "Name length must be greater than 1 and less than 255",
-      };
-    }
-    return User.validValidationResult;
-  }
-
   private static validateEmail(email: string): ValidationResult {
     if (!email) {
       return { isValid: false, message: "Email is required" };
@@ -86,19 +73,6 @@ export default class User extends Entity {
 
   private static formatEmail(email: string): string {
     return email.trim().toLowerCase();
-  }
-
-  private static validateUsername(username: string): ValidationResult {
-    if (!username) {
-      return { isValid: false, message: "Username is required" };
-    }
-    if (username.length < 2 || username.length >= 255) {
-      return {
-        isValid: false,
-        message: "Username length must be greater than 1 and less than 255",
-      };
-    }
-    return User.validValidationResult;
   }
 
   private static validatePassword(
@@ -130,12 +104,14 @@ export default class User extends Entity {
   ): Promise<User> {
     const props = { ...createUserProps };
 
-    this.validateProp(props.name, this.validateName);
+    this.validateProp({ key: "Name", value: props.name }, this.validateString);
+    this.validateProp(
+      { key: "Username", value: props.username },
+      this.validateString
+    );
 
     this.validateProp(props.email, this.validateEmail);
     props.email = this.formatEmail(props.email);
-
-    this.validateProp(props.username, this.validateUsername);
 
     if (props.isPasswordRequired) {
       this.validateProp(props.password, this.validatePassword);
@@ -149,10 +125,6 @@ export default class User extends Entity {
       props.role = Role.USER;
     }
 
-    if (!props.id) {
-      props.id = uuidService.generate();
-    }
-
     if (!props.isPasswordHashed && props.password) {
       props.password = await securityService.hash(props.password);
     }
@@ -161,6 +133,6 @@ export default class User extends Entity {
       props.verified = false;
     }
 
-    return new User(props);
+    return new User(props, uuidService);
   }
 }

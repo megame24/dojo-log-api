@@ -1,4 +1,4 @@
-import Entity, { ValidationResult } from "../../shared/entities/entity";
+import Entity from "../../shared/entities/entity";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 
 interface CategoryProps {
@@ -7,8 +7,8 @@ interface CategoryProps {
 }
 
 export default class Category extends Entity {
-  private constructor(private props: CategoryProps) {
-    super();
+  private constructor(private props: CategoryProps, uuidService: UUIDService) {
+    super(props, uuidService);
   }
 
   get id(): string | undefined {
@@ -19,23 +19,15 @@ export default class Category extends Entity {
     return this.props.name;
   }
 
-  private static validateName(name: string): ValidationResult {
-    if (!name) return { isValid: false, message: "Name is required" };
-    return Category.validValidationResult;
-  }
-
   private static formatName(name: string): string {
     return name.trim().toLowerCase();
   }
 
   static create(props: CategoryProps, uuidService: UUIDService): Category {
-    this.validateProp(props.name, this.validateName);
+    this.validateProp({ key: "Name", value: props.name }, this.validateString);
+
     props.name = this.formatName(props.name);
 
-    if (!props.id) {
-      props.id = uuidService.generate();
-    }
-
-    return new Category(props);
+    return new Category(props, uuidService);
   }
 }
