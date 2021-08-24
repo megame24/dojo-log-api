@@ -5,6 +5,7 @@ import Category from "../../entities/category";
 export interface CategoryRepo {
   create: (category: Category) => void;
   getCategoryByName: (name: string) => Promise<Category | null>;
+  getCategoryById: (id: string) => Promise<Category | null>;
 }
 
 export class CategoryRepoImpl implements CategoryRepo {
@@ -44,6 +45,12 @@ export class CategoryRepoImpl implements CategoryRepo {
   async getCategoryByName(name = ""): Promise<Category | null> {
     name = name.toLowerCase();
     const queryOption = { where: { name } };
+
+    return this.getCategory(queryOption);
+  }
+
+  async getCategoryById(id = ""): Promise<Category | null> {
+    const queryOption = { where: { id } };
 
     return this.getCategory(queryOption);
   }
