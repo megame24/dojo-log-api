@@ -5,7 +5,7 @@ import Category from "./category";
 import Goal from "./goal";
 import Log from "./log";
 
-enum LogbookVisibility {
+export enum LogbookVisibility {
   public = "public",
   private = "private",
 }
@@ -59,6 +59,10 @@ export default class Logbook extends Entity {
 
   get category(): Category {
     return this.props.category;
+  }
+
+  get userId(): string {
+    return this.props.userId;
   }
 
   private static saveLogsToHeatMap(
