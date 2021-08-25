@@ -1,4 +1,5 @@
 {
   "Role": ["ADMIN", "USER"],
-  "TokenType": ["verification", "resetPassword"]
+  "TokenType": ["verification", "resetPassword"],
+  "LogbookVisibility": ["public", "private"]
 }

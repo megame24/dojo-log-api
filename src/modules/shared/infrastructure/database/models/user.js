@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
       User.hasMany(models.PersistentToken, { foreignKey: "userId" });
+      User.hasMany(models.Logbook, { foreignKey: "userId" });
     }
   }
   User.init(

@@ -7,6 +7,7 @@ interface LogProps {
   date: Date;
   message: string;
   durationOfWork?: string;
+  // make proofOfWork it's own entity in the future !!!!!!
   proofOfWorkImageUrl?: string;
 }
 
