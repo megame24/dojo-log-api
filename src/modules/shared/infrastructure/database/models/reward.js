@@ -1,12 +1,12 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Category extends Model {
+  class Reward extends Model {
     static associate(models) {
-      Category.hasMany(models.Logbook, { foreignKey: "categoryId" });
+      Reward.hasMany(models.Goal, { foreignKey: "rewardId" });
     }
   }
-  Category.init(
+  Reward.init(
     {
       id: {
         allowNull: false,
@@ -16,13 +16,20 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      imageUrl: {
+        type: DataTypes.TEXT,
+        allowNull: true,
       },
     },
     {
       sequelize,
-      modelName: "Category",
+      modelName: "Reward",
     }
   );
-  return Category;
+  return Reward;
 };
