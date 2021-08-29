@@ -1,9 +1,21 @@
 {
   "ADMIN": {
-    "/categories": ["POST"]
+    "inherits": "USER",
+    "allow": {
+      "/categories": ["POST"]
+    },
+    "deny": {}
   },
   "USER": {
-    "/logbook": ["POST"]
+    "inherits": "GUEST",
+    "allow": {
+      "/logbook": ["POST"]
+    },
+    "deny": {}
   },
-  "GUEST": {}
+  "GUEST": {
+    "inherits": "",
+    "allow": {},
+    "deny": {}
+  }
 }
