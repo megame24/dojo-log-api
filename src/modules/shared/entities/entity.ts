@@ -33,6 +33,13 @@ export default abstract class Entity {
     return Entity.validValidationResult;
   }
 
+  protected static validateEnum(prop: { key: string; value: any; Enum: any }) {
+    if (!prop.Enum[prop.value]) {
+      return { isValid: false, message: `Invalid ${prop.key}` };
+    }
+    return Entity.validValidationResult;
+  }
+
   protected static isRequiredValidation(prop: {
     key: string;
     value: any;

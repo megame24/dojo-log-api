@@ -1,4 +1,7 @@
 "use strict";
+
+const { LogbookVisibility } = require("../models/json/enums.json");
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("Goals", {
@@ -13,17 +16,17 @@ module.exports = {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
         references: {
-          model: "Users",
+          model: "Logbooks",
           key: "id",
         },
       },
-      rewardId: {
-        allowNull: true,
+      userId: {
+        allowNull: false,
         type: Sequelize.UUID,
-        onDelete: "NO ACTION",
-        onUpdate: "NO ACTION",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
         references: {
-          model: "Categories",
+          model: "Users",
           key: "id",
         },
       },
@@ -46,6 +49,10 @@ module.exports = {
       },
       date: {
         type: Sequelize.DATE,
+        allowNull: false,
+      },
+      visibility: {
+        type: DataTypes.ENUM(LogbookVisibility),
         allowNull: false,
       },
       createdAt: {

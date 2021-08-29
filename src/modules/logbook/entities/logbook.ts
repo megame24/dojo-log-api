@@ -1,4 +1,4 @@
-import Entity, { ValidationResult } from "../../shared/entities/entity";
+import Entity from "../../shared/entities/entity";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import { DateService } from "../infrastructure/services/dateService";
 import Category from "./category";
@@ -108,9 +108,7 @@ export default class Logbook extends Entity {
         id: goal.id,
         name: goal.name,
         achieved: goal.achieved,
-        reward: {
-          name: goal.reward?.name,
-        },
+        rewards: goal.rewards,
       };
     });
   }
@@ -127,15 +125,6 @@ export default class Logbook extends Entity {
     return heatMap;
   }
 
-  private static validateVisibility(
-    visibility: LogbookVisibility
-  ): ValidationResult {
-    if (!LogbookVisibility[visibility]) {
-      return { isValid: false, message: "Invalid logbook visibility" };
-    }
-    return Logbook.validValidationResult;
-  }
-
   static create(
     createLogbookProps: CreateLogbookProps,
     uuidService: UUIDService,
@@ -148,7 +137,14 @@ export default class Logbook extends Entity {
       this.isRequiredValidation
     );
     this.validateProp({ key: "Name", value: props.name }, this.validateString);
-    this.validateProp(props.visibility, this.validateVisibility);
+    this.validateProp(
+      {
+        key: "logbook visibility",
+        value: props.visibility,
+        Enum: LogbookVisibility,
+      },
+      this.validateEnum
+    );
     this.validateProp(
       { key: "Category", value: props.category },
       this.isRequiredValidation

@@ -92,11 +92,6 @@ export default class User extends Entity {
     return User.validValidationResult;
   }
 
-  private static validateRole(role: Role): ValidationResult {
-    if (!Role[role]) return { isValid: false, message: "Invalid role" };
-    return User.validValidationResult;
-  }
-
   static async create(
     createUserProps: CreateUserProps,
     securityService: SecurityService,
@@ -120,7 +115,10 @@ export default class User extends Entity {
     }
 
     if (props.role) {
-      this.validateProp(props.role, this.validateRole);
+      this.validateProp(
+        { key: "role", value: props.role, Enum: Role },
+        this.validateEnum
+      );
     } else {
       props.role = Role.USER;
     }
