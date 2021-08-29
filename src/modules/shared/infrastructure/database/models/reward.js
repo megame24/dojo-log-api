@@ -3,7 +3,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Reward extends Model {
     static associate(models) {
-      Reward.hasMany(models.Goal, { foreignKey: "rewardId" });
+      Reward.belongsToMany(models.Goal, { through: "GoalRewards" });
     }
   }
   Reward.init(

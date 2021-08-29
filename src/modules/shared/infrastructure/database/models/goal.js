@@ -1,10 +1,13 @@
 "use strict";
 const { Model } = require("sequelize");
+const { LogbookVisibility } = require("./json/enums.json");
+
 module.exports = (sequelize, DataTypes) => {
   class Goal extends Model {
     static associate(models) {
       Goal.belongsTo(models.Logbook, { foreignKey: "logbookId" });
-      Goal.belongsTo(models.Reward, { foreignKey: "rewardId" });
+      Goal.belongsTo(models.User, { foreignKey: "userId" });
+      Goal.belongsToMany(models.Reward, { through: "GoalRewards" });
     }
   }
   Goal.init(
@@ -18,8 +21,8 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.UUID,
       },
-      rewardId: {
-        allowNull: true,
+      userId: {
+        allowNull: false,
         type: DataTypes.UUID,
       },
       name: {
@@ -41,6 +44,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       date: {
         type: DataTypes.DATE,
+        allowNull: false,
+      },
+      visibility: {
+        type: DataTypes.ENUM(LogbookVisibility),
         allowNull: false,
       },
     },

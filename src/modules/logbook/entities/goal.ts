@@ -1,16 +1,19 @@
 import Entity from "../../shared/entities/entity";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
+import { LogbookVisibility } from "./logbook";
 import Reward from "./reward";
 
 interface GoalProps {
   id?: string;
   logbookId: string;
+  userId: string;
+  visibility: LogbookVisibility;
   name: string;
   description?: string;
   achieved: boolean;
   achievementCriteria: string;
   date: Date;
-  reward?: Reward;
+  rewards?: Reward[];
 }
 
 export default class Goal extends Entity {
@@ -20,6 +23,14 @@ export default class Goal extends Entity {
 
   get id(): string | undefined {
     return this.props.id;
+  }
+
+  get userId(): string {
+    return this.props.userId;
+  }
+
+  get visibility(): LogbookVisibility {
+    return this.props.visibility;
   }
 
   get name(): string {
@@ -46,14 +57,26 @@ export default class Goal extends Entity {
     return this.props.date;
   }
 
-  get reward(): Reward | undefined {
-    return this.props.reward;
+  get rewards(): Reward[] | undefined {
+    return this.props.rewards;
   }
 
   static create(props: GoalProps, uuidService: UUIDService): Goal {
     this.validateProp(
       { key: "logbookId", value: props.logbookId },
       this.isRequiredValidation
+    );
+    this.validateProp(
+      { key: "userId", value: props.userId },
+      this.isRequiredValidation
+    );
+    this.validateProp(
+      {
+        key: "logbook visibility",
+        value: props.visibility,
+        Enum: LogbookVisibility,
+      },
+      this.validateEnum
     );
     this.validateProp({ key: "Name", value: props.name }, this.validateString);
     this.validateProp(
