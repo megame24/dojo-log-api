@@ -1,13 +1,25 @@
 {
-  "ADMIN": {},
+  "ADMIN": {
+    "inherits": "",
+    "allow": {},
+    "deny": {}
+  },
   "USER": {
-    "/users/:id/send-verification": ["GET"]
+    "inherits": "",
+    "allow": {
+      "/users/:id/send-verification": ["GET"]
+    },
+    "deny": {}
   },
   "GUEST": {
-    "/users/register": ["POST"],
-    "/users/login": ["POST"],
-    "/users/:id/verify/:token": ["PUT"],
-    "/users/forgot-password": ["POST"],
-    "/users/:id/reset-password/:token": ["PUT"]
+    "inherits": "",
+    "allow": {
+      "/users/register": ["POST"],
+      "/users/login": ["POST"],
+      "/users/:id/verify/:token": ["PUT"],
+      "/users/forgot-password": ["POST"],
+      "/users/:id/reset-password/:token": ["PUT"]
+    },
+    "deny": {}
   }
 }

@@ -19,12 +19,15 @@ export class EndpointPermissionsImpl implements EndpointPermissions {
       endpointPermissionsDTO;
 
     const policy = endpointPolicy[role];
-    let hasPermission = false;
 
-    if (policy[endpoint] && policy[endpoint].includes(httpMethod)) {
-      hasPermission = true;
-    }
+    if (policy.deny[endpoint] && policy.deny[endpoint].includes(httpMethod))
+      return false;
 
-    return hasPermission;
+    if (policy.allow[endpoint] && policy.allow[endpoint].includes(httpMethod))
+      return true;
+
+    if (!policy.inherits) return false;
+
+    return this.execute({ ...endpointPermissionsDTO, role: policy.inherits });
   }
 }
