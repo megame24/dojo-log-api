@@ -1,5 +1,5 @@
 import express from "express";
-import { endpointPermissionsMiddleware } from "../../../users/api";
+import { endpointPermissionsMiddleware } from "../../../shared/adapters/middleware";
 import { createCategoryController } from "../../adapters/controllers";
 import endpointPolicy from "./endpointPolicy.json";
 

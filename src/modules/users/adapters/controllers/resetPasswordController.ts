@@ -7,9 +7,9 @@ export default class ResetPasswordController extends Adapter {
   }
 
   async execute(req: any, res: any, next: any) {
-    const { id, token } = req.params;
+    const { userId, token } = req.params;
     const resetPasswordDTO = {
-      userId: id,
+      userId,
       token,
       password: req.body.password,
     };

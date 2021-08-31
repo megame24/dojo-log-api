@@ -7,8 +7,8 @@ export default class VerifyUserController extends Adapter {
   }
 
   async execute(req: any, res: any, next: any) {
-    const { id, token } = req.params;
-    const verifyUserDTO = { userId: id, token };
+    const { userId, token } = req.params;
+    const verifyUserDTO = { userId, token };
 
     try {
       await this.verifyUser.execute(verifyUserDTO);

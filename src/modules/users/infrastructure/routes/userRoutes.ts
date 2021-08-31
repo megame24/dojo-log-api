@@ -1,4 +1,5 @@
 import express from "express";
+import { endpointPermissionsMiddleware } from "../../../shared/adapters/middleware";
 import {
   registerUserViaEmailController,
   loginUserViaEmailController,
@@ -7,10 +8,7 @@ import {
   forgotPasswordController,
   resetPasswordController,
 } from "../../adapters/controllers";
-import {
-  endpointPermissionsMiddleware,
-  sendVerificationMiddleware,
-} from "../../adapters/middleware";
+import { sendVerificationMiddleware } from "../../adapters/middleware";
 import endpointPolicy from "./endpointPolicy.json";
 
 const userRouter = express.Router();
@@ -29,13 +27,13 @@ userRouter.post(
 );
 
 userRouter.put(
-  "/:id/verify/:token",
+  "/:userId/verify/:token",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   verifyUserController.execute
 );
 
 userRouter.get(
-  "/:id/send-verification",
+  "/:userId/send-verification",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   sendVerificationController.execute
 );
@@ -47,7 +45,7 @@ userRouter.post(
 );
 
 userRouter.put(
-  "/:id/reset-password/:token",
+  "/:userId/reset-password/:token",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   resetPasswordController.execute
 );

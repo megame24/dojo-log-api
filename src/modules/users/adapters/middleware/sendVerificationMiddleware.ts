@@ -8,7 +8,7 @@ export default class SendVerificationMiddleware extends Adapter {
 
   async execute(req: any, res: any, next: any) {
     const sendVerificationDTO = {
-      id: req.user.id,
+      userId: req.user.id,
       email: req.user.email,
     };
 

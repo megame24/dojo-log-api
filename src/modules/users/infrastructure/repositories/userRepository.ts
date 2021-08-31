@@ -14,7 +14,7 @@ export interface UserRepo {
     config?: GetUserConfig
   ) => Promise<User | null>;
   getUserByUsername: (
-    email: string,
+    username: string,
     config?: GetUserConfig
   ) => Promise<User | null>;
   getUserById: (id: string, config?: GetUserConfig) => Promise<User | null>;
@@ -45,6 +45,7 @@ export class UserRepoImpl implements UserRepo {
     }
   }
 
+  // MOVE SOME OF THE LOGIC HERE TO THE USE CASE!!!!!!!!!!!!!!
   async update(userId: string, payload: Partial<CreateUserProps>) {
     delete payload.id; // can't update ID
 
