@@ -63,20 +63,7 @@ describe("Registering a user via email", () => {
       error = err;
     }
 
-    const user = await User.create(
-      {
-        id: "this_is_a_random_uuid",
-        name: "Mr. Taiemo",
-        email: "email@test.com",
-        username: "user1234",
-        password: "P@ssw0rd",
-        isPasswordHashed: false,
-        isPasswordRequired: true,
-      },
-      new MockSecurityService(),
-      new MockUUIDService()
-    );
-    expect(mockUserRepo.create).toBeCalledWith(user);
+    expect(mockUserRepo.create).toBeCalledTimes(1);
     expect(error).toBeUndefined();
   });
 });
