@@ -8,9 +8,9 @@ interface PermissionProps {
 }
 
 export default class EndpointPermission {
-  static hasPermission(params: PermissionProps): boolean {
-    const { endpointPolicy, endpoint, httpMethod } = params;
-    let { role } = params;
+  static hasPermission(props: PermissionProps): boolean {
+    const { endpointPolicy, endpoint, httpMethod } = props;
+    let { role } = props;
 
     const policy = endpointPolicy[role];
     const deny = policy.deny;
@@ -23,6 +23,6 @@ export default class EndpointPermission {
     if (!policy.inherits) return false;
 
     role = policy.inherits;
-    return this.hasPermission({ ...params, role });
+    return this.hasPermission({ ...props, role });
   }
 }

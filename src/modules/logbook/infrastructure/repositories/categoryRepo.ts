@@ -49,7 +49,9 @@ export class CategoryRepoImpl implements CategoryRepo {
     return this.getCategory(queryOption);
   }
 
-  async getCategoryById(id = ""): Promise<Category | null> {
+  async getCategoryById(id: string): Promise<Category | null> {
+    if (!id) throw AppError.badRequestError("Category ID is required");
+
     const queryOption = { where: { id } };
 
     return this.getCategory(queryOption);

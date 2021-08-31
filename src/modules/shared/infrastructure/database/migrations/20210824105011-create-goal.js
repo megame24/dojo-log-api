@@ -52,7 +52,7 @@ module.exports = {
         allowNull: false,
       },
       visibility: {
-        type: DataTypes.ENUM(LogbookVisibility),
+        type: Sequelize.ENUM(LogbookVisibility),
         allowNull: false,
       },
       createdAt: {

@@ -22,7 +22,7 @@ module.exports = {
       },
       categoryId: {
         allowNull: false,
-        type: DataTypes.UUID,
+        type: Sequelize.UUID,
         onDelete: "NO ACTION",
         onUpdate: "NO ACTION",
         references: {
@@ -39,7 +39,7 @@ module.exports = {
         allowNull: true,
       },
       visibility: {
-        type: DataTypes.ENUM(LogbookVisibility),
+        type: Sequelize.ENUM(LogbookVisibility),
         allowNull: false,
       },
       createdAt: {
