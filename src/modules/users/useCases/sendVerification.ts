@@ -6,7 +6,7 @@ import { PersistentTokenRepo } from "../infrastructure/repositories/persistentTo
 import { SecurityService } from "../infrastructure/services/securityService";
 
 interface SendVerificationDTO {
-  id: string;
+  userId: string;
   email: string;
 }
 
@@ -23,15 +23,15 @@ export class SendVerificationImpl implements SendVerification {
   ) {}
 
   async execute(sendVerificationDTO: SendVerificationDTO) {
-    const { id, email } = sendVerificationDTO;
+    const { userId, email } = sendVerificationDTO;
 
     await this.persistentTokenRepo.deleteMany({
-      userId: id,
+      userId,
       type: TokenType.verification,
     });
 
     const persistentTokenProps = {
-      userId: id,
+      userId,
       type: TokenType.verification,
     };
     const verificationToken = PersistentToken.create(

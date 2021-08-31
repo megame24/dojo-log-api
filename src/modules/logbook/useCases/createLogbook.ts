@@ -49,8 +49,3 @@ export class CreateLogbookImpl implements CreateLogbook {
     await this.logbookRepo.create(logbook);
   }
 }
-
-// Consider the following
-// - Give everything that requires visibility their own visibility property
-// - Plug a middleware at the end of the endpoint to check for visibility permissions (since we now have guest users)
-// Alt - Find a way to plug at the beginning

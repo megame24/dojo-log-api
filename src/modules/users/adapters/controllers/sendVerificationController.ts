@@ -8,7 +8,7 @@ export default class SendVerificationController extends Adapter {
 
   async execute(req: any, res: any, next: any) {
     const sendVerificationDTO = {
-      id: req.params.id,
+      userId: req.params.userId,
       email: req.user.email,
     };
 
