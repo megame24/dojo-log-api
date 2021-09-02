@@ -1,4 +1,4 @@
-import Entity from "../../shared/entities/entity";
+import Entity, { ValidationResult } from "../../shared/entities/entity";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import { LogbookVisibility } from "./logbook";
 
@@ -9,12 +9,15 @@ interface LogProps {
   visibility: LogbookVisibility;
   date: Date;
   message: string;
-  durationOfWork?: string;
+  durationOfWork?: string; // format: 1h 30m 0h 59m
   // make proofOfWork it's own entity in the future !!!!!!
   proofOfWorkImageUrl?: string;
 }
 
 export default class Log extends Entity {
+  private static durationOfWorkRegEx =
+    /^(2[0-3][h]|[0-1]?[0-9][h])$|^((([0]?|[1-5]{1})[0-9])[m])$|^((2[0-3][h]|[0-1]?[0-9][h])\s((([0]?|[1-5]{1})[0-9])[m]))$/;
+
   private constructor(private props: LogProps, uuidService: UUIDService) {
     super(props, uuidService);
   }
@@ -51,6 +54,15 @@ export default class Log extends Entity {
     return this.props.proofOfWorkImageUrl;
   }
 
+  private static validateDurationOfWork(
+    durationOfWork: string
+  ): ValidationResult {
+    if (!Log.durationOfWorkRegEx.test(durationOfWork)) {
+      return { isValid: false, message: "Invalid duration of work format" };
+    }
+    return Log.validValidationResult;
+  }
+
   static create(props: LogProps, uuidService: UUIDService): Log {
     this.validateProp(
       { key: "logbookId", value: props.logbookId },
@@ -76,6 +88,10 @@ export default class Log extends Entity {
       { key: "date", value: props.date },
       this.isRequiredValidation
     );
+
+    if (props.durationOfWork) {
+      this.validateProp(props.durationOfWork, this.validateDurationOfWork);
+    }
 
     return new Log(props, uuidService);
   }

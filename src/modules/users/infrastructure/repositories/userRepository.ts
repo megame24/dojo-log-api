@@ -142,7 +142,7 @@ export class UserRepoImpl implements UserRepo {
   }
 
   async getUserById(id: string, config?: GetUserConfig): Promise<User | null> {
-    if (!id) throw AppError.badRequestError("User ID is required");
+    if (!id) throw AppError.badRequestError("userId is required");
 
     const queryOption = { where: { id } };
 

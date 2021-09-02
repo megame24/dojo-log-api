@@ -5,9 +5,12 @@ import {
 import {
   categoryRepoImpl,
   logbookRepoImpl,
+  logRepoImpl,
 } from "../infrastructure/repositories";
 import { CreateCategoryImpl } from "./createCategory";
+import { CreateLogImpl } from "./createLog";
 import { CreateLogbookImpl } from "./createLogbook";
+import { GetLiteLogbookImpl } from "./getLiteLogbook";
 
 export const createCategoryImpl = new CreateCategoryImpl(
   categoryRepoImpl,
@@ -19,3 +22,5 @@ export const createLogbookImpl = new CreateLogbookImpl(
   uuidServiceImpl,
   dateServiceImpl
 );
+export const getLiteLogbookImpl = new GetLiteLogbookImpl(logbookRepoImpl);
+export const createLogImpl = new CreateLogImpl(logRepoImpl, uuidServiceImpl);
