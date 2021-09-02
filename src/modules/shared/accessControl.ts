@@ -12,7 +12,7 @@ export interface BaseAccessProps {
   user: User;
   operation: Operation;
   resourceType: string;
-  resource?: any;
+  resourceOrParent?: any;
 }
 
 interface AccessProps extends BaseAccessProps {
@@ -21,6 +21,12 @@ interface AccessProps extends BaseAccessProps {
 }
 
 export abstract class AccessControl {
+  constructor() {
+    this.isAdmin = this.isAdmin.bind(this);
+    this.isOwner = this.isOwner.bind(this);
+    this.privateAccess = this.privateAccess.bind(this);
+  }
+
   protected pass(): boolean {
     return true;
   }
@@ -30,65 +36,65 @@ export abstract class AccessControl {
     return user.role === Role.ADMIN;
   }
 
-  protected isOwner(user: User, resource: any): boolean {
-    if (!user || !resource) return false;
-    return user.id === resource.userId;
+  protected isOwner(user: User, resourceOrParent: any): boolean {
+    if (!user || !resourceOrParent) return false;
+    return user.id === resourceOrParent.userId;
   }
 
-  protected privateAccess(user: User, resource: any): boolean {
-    if (!user || !resource) return false;
-    return this.isAdmin(user) || this.isOwner(user, resource);
+  protected privateAccess(user: User, resourceOrParent: any): boolean {
+    if (!user || !resourceOrParent) return false;
+    return this.isAdmin(user) || this.isOwner(user, resourceOrParent);
   }
 
-  protected privatePublicAccess(user: User, resource: any): boolean {
-    if (!user || !resource) return false;
-    if (resource.visibility === LogbookVisibility.private) {
-      return this.privateAccess(user, resource);
+  protected privatePublicAccess(user: User, resourceOrParent: any): boolean {
+    if (!user || !resourceOrParent) return false;
+    if (resourceOrParent.visibility === LogbookVisibility.private) {
+      return this.privateAccess(user, resourceOrParent);
     }
     return true;
   }
 
-  protected getResourceOperationPolicy(params: AccessProps) {
-    const { policy, resourceType, operation } = params;
+  protected getResourceOperationPolicy(props: AccessProps) {
+    const { policy, resourceType, operation } = props;
 
     return policy[resourceType].find(
       (elem: any) => elem.operation === operation
     );
   }
 
-  protected checkAccess(params: AccessProps): boolean {
-    const { user, policy, resourceType, resource } = params;
+  protected checkAccess(props: AccessProps): boolean {
+    const { user, policy, resourceType, resourceOrParent } = props;
 
     if (policy[resourceType]) {
-      const resourceOperationPolicy = this.getResourceOperationPolicy(params);
+      const resourceOperationPolicy = this.getResourceOperationPolicy(props);
       if (
         resourceOperationPolicy &&
-        resourceOperationPolicy.condition(user, resource)
+        resourceOperationPolicy.condition(user, resourceOrParent)
       )
         return true;
     }
     return false;
   }
 
-  protected _hasAccess(params: AccessProps): boolean {
-    const { policy } = params;
-    let { role } = params;
+  protected _hasAccess(props: AccessProps): boolean {
+    const { policy } = props;
+    let { role } = props;
 
     const policyByRole = policy[role];
     const deny = policyByRole.deny;
     const allow = policyByRole.allow;
 
-    if (this.checkAccess({ ...params, policy: deny })) return false;
+    if (this.checkAccess({ ...props, policy: deny })) return false;
 
-    if (this.checkAccess({ ...params, policy: allow })) return true;
+    if (this.checkAccess({ ...props, policy: allow })) return true;
 
     if (!policyByRole.inherits) return false;
 
     role = policyByRole.inherits;
-    return this._hasAccess({ ...params, role });
+    return this._hasAccess({ ...props, role });
   }
 
-  hasAccess(params: BaseAccessProps): boolean {
+  hasAccess(props: BaseAccessProps): boolean {
     console.log("Not implemented");
     return false;
   }

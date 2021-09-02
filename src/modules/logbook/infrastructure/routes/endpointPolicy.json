@@ -9,7 +9,8 @@
   "USER": {
     "inherits": "GUEST",
     "allow": {
-      "/logbook": ["POST"]
+      "/logbook": ["POST"],
+      "/logbook/:logbookId/log": ["POST"]
     },
     "deny": {}
   },

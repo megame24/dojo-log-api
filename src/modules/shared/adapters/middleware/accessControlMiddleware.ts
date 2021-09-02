@@ -12,13 +12,13 @@ export default class AccessControlMiddleware extends Adapter {
     accessControl: AccessControl;
     operation: Operation;
     resourceType: string;
-    getResource?: UseCase<any, any>;
+    getResourceOrParent?: UseCase<any, any>;
   }) {
     return async (req: any, res: any, next: any) => {
       try {
-        let resource;
-        if (props.getResource) {
-          resource = await props.getResource.execute({
+        let resourceOrParent;
+        if (props.getResourceOrParent) {
+          resourceOrParent = await props.getResourceOrParent.execute({
             ...req.body,
             ...req.params,
             userId: req.user.id,
@@ -29,13 +29,13 @@ export default class AccessControlMiddleware extends Adapter {
           user: req.user,
           operation: props.operation,
           resourceType: props.resourceType,
-          resource,
+          resourceOrParent,
         };
 
         const hasAccess = props.accessControl.hasAccess(accessProps);
         if (!hasAccess) throw AppError.forbiddenError();
 
-        req.resource = resource;
+        req.resourceOrParent = resourceOrParent;
         next();
       } catch (error) {
         next(error);

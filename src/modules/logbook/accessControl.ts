@@ -27,12 +27,10 @@ class LogbookAccessControl extends AccessControl {
             operation: Operation.CREATE,
             condition: this.pass,
           },
+        ],
+        log: [
           {
-            operation: Operation.UPDATE,
-            condition: this.privateAccess,
-          },
-          {
-            operation: Operation.DELETE,
+            operation: Operation.CREATE,
             condition: this.privateAccess,
           },
         ],
@@ -41,17 +39,14 @@ class LogbookAccessControl extends AccessControl {
     },
     GUEST: {
       inherits: "",
-      allow: {
-        logbook: [
-          {
-            operation: Operation.GET,
-            condition: this.privatePublicAccess,
-          },
-        ],
-      },
+      allow: {},
       deny: {},
     },
   };
+
+  constructor() {
+    super();
+  }
 
   hasAccess(params: BaseAccessProps): boolean {
     return this._hasAccess({
@@ -62,4 +57,4 @@ class LogbookAccessControl extends AccessControl {
   }
 }
 
-export const logBookAccessControl = new LogbookAccessControl();
+export const logbookAccessControl = new LogbookAccessControl();
