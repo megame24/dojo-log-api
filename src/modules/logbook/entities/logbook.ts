@@ -5,7 +5,7 @@ import Category from "./category";
 import Goal from "./goal";
 import Log from "./log";
 
-export enum LogbookVisibility {
+export enum Visibility {
   public = "public",
   private = "private",
 }
@@ -15,22 +15,18 @@ interface BaseLogbookProps {
   userId: string;
   name: string;
   description?: string;
-  visibility: LogbookVisibility;
+  visibility: Visibility;
   category: Category;
 }
 
 interface LogbookProps extends BaseLogbookProps {
-  // this would be an object of timestamp to singular heat map details
-  heatMap: any; // or plain logs .... or pass in plain logs & goals and get heatMap
+  heatMap: any;
 }
 
 interface CreateLogbookProps extends BaseLogbookProps {
   goals?: Goal[];
   logs?: Log[];
 }
-
-// idea
-// have a getLogbookLite repo method!!!!
 
 export default class Logbook extends Entity {
   private constructor(private props: LogbookProps, uuidService: UUIDService) {
@@ -53,7 +49,7 @@ export default class Logbook extends Entity {
     return this.props.heatMap;
   }
 
-  get visibility(): LogbookVisibility {
+  get visibility(): Visibility {
     return this.props.visibility;
   }
 
@@ -141,7 +137,7 @@ export default class Logbook extends Entity {
       {
         key: "logbook visibility",
         value: props.visibility,
-        Enum: LogbookVisibility,
+        Enum: Visibility,
       },
       this.validateEnum
     );

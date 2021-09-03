@@ -1,13 +1,13 @@
 import Entity from "../../shared/entities/entity";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
-import { LogbookVisibility } from "./logbook";
+import { Visibility } from "./logbook";
 import Reward from "./reward";
 
 interface GoalProps {
   id?: string;
   logbookId: string;
   userId: string;
-  visibility: LogbookVisibility;
+  visibility: Visibility;
   name: string;
   description?: string;
   achieved: boolean;
@@ -29,7 +29,7 @@ export default class Goal extends Entity {
     return this.props.userId;
   }
 
-  get visibility(): LogbookVisibility {
+  get visibility(): Visibility {
     return this.props.visibility;
   }
 
@@ -74,7 +74,7 @@ export default class Goal extends Entity {
       {
         key: "logbook visibility",
         value: props.visibility,
-        Enum: LogbookVisibility,
+        Enum: Visibility,
       },
       this.validateEnum
     );

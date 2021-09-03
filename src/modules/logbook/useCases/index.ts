@@ -1,5 +1,5 @@
 import {
-  dateServiceImpl,
+  fileServiceImpl,
   uuidServiceImpl,
 } from "../../shared/infrastructure/services";
 import {
@@ -7,6 +7,7 @@ import {
   logbookRepoImpl,
   logRepoImpl,
 } from "../infrastructure/repositories";
+import { dateServiceImpl } from "../infrastructure/services";
 import { CreateCategoryImpl } from "./createCategory";
 import { CreateLogImpl } from "./createLog";
 import { CreateLogbookImpl } from "./createLogbook";
@@ -23,4 +24,8 @@ export const createLogbookImpl = new CreateLogbookImpl(
   dateServiceImpl
 );
 export const getLiteLogbookImpl = new GetLiteLogbookImpl(logbookRepoImpl);
-export const createLogImpl = new CreateLogImpl(logRepoImpl, uuidServiceImpl);
+export const createLogImpl = new CreateLogImpl(
+  logRepoImpl,
+  uuidServiceImpl,
+  fileServiceImpl
+);

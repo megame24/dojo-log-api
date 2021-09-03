@@ -13,7 +13,7 @@ export default class CreateLogController extends Adapter {
       message: req.body.message,
       date: req.body.date,
       durationOfWork: req.body.durationOfWork,
-      proofOfWorkImageUrl: req.body.proofOfWorkImageUrl,
+      file: req.file,
     };
 
     try {

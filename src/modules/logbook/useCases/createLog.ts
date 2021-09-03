@@ -3,6 +3,7 @@ import UseCase from "../../shared/useCases/useCase";
 import Log from "../entities/log";
 import { LogRepo } from "../infrastructure/repositories/logRepo";
 import Logbook from "../entities/logbook";
+import { FileService } from "../../shared/infrastructure/services/fileService";
 
 interface CreateLogDTO {
   userId: string;
@@ -10,7 +11,7 @@ interface CreateLogDTO {
   message: string;
   date: Date;
   durationOfWork?: string;
-  proofOfWorkImageUrl?: string;
+  file: any;
 }
 
 export interface CreateLog extends UseCase<CreateLogDTO, void> {
@@ -18,9 +19,20 @@ export interface CreateLog extends UseCase<CreateLogDTO, void> {
 }
 
 export class CreateLogImpl implements CreateLog {
-  constructor(private logRepo: LogRepo, private uuidService: UUIDService) {}
+  constructor(
+    private logRepo: LogRepo,
+    private uuidService: UUIDService,
+    private fileService: FileService
+  ) {}
 
   async execute(createLogDTO: CreateLogDTO) {
+    let proofOfWorkImageUrl;
+    if (createLogDTO.file) {
+      proofOfWorkImageUrl = await this.fileService.uploadFile(
+        createLogDTO.file
+      );
+    }
+
     const createLogProps = {
       userId: createLogDTO.userId,
       logbookId: <string>createLogDTO.logbook.id,
@@ -28,7 +40,7 @@ export class CreateLogImpl implements CreateLog {
       date: createLogDTO.date,
       message: createLogDTO.message,
       durationOfWork: createLogDTO.durationOfWork,
-      proofOfWorkImageUrl: createLogDTO.proofOfWorkImageUrl,
+      proofOfWorkImageUrl: proofOfWorkImageUrl,
     };
     const log = Log.create(createLogProps, this.uuidService);
 

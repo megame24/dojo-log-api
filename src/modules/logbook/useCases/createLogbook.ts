@@ -1,7 +1,7 @@
 import AppError from "../../shared/AppError";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
-import Logbook, { LogbookVisibility } from "../entities/logbook";
+import Logbook, { Visibility } from "../entities/logbook";
 import { CategoryRepo } from "../infrastructure/repositories/categoryRepo";
 import { LogbookRepo } from "../infrastructure/repositories/logbookRepo";
 import { DateService } from "../infrastructure/services/dateService";
@@ -10,7 +10,7 @@ interface CreateLogbookDTO {
   userId: string;
   name: string;
   description?: string;
-  visibility: LogbookVisibility;
+  visibility: Visibility;
   categoryId: string;
 }
 

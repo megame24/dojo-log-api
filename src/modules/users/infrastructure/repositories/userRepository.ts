@@ -18,7 +18,7 @@ export interface UserRepo {
     config?: GetUserConfig
   ) => Promise<User | null>;
   getUserById: (id: string, config?: GetUserConfig) => Promise<User | null>;
-  update: (userId: string, payload: Partial<CreateUserProps>) => void;
+  update: (user: User, payload: Partial<CreateUserProps>) => void;
 }
 
 export class UserRepoImpl implements UserRepo {
@@ -45,12 +45,8 @@ export class UserRepoImpl implements UserRepo {
     }
   }
 
-  // MOVE SOME OF THE LOGIC HERE TO THE USE CASE!!!!!!!!!!!!!!
-  async update(userId: string, payload: Partial<CreateUserProps>) {
+  async update(user: User, payload: Partial<CreateUserProps>) {
     delete payload.id; // can't update ID
-
-    const user: User | null = await this.getUser({ where: { id: userId } });
-    if (!user) throw AppError.notFoundError("User not found");
 
     const updateUserProps = {
       id: user.id,
@@ -84,7 +80,7 @@ export class UserRepoImpl implements UserRepo {
           role: updatedUser.role,
           verified: updatedUser.verified,
         },
-        { where: { id: userId } }
+        { where: { id: updatedUser.id } }
       );
     } catch (error) {
       throw AppError.internalServerError("Error updating user", error);

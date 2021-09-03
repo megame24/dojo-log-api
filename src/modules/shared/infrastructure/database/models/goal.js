@@ -1,6 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
-const { LogbookVisibility } = require("./json/enums.json");
+const { Visibility } = require("./json/enums.json");
 
 module.exports = (sequelize, DataTypes) => {
   class Goal extends Model {
@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       visibility: {
-        type: DataTypes.ENUM(LogbookVisibility),
+        type: DataTypes.ENUM(Visibility),
         allowNull: false,
       },
     },
