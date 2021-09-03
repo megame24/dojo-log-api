@@ -1,4 +1,4 @@
-import { LogbookVisibility } from "../logbook/api";
+import { Visibility } from "../logbook/api";
 import { User, Role } from "../users/api";
 
 export enum Operation {
@@ -48,7 +48,7 @@ export abstract class AccessControl {
 
   protected privatePublicAccess(user: User, resourceOrParent: any): boolean {
     if (!user || !resourceOrParent) return false;
-    if (resourceOrParent.visibility === LogbookVisibility.private) {
+    if (resourceOrParent.visibility === Visibility.private) {
       return this.privateAccess(user, resourceOrParent);
     }
     return true;

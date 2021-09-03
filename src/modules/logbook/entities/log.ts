@@ -1,15 +1,15 @@
 import Entity, { ValidationResult } from "../../shared/entities/entity";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
-import { LogbookVisibility } from "./logbook";
+import { Visibility } from "./logbook";
 
 interface LogProps {
   id?: string;
   logbookId: string;
   userId: string;
-  visibility: LogbookVisibility;
+  visibility: Visibility;
   date: Date;
   message: string;
-  durationOfWork?: string; // format: 1h 30m 0h 59m
+  durationOfWork?: string;
   // make proofOfWork it's own entity in the future !!!!!!
   proofOfWorkImageUrl?: string;
 }
@@ -34,7 +34,7 @@ export default class Log extends Entity {
     return this.props.userId;
   }
 
-  get visibility(): LogbookVisibility {
+  get visibility(): Visibility {
     return this.props.visibility;
   }
 
@@ -76,7 +76,7 @@ export default class Log extends Entity {
       {
         key: "logbook visibility",
         value: props.visibility,
-        Enum: LogbookVisibility,
+        Enum: Visibility,
       },
       this.validateEnum
     );

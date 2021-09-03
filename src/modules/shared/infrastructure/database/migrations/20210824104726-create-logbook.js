@@ -1,6 +1,6 @@
 "use strict";
 
-const { LogbookVisibility } = require("../models/json/enums.json");
+const { Visibility } = require("../models/json/enums.json");
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -39,7 +39,7 @@ module.exports = {
         allowNull: true,
       },
       visibility: {
-        type: Sequelize.ENUM(LogbookVisibility),
+        type: Sequelize.ENUM(Visibility),
         allowNull: false,
       },
       createdAt: {

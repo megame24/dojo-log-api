@@ -1,4 +1,4 @@
 import logbookModuleRouter from "./infrastructure/routes";
-import { LogbookVisibility } from "./entities/logbook";
+import { Visibility } from "./entities/logbook";
 
-export { logbookModuleRouter, LogbookVisibility };
+export { logbookModuleRouter, Visibility };

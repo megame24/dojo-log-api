@@ -1,5 +1,5 @@
 {
   "Role": ["ADMIN", "USER"],
   "TokenType": ["verification", "resetPassword"],
-  "LogbookVisibility": ["public", "private"]
+  "Visibility": ["public", "private"]
 }

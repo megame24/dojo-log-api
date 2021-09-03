@@ -31,7 +31,10 @@ export class ResetPasswordImpl implements ResetPassword {
       await this.persistentTokenRepo.getByUserIdAndToken(userId, token);
     if (!verificationToken) throw AppError.unauthorizedError();
 
-    await this.userRepo.update(userId, { password });
+    const user = await this.userRepo.getUserById(userId);
+    if (!user) throw AppError.notFoundError("User not found");
+
+    await this.userRepo.update(user, { password });
     await this.persistentTokenRepo.deleteOne(verificationToken);
   }
 }
