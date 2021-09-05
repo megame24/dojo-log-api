@@ -11,7 +11,6 @@ export default class CreateLogController extends Adapter {
       userId: req.user.id,
       logbook: req.resourceOrParent,
       message: req.body.message,
-      date: req.body.date,
       durationOfWork: req.body.durationOfWork,
       file: req.file,
     };
