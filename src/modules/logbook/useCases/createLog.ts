@@ -9,9 +9,8 @@ interface CreateLogDTO {
   userId: string;
   logbook: Logbook;
   message: string;
-  date: Date;
   durationOfWork?: string;
-  file: any;
+  file?: any;
 }
 
 export interface CreateLog extends UseCase<CreateLogDTO, void> {
@@ -37,7 +36,7 @@ export class CreateLogImpl implements CreateLog {
       userId: createLogDTO.userId,
       logbookId: <string>createLogDTO.logbook.id,
       visibility: createLogDTO.logbook.visibility,
-      date: createLogDTO.date,
+      date: new Date(),
       message: createLogDTO.message,
       durationOfWork: createLogDTO.durationOfWork,
       proofOfWorkImageUrl: proofOfWorkImageUrl,
