@@ -1,4 +1,4 @@
-import Entity from "../../shared/entities/entity";
+import Entity, { ValidationResult } from "../../shared/entities/entity";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import { Visibility } from "./logbook";
 import Reward from "./reward";
@@ -16,6 +16,8 @@ interface GoalProps {
   rewards?: Reward[];
 }
 
+// Can't update or delete goal
+// Can't create more than one goal on the same day
 export default class Goal extends Entity {
   private constructor(private props: GoalProps, uuidService: UUIDService) {
     super(props, uuidService);
@@ -61,6 +63,19 @@ export default class Goal extends Entity {
     return this.props.rewards;
   }
 
+  private static validateDate(date: Date): ValidationResult {
+    const now = new Date();
+    const beginningOfToday = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDay()
+    );
+    if (date < beginningOfToday) {
+      return { isValid: false, message: "Can't set Goal date in the past" };
+    }
+    return Goal.validValidationResult;
+  }
+
   static create(props: GoalProps, uuidService: UUIDService): Goal {
     this.validateProp(
       { key: "logbookId", value: props.logbookId },
@@ -83,6 +98,7 @@ export default class Goal extends Entity {
       { key: "date", value: props.date },
       this.isRequiredValidation
     );
+    this.validateProp(props.date, this.validateDate);
     this.validateProp(
       { key: "achievementCriteria", value: props.achievementCriteria },
       this.isRequiredValidation
