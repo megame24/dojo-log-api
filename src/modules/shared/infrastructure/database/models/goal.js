@@ -7,7 +7,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Goal.belongsTo(models.Logbook, { foreignKey: "logbookId" });
       Goal.belongsTo(models.User, { foreignKey: "userId" });
-      Goal.belongsToMany(models.Reward, { through: "GoalRewards" });
+      Goal.belongsToMany(models.Reward, {
+        through: "GoalRewards",
+        foreignKey: "goalId",
+      });
     }
   }
   Goal.init(

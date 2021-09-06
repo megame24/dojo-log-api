@@ -3,7 +3,11 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Reward extends Model {
     static associate(models) {
-      Reward.belongsToMany(models.Goal, { through: "GoalRewards" });
+      Reward.belongsToMany(models.Goal, {
+        through: "GoalRewards",
+        foreignKey: "rewardId",
+      });
+      Reward.belongsTo(models.User, { foreignKey: "userId" });
     }
   }
   Reward.init(
@@ -11,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
       id: {
         allowNull: false,
         primaryKey: true,
+        type: DataTypes.UUID,
+      },
+      userId: {
+        allowNull: false,
         type: DataTypes.UUID,
       },
       name: {
