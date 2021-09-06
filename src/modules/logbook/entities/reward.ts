@@ -3,6 +3,7 @@ import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 
 interface RewardProps {
   id?: string;
+  userId: string;
   name: string;
   description?: string;
   imageUrl?: string;
@@ -15,6 +16,10 @@ export default class Reward extends Entity {
 
   get id(): string | undefined {
     return this.props.id;
+  }
+
+  get userId(): string {
+    return this.props.userId;
   }
 
   get name(): string {
@@ -30,6 +35,10 @@ export default class Reward extends Entity {
   }
 
   static create(props: RewardProps, uuidService: UUIDService): Reward {
+    this.validateProp(
+      { key: "userId", value: props.userId },
+      this.isRequiredValidation
+    );
     this.validateProp({ key: "Name", value: props.name }, this.validateString);
 
     return new Reward(props, uuidService);
