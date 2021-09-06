@@ -9,7 +9,8 @@
     "strict": true,         
     "noImplicitAny": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "skipLibCheck": true
   },
-  "exclude": ["jest.config.js", "./coverage/**/*.js"]
+  "exclude": ["jest.config.js", "./coverage/**/*.js", "./build/**/*", "node_modules"]
 }

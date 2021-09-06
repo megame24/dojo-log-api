@@ -10,11 +10,13 @@ services:
     volumes:
       - .:/usr/src/app
     container_name: dojo_log_api
+    depends_on:
+      - db
     environment:
       - NODE_ENV=development
     ports:
       - '3000:3000'
-    command: npm run dev
+    command: /bin/bash -c ./bin/entrypoint.sh
 
   db:
     image: postgres:13

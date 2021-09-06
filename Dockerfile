@@ -12,6 +12,8 @@ EXPOSE 3000
 
 FROM base as production
 
+ENV NODE_ENV=production
+
 RUN npm run build
 
-CMD ["node", "./build/index.js"]
+ENTRYPOINT ["/bin/bash", "./bin/entrypoint.sh"]
