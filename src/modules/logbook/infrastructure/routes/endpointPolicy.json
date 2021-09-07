@@ -10,7 +10,8 @@
     "inherits": "GUEST",
     "allow": {
       "/logbook": ["POST"],
-      "/logbook/:logbookId/log": ["POST"]
+      "/logbook/:logbookId/log": ["POST"],
+      "/logbook/:logbookId/goal": ["POST"]
     },
     "deny": {}
   },

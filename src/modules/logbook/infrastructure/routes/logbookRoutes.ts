@@ -1,11 +1,15 @@
 import express from "express";
+import multer from "multer";
 import { Operation } from "../../../shared/accessControl";
 import {
   accessControlMiddleware,
   endpointPermissionsMiddleware,
 } from "../../../shared/adapters/middleware";
 import { logbookAccessControl } from "../../accessControl";
-import { createLogbookController } from "../../adapters/controllers";
+import {
+  createGoalController,
+  createLogbookController,
+} from "../../adapters/controllers";
 import { createLogController } from "../../adapters/controllers";
 import { getLiteLogbookImpl } from "../../useCases";
 import endpointPolicy from "./endpointPolicy.json";
@@ -32,7 +36,21 @@ logbookRouter.post(
     resourceType: "log",
     getResourceOrParent: getLiteLogbookImpl,
   }),
+  multer().any(),
   createLogController.execute
+);
+
+logbookRouter.post(
+  "/:logbookId/goal",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.CREATE,
+    resourceType: "goal",
+    getResourceOrParent: getLiteLogbookImpl,
+  }),
+  multer().any(),
+  createGoalController.execute
 );
 
 export default logbookRouter;

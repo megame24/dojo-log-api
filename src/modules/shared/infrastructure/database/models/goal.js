@@ -48,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       date: {
         type: DataTypes.DATE,
         allowNull: false,
+        unique: true,
       },
       visibility: {
         type: DataTypes.ENUM(Visibility),
