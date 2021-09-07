@@ -17,7 +17,6 @@ interface GoalProps {
 }
 
 // Can't update or delete goal
-// Can't create more than one goal on the same day
 export default class Goal extends Entity {
   private constructor(private props: GoalProps, uuidService: UUIDService) {
     super(props, uuidService);
@@ -63,13 +62,16 @@ export default class Goal extends Entity {
     return this.props.rewards;
   }
 
+  private static formatDate(date: Date): Date {
+    if (typeof date === "string") {
+      date = new Date(date);
+    }
+    return new Date(date.getFullYear(), date.getMonth(), date.getDay());
+  }
+
   private static validateDate(date: Date): ValidationResult {
     const now = new Date();
-    const beginningOfToday = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDay()
-    );
+    const beginningOfToday = Goal.formatDate(now);
     if (date < beginningOfToday) {
       return { isValid: false, message: "Can't set Goal date in the past" };
     }
@@ -94,11 +96,14 @@ export default class Goal extends Entity {
       this.validateEnum
     );
     this.validateProp({ key: "Name", value: props.name }, this.validateString);
+
     this.validateProp(
       { key: "date", value: props.date },
       this.isRequiredValidation
     );
+    props.date = this.formatDate(props.date);
     this.validateProp(props.date, this.validateDate);
+
     this.validateProp(
       { key: "achievementCriteria", value: props.achievementCriteria },
       this.isRequiredValidation

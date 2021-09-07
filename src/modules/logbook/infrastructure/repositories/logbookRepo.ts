@@ -43,7 +43,7 @@ export class LogbookRepoImpl implements LogbookRepo {
         include: { model: this.CategoryModel, required: true },
       });
     } catch (error) {
-      throw AppError.internalServerError("Error getting Logbook");
+      throw AppError.internalServerError("Error getting Logbook", error);
     }
 
     if (!logbookData) return null;

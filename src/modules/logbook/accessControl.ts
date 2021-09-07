@@ -5,6 +5,8 @@ import {
 } from "../shared/accessControl";
 import { Role } from "../users/api";
 
+// INCLUDE CHECKING FOR VERIFIED!!!!
+
 class LogbookAccessControl extends AccessControl {
   private policy: any = {
     ADMIN: {
@@ -29,6 +31,12 @@ class LogbookAccessControl extends AccessControl {
           },
         ],
         log: [
+          {
+            operation: Operation.CREATE,
+            condition: this.privateAccess,
+          },
+        ],
+        goal: [
           {
             operation: Operation.CREATE,
             condition: this.privateAccess,
