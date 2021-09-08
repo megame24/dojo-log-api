@@ -17,6 +17,7 @@ interface GoalProps {
 }
 
 // Can't update or delete goal
+// can only achieve goal
 export default class Goal extends Entity {
   private constructor(private props: GoalProps, uuidService: UUIDService) {
     super(props, uuidService);

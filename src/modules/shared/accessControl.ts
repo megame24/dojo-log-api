@@ -22,6 +22,7 @@ interface AccessProps extends BaseAccessProps {
 
 export abstract class AccessControl {
   constructor() {
+    this.isVerified = this.isVerified.bind(this);
     this.isAdmin = this.isAdmin.bind(this);
     this.isOwner = this.isOwner.bind(this);
     this.privateAccess = this.privateAccess.bind(this);
@@ -31,13 +32,18 @@ export abstract class AccessControl {
     return true;
   }
 
+  protected isVerified(user: User): boolean {
+    if (!user) return false;
+    return <boolean>user.verified;
+  }
+
   protected isAdmin(user: User): boolean {
     if (!user) return false;
     return user.role === Role.ADMIN;
   }
 
   protected isOwner(user: User, resourceOrParent: any): boolean {
-    if (!user || !resourceOrParent) return false;
+    if (!this.isVerified(user) || !resourceOrParent) return false;
     return user.id === resourceOrParent.userId;
   }
 

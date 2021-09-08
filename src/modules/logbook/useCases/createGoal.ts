@@ -45,7 +45,7 @@ export class CreateGoalImpl implements CreateGoal {
 
     const createdRewardsPromise: Promise<Reward>[] = Object.values(
       rewardsProps
-    ).map(async (rewardProps) => {
+    ).map((rewardProps) => {
       const createRewardDTO = {
         ...rewardProps,
         name: <string>rewardProps.name,
