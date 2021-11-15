@@ -18,7 +18,7 @@ export class CategoryRepoImpl implements CategoryRepo {
         name: category.name,
       };
       await this.CategoryModel.create(categoryProps);
-    } catch (error) {
+    } catch (error: any) {
       throw AppError.internalServerError("Error creating Category", error);
     }
   }
@@ -28,7 +28,7 @@ export class CategoryRepoImpl implements CategoryRepo {
 
     try {
       categoryData = await this.CategoryModel.findOne(queryOption);
-    } catch (error) {
+    } catch (error: any) {
       throw AppError.internalServerError("Error retrieving Category", error);
     }
 

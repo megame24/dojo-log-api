@@ -34,7 +34,7 @@ export class PersistentTokenRepoImpl implements PersistentTokenRepo {
         type: persistentToken.type,
       };
       await this.PersistentTokenModel.create(persistentTokenProps);
-    } catch (error) {
+    } catch (error: any) {
       throw AppError.internalServerError(
         "Error creating persistentToken",
         error
@@ -50,7 +50,7 @@ export class PersistentTokenRepoImpl implements PersistentTokenRepo {
           token: persistentToken.token,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       throw AppError.internalServerError(
         "Error deleting persistentToken",
         error
@@ -66,7 +66,7 @@ export class PersistentTokenRepoImpl implements PersistentTokenRepo {
           type: queryOption.type,
         },
       });
-    } catch (error) {
+    } catch (error: any) {
       throw AppError.internalServerError(
         "Error deleting persistentToken",
         error
@@ -93,7 +93,7 @@ export class PersistentTokenRepoImpl implements PersistentTokenRepo {
         this.securityService,
         this.uuidService
       );
-    } catch (error) {
+    } catch (error: any) {
       throw AppError.internalServerError(
         "Error retrieving persistentToken",
         error

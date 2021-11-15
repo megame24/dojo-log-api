@@ -28,7 +28,7 @@ export class LogbookRepoImpl implements LogbookRepo {
         categoryId: logbook.category.id,
       };
       await this.LogbookModel.create(logbookProps);
-    } catch (error) {
+    } catch (error: any) {
       throw AppError.internalServerError("Error creating Logbook", error);
     }
   }
@@ -42,7 +42,7 @@ export class LogbookRepoImpl implements LogbookRepo {
         where: { id: logbookId },
         include: { model: this.CategoryModel, required: true },
       });
-    } catch (error) {
+    } catch (error: any) {
       throw AppError.internalServerError("Error getting Logbook", error);
     }
 

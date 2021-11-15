@@ -67,7 +67,7 @@ export default class Goal extends Entity {
     if (typeof date === "string") {
       date = new Date(date);
     }
-    return new Date(date.getFullYear(), date.getMonth(), date.getDay());
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
   private static validateDate(date: Date): ValidationResult {

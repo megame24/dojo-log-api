@@ -40,7 +40,7 @@ export class UserRepoImpl implements UserRepo {
         verified: user.verified,
       };
       await this.UserModel.create(userProps);
-    } catch (error) {
+    } catch (error: any) {
       throw AppError.internalServerError("Error creating user", error);
     }
   }
@@ -82,7 +82,7 @@ export class UserRepoImpl implements UserRepo {
         },
         { where: { id: updatedUser.id } }
       );
-    } catch (error) {
+    } catch (error: any) {
       throw AppError.internalServerError("Error updating user", error);
     }
   }
@@ -95,7 +95,7 @@ export class UserRepoImpl implements UserRepo {
 
     try {
       userData = await this.UserModel.findOne(queryOption);
-    } catch (error) {
+    } catch (error: any) {
       throw AppError.internalServerError("Error retrieving user", error);
     }
 

@@ -34,7 +34,7 @@ export class RewardRepoImpl implements RewardRepo {
       );
 
       return rewards;
-    } catch (error) {
+    } catch (error: any) {
       throw AppError.internalServerError("Error retrieving Rewards", error);
     }
   }
@@ -52,7 +52,7 @@ export class RewardRepoImpl implements RewardRepo {
       await this.RewardModel.bulkCreate(rewardsProps, {
         updateOnDuplicate: ["id"],
       });
-    } catch (error) {
+    } catch (error: any) {
       throw AppError.internalServerError("Error creating Rewards", error);
     }
   }

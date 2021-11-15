@@ -21,7 +21,7 @@ export class LogRepoImpl implements LogRepo {
         proofOfWorkImageUrl: log.proofOfWorkImageUrl,
       };
       await this.LogModel.create(logProps);
-    } catch (error) {
+    } catch (error: any) {
       throw AppError.internalServerError("Error creating Log", error);
     }
   }
