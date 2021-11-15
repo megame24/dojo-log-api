@@ -27,7 +27,7 @@ describe("Creating a user entity", () => {
 
     try {
       user = await createUser(invalidCreateUserProps);
-    } catch (err) {
+    } catch (err: any) {
       error = err;
     }
 
@@ -41,7 +41,7 @@ describe("Creating a user entity", () => {
 
     try {
       user1 = await createUser(invalidCreateUserProps1);
-    } catch (err) {
+    } catch (err: any) {
       error1 = err;
     }
 
@@ -63,7 +63,7 @@ describe("Creating a user entity", () => {
 
     try {
       user2 = await createUser(invalidCreateUserProps2);
-    } catch (err) {
+    } catch (err: any) {
       error2 = err;
     }
 
@@ -79,7 +79,7 @@ describe("Creating a user entity", () => {
 
     try {
       user = await createUser(invalidCreateUserProps);
-    } catch (err) {
+    } catch (err: any) {
       error = err;
     }
 
@@ -96,7 +96,7 @@ describe("Creating a user entity", () => {
 
     try {
       user = await createUser(invalidCreateUserProps);
-    } catch (err) {
+    } catch (err: any) {
       error = err;
     }
 
@@ -110,7 +110,7 @@ describe("Creating a user entity", () => {
 
     try {
       user = await createUser(invalidCreateUserProps);
-    } catch (err) {
+    } catch (err: any) {
       error = err;
     }
 
@@ -124,7 +124,7 @@ describe("Creating a user entity", () => {
 
     try {
       user1 = await createUser(invalidCreateUserProps1);
-    } catch (err) {
+    } catch (err: any) {
       error1 = err;
     }
 
@@ -146,7 +146,7 @@ describe("Creating a user entity", () => {
 
     try {
       user2 = await createUser(invalidCreateUserProps2);
-    } catch (err) {
+    } catch (err: any) {
       error2 = err;
     }
 
@@ -162,7 +162,7 @@ describe("Creating a user entity", () => {
 
     try {
       user = await createUser(invalidCreateUserProps);
-    } catch (err) {
+    } catch (err: any) {
       error = err;
     }
 
@@ -179,7 +179,7 @@ describe("Creating a user entity", () => {
 
     try {
       user = await createUser(invalidCreateUserProps);
-    } catch (err) {
+    } catch (err: any) {
       error = err;
     }
 
@@ -199,7 +199,7 @@ describe("Creating a user entity", () => {
 
     try {
       user = await createUser(invalidCreateUserProps);
-    } catch (err) {
+    } catch (err: any) {
       error = err;
     }
 
@@ -212,7 +212,7 @@ describe("Creating a user entity", () => {
 
     try {
       user = await createUser(validCreateUserProps);
-    } catch (err) {
+    } catch (err: any) {
       error = err;
     }
 
@@ -241,7 +241,7 @@ describe("Creating a user entity", () => {
         new MockSecurityService(),
         new MockUUIDService()
       );
-    } catch (err) {
+    } catch (err: any) {
       error = err;
     }
 

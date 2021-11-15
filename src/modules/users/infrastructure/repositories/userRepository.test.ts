@@ -28,7 +28,7 @@ describe("User repository test", () => {
 
       try {
         await userRepo.create(user);
-      } catch (err) {
+      } catch (err: any) {
         error = err;
       }
 
@@ -40,7 +40,7 @@ describe("User repository test", () => {
 
       try {
         await userRepo.create(user);
-      } catch (err) {
+      } catch (err: any) {
         error = err;
       }
 

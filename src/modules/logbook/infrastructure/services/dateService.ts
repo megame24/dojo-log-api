@@ -9,7 +9,7 @@ export class DateServiceImpl implements DateService {
       date.getMonth(),
       date.getDate()
     );
-    const startOfYearInUTC = Date.UTC(date.getFullYear(), 0, 0);
+    const startOfYearInUTC = Date.UTC(date.getFullYear(), 0, 1);
     const diff = dateInUTC - startOfYearInUTC;
     const dayInMilliseconds = 1000 * 60 * 60 * 24;
     const dayOfYear = diff / dayInMilliseconds;

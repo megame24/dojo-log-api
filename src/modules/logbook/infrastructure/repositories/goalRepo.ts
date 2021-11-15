@@ -35,7 +35,7 @@ export class GoalRepoImpl implements GoalRepo {
 
       const rewardIds = goal.rewards?.map((reward) => reward.id);
       await createdGoal.addRewards(rewardIds);
-    } catch (error) {
+    } catch (error: any) {
       throw AppError.internalServerError("Error creating goal", error);
     }
   }
@@ -45,7 +45,7 @@ export class GoalRepoImpl implements GoalRepo {
 
     try {
       goalData = await this.GoalModel.findOne(queryOption);
-    } catch (error) {
+    } catch (error: any) {
       throw AppError.internalServerError("Error retrieving Goal", error);
     }
 

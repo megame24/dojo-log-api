@@ -29,7 +29,7 @@ describe("Registering a user via email", () => {
 
     try {
       await registerUserViaEmail.execute(registerUserDTO);
-    } catch (err) {
+    } catch (err: any) {
       error = err;
     }
 
@@ -44,7 +44,7 @@ describe("Registering a user via email", () => {
 
     try {
       await registerUserViaEmail.execute(registerUserDTO);
-    } catch (err) {
+    } catch (err: any) {
       error = err;
     }
 
@@ -59,7 +59,7 @@ describe("Registering a user via email", () => {
 
     try {
       await registerUserViaEmail.execute(registerUserDTO);
-    } catch (err) {
+    } catch (err: any) {
       error = err;
     }
 
