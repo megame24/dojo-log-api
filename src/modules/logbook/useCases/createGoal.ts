@@ -70,7 +70,10 @@ export class CreateGoalImpl implements CreateGoal {
 
     const goal = Goal.create(createGoalProps, this.uuidService);
 
-    const existingGoal = await this.goalRepo.getGoalByDate(goal.date);
+    const existingGoal = await this.goalRepo.getGoalByLogbookIdAndDate(
+      <string>logbook.id,
+      goal.date
+    );
     if (existingGoal)
       throw AppError.badRequestError(
         "More than one goal can't share the same date"

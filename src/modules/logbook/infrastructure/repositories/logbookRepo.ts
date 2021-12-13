@@ -1,12 +1,25 @@
 import AppError from "../../../shared/AppError";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
 import Category from "../../entities/category";
+import Goal from "../../entities/goal";
+import Log from "../../entities/log";
 import Logbook from "../../entities/logbook";
 import { DateService } from "../services/dateService";
+import { GoalRepo } from "./goalRepo";
+import { LogRepo } from "./logRepo";
+
+interface GetByIdQueryOption {
+  startDate: Date;
+  endDate: Date;
+}
 
 export interface LogbookRepo {
   create: (logbook: Logbook) => void;
   getLiteLogbookById: (logbookId: string) => Promise<Logbook | null>;
+  getLogbookById: (
+    logbookId: string,
+    getByIdQueryOption: GetByIdQueryOption
+  ) => Promise<Logbook | null>;
 }
 
 export class LogbookRepoImpl implements LogbookRepo {
@@ -14,7 +27,9 @@ export class LogbookRepoImpl implements LogbookRepo {
     private LogbookModel: any,
     private CategoryModel: any,
     private uuidService: UUIDService,
-    private dateService: DateService
+    private dateService: DateService,
+    private goalRepo: GoalRepo,
+    private logRepo: LogRepo
   ) {}
 
   async create(logbook: Logbook) {
@@ -33,14 +48,16 @@ export class LogbookRepoImpl implements LogbookRepo {
     }
   }
 
-  async getLiteLogbookById(logbookId: string): Promise<Logbook | null> {
-    if (!logbookId) throw AppError.badRequestError("logbookId is required");
-
+  private async getLogbook(
+    queryOption: any,
+    goals: Goal[] = [],
+    logs: Log[] = []
+  ): Promise<Logbook | null> {
     let logbookData: any;
     try {
       logbookData = await this.LogbookModel.findOne({
-        where: { id: logbookId },
         include: { model: this.CategoryModel, required: true },
+        ...queryOption,
       });
     } catch (error: any) {
       throw AppError.internalServerError("Error getting Logbook", error);
@@ -58,9 +75,11 @@ export class LogbookRepoImpl implements LogbookRepo {
       id: logbookData.id,
       userId: logbookData.userId,
       name: logbookData.name,
-      describe: logbookData.description,
+      description: logbookData.description,
       visibility: logbookData.visibility,
       category,
+      logs,
+      goals,
     };
     const logbook = Logbook.create(
       createLogbookProps,
@@ -68,5 +87,36 @@ export class LogbookRepoImpl implements LogbookRepo {
       this.dateService
     );
     return logbook;
+  }
+
+  async getLiteLogbookById(logbookId: string): Promise<Logbook | null> {
+    if (!logbookId) throw AppError.badRequestError("logbookId is required");
+
+    const queryOption = { where: { id: logbookId } };
+
+    return this.getLogbook(queryOption);
+  }
+
+  async getLogbookById(
+    logbookId: string,
+    getByIdQueryOption: GetByIdQueryOption
+  ): Promise<Logbook | null> {
+    if (!logbookId) throw AppError.badRequestError("logbookId is required");
+    const { startDate, endDate } = getByIdQueryOption;
+
+    const goals = await this.goalRepo.getGoalsByLogbookIdStartAndEndDates(
+      logbookId,
+      startDate,
+      endDate
+    );
+    const logs = await this.logRepo.getLogsByLogbookIdStartAndEndDates(
+      logbookId,
+      startDate,
+      endDate
+    );
+
+    const queryOption = { where: { id: logbookId } };
+
+    return this.getLogbook(queryOption, goals, logs);
   }
 }

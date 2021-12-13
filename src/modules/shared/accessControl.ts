@@ -26,6 +26,7 @@ export abstract class AccessControl {
     this.isAdmin = this.isAdmin.bind(this);
     this.isOwner = this.isOwner.bind(this);
     this.privateAccess = this.privateAccess.bind(this);
+    this.privatePublicAccess = this.privatePublicAccess.bind(this);
   }
 
   protected pass(): boolean {
@@ -101,7 +102,7 @@ export abstract class AccessControl {
   }
 
   hasAccess(props: BaseAccessProps): boolean {
-    console.log("Not implemented");
+    console.log("Not implemented, to be implemented by child classes");
     return false;
   }
 }

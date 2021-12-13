@@ -47,7 +47,14 @@ class LogbookAccessControl extends AccessControl {
     },
     GUEST: {
       inherits: "",
-      allow: {},
+      allow: {
+        logbook: [
+          {
+            operation: Operation.GET,
+            condition: this.privatePublicAccess,
+          },
+        ],
+      },
       deny: {},
     },
   };

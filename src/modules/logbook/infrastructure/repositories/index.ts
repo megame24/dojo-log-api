@@ -18,19 +18,23 @@ const {
 
 export const categoryRepoImpl = new CategoryRepoImpl(Category, uuidServiceImpl);
 
-export const logbookRepoImpl = new LogbookRepoImpl(
-  Logbook,
-  Category,
-  uuidServiceImpl,
-  dateServiceImpl
-);
-
-export const logRepoImpl = new LogRepoImpl(Log);
+export const logRepoImpl = new LogRepoImpl(Log, uuidServiceImpl, Op);
 
 export const rewardRepoImpl = new RewardRepoImpl(uuidServiceImpl, Reward, Op);
 
 export const goalRepoImpl = new GoalRepoImpl(
   uuidServiceImpl,
   Goal,
-  rewardRepoImpl
+  Reward,
+  rewardRepoImpl,
+  Op
+);
+
+export const logbookRepoImpl = new LogbookRepoImpl(
+  Logbook,
+  Category,
+  uuidServiceImpl,
+  dateServiceImpl,
+  goalRepoImpl,
+  logRepoImpl
 );

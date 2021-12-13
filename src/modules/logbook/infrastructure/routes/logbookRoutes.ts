@@ -9,6 +9,7 @@ import { logbookAccessControl } from "../../accessControl";
 import {
   createGoalController,
   createLogbookController,
+  getLogbookController,
 } from "../../adapters/controllers";
 import { createLogController } from "../../adapters/controllers";
 import { getLiteLogbookImpl } from "../../useCases";
@@ -25,6 +26,18 @@ logbookRouter.post(
     resourceType: "logbook",
   }),
   createLogbookController.execute
+);
+
+logbookRouter.get(
+  "/:logbookId",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.GET,
+    resourceType: "logbook",
+    getResourceOrParent: getLiteLogbookImpl,
+  }),
+  getLogbookController.execute
 );
 
 logbookRouter.post(

@@ -15,7 +15,7 @@ export interface PersistentTokenRepo {
     token: string
   ) => Promise<PersistentToken | null>;
   deleteOne: (persistentToken: PersistentToken) => void;
-  deleteMany: (queryOption: DeleteManyQueryOption) => void;
+  deleteMany: (deleteManyQueryOption: DeleteManyQueryOption) => void;
 }
 
 export class PersistentTokenRepoImpl implements PersistentTokenRepo {
@@ -58,12 +58,12 @@ export class PersistentTokenRepoImpl implements PersistentTokenRepo {
     }
   }
 
-  async deleteMany(queryOption: DeleteManyQueryOption) {
+  async deleteMany(deleteManyQueryOption: DeleteManyQueryOption) {
     try {
       await this.PersistentTokenModel.destroy({
         where: {
-          userId: queryOption.userId,
-          type: queryOption.type,
+          userId: deleteManyQueryOption.userId,
+          type: deleteManyQueryOption.type,
         },
       });
     } catch (error: any) {
