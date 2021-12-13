@@ -7,26 +7,28 @@ export default class CreateGoalController extends Adapter {
   }
 
   async execute(req: any, res: any, next: any) {
-    const { body, files, user, resourceOrParent } = req;
-    const rewardIds = body.rewardIds ? JSON.parse(body.rewardIds) : [];
-    const rewardsProps = body.rewardsProps ? JSON.parse(body.rewardsProps) : {};
-
-    files?.forEach((file: any) => {
-      rewardsProps[file.fieldname].file = file;
-    });
-
-    const createGoalDTO = {
-      userId: user.id,
-      logbook: resourceOrParent,
-      name: body.name,
-      description: body.description,
-      achievementCriteria: body.achievementCriteria,
-      date: body.date,
-      rewardIds,
-      rewardsProps,
-    };
-
     try {
+      const { body, files, user, resourceOrParent } = req;
+      const rewardIds = body.rewardIds ? JSON.parse(body.rewardIds) : [];
+      const rewardsProps = body.rewardsProps
+        ? JSON.parse(body.rewardsProps)
+        : {};
+
+      files?.forEach((file: any) => {
+        rewardsProps[file.fieldname].file = file;
+      });
+
+      const createGoalDTO = {
+        userId: user.id,
+        logbook: resourceOrParent,
+        name: body.name,
+        description: body.description,
+        achievementCriteria: body.achievementCriteria,
+        date: body.date,
+        rewardIds,
+        rewardsProps,
+      };
+
       await this.createGoal.execute(createGoalDTO);
       res.status(201).json({ message: "Goal created successfully" });
     } catch (error) {

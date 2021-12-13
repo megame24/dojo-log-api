@@ -12,18 +12,19 @@ export interface GetLogbook extends UseCase<GetLogbookDTO, Promise<Logbook>> {
   execute: (getLogbookDTO: GetLogbookDTO) => Promise<Logbook>;
 }
 
-// page & limit = yearly!!!
-
 export class GetLogbookImpl implements GetLogbook {
   constructor(private logbookRepo: LogbookRepo) {}
 
   async execute(getLogbookDTO: GetLogbookDTO): Promise<Logbook> {
     const { logbookId, year } = getLogbookDTO;
 
-    const startDate = new Date(year, 0, 1); //????????
-    const endDate = new Date(year, 11, 31, 24, 59, 59, 999); //????????
+    const startOfYear = new Date(year, 0, 1);
+    const endOfYear = new Date(year, 11, 31);
 
-    const logbook = await this.logbookRepo.getLogbookById(logbookId, {});
+    const logbook = await this.logbookRepo.getLogbookById(logbookId, {
+      startDate: startOfYear,
+      endDate: endOfYear,
+    });
 
     if (!logbook) throw AppError.notFoundError("Logbook not found");
 

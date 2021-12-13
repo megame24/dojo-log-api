@@ -100,12 +100,28 @@ export default class Logbook extends Entity {
 
       const dayOfYear = dateService.getDayOfYear(goal.date);
 
-      heatMap[dayOfYear].goal = {
+      const heatMapRewards = goal.rewards?.map((reward) => ({
+        id: reward.id,
+        name: reward.name,
+        description: reward.description,
+        imageUrl: reward.imageUrl,
+      }));
+
+      const heatMapGoal = {
         id: goal.id,
         name: goal.name,
         achieved: goal.achieved,
-        rewards: goal.rewards,
+        achievementCriteria: goal.achievementCriteria,
+        rewards: heatMapRewards,
       };
+
+      if (!heatMap[dayOfYear]) {
+        heatMap[dayOfYear] = {
+          goal: heatMapGoal,
+        };
+      } else {
+        heatMap[dayOfYear].goal = heatMapGoal;
+      }
     });
   }
 
