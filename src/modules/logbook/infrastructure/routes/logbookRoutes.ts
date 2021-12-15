@@ -10,6 +10,7 @@ import {
   createGoalController,
   createLogbookController,
   getLogbookController,
+  updateGoalController,
 } from "../../adapters/controllers";
 import { createLogController } from "../../adapters/controllers";
 import { getLiteLogbookImpl } from "../../useCases";
@@ -64,6 +65,19 @@ logbookRouter.post(
   }),
   multer().any(),
   createGoalController.execute
+);
+
+logbookRouter.put(
+  "/:logbookId/goal/:goalId",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.UPDATE,
+    resourceType: "goal",
+    getResourceOrParent: getLiteLogbookImpl, /// update to getGoal
+  }),
+  multer().any(),
+  updateGoalController.execute
 );
 
 export default logbookRouter;

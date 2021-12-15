@@ -2,7 +2,6 @@ import AppError from "../../../shared/AppError";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
 import Goal from "../../entities/goal";
 import Reward from "../../entities/reward";
-import { RewardRepo } from "./rewardRepo";
 
 export interface GoalRepo {
   create: (goal: Goal) => void;
@@ -15,6 +14,8 @@ export interface GoalRepo {
     startDate: Date,
     endDate: Date
   ) => Promise<Goal[]>;
+  getGoalById: (goalId: string) => Promise<Goal | null>;
+  update: (goal: Goal, outdatedRewards: Reward[]) => void;
 }
 
 export class GoalRepoImpl implements GoalRepo {
@@ -22,13 +23,10 @@ export class GoalRepoImpl implements GoalRepo {
     private uuidService: UUIDService,
     private GoalModel: any,
     private RewardModel: any,
-    private rewardRepo: RewardRepo,
     private Op: any
   ) {}
 
   async create(goal: Goal) {
-    if (goal.rewards) await this.rewardRepo.bulkUpsert(goal.rewards);
-
     try {
       const goalProps = {
         id: goal.id,
@@ -62,6 +60,17 @@ export class GoalRepoImpl implements GoalRepo {
 
     if (!goalData) return null;
 
+    const rewards = goalData.Rewards?.map((rewardData: any) => {
+      const createRewardProps = {
+        id: rewardData.id,
+        userId: rewardData.userId,
+        name: rewardData.name,
+        description: rewardData.description,
+      };
+
+      return Reward.create(createRewardProps, this.uuidService);
+    });
+
     const createGoalProps = {
       id: goalData.id,
       logbookId: goalData.logbookId,
@@ -72,6 +81,7 @@ export class GoalRepoImpl implements GoalRepo {
       achieved: goalData.achieved,
       achievementCriteria: goalData.achievementCriteria,
       date: goalData.date,
+      rewards,
     };
 
     return Goal.create(createGoalProps, this.uuidService);
@@ -132,6 +142,15 @@ export class GoalRepoImpl implements GoalRepo {
     return this.getGoal(queryOption);
   }
 
+  async getGoalById(goalId: string): Promise<Goal | null> {
+    const queryOption = {
+      where: { id: goalId },
+      include: { model: this.RewardModel, required: false },
+    };
+
+    return this.getGoal(queryOption);
+  }
+
   async getGoalsByLogbookIdStartAndEndDates(
     logbookId: string,
     startDate: Date,
@@ -147,5 +166,38 @@ export class GoalRepoImpl implements GoalRepo {
       },
     };
     return this.getGoals(queryOption);
+  }
+
+  async update(goal: Goal, outdatedRewards: Reward[] = []) {
+    try {
+      const updatedData = await this.GoalModel.update(
+        {
+          id: goal.id,
+          logbookId: goal.logbookId,
+          userId: goal.userId,
+          visibility: goal.visibility,
+          name: goal.name,
+          description: goal.description,
+          achieved: goal.achieved,
+          achievementCriteria: goal.achievementCriteria,
+          date: goal.date,
+        },
+        {
+          where: { id: goal.id },
+          returning: true,
+        }
+      );
+      const updatedGoal = updatedData[1][0];
+
+      if (goal.rewards?.length) {
+        const outDatedRewardIds = outdatedRewards.map((reward) => reward.id);
+        await updatedGoal.removeRewards(outDatedRewardIds);
+
+        const updatedGoalRewardIds = goal.rewards.map((reward) => reward.id);
+        await updatedGoal.addRewards(updatedGoalRewardIds);
+      }
+    } catch (error: any) {
+      throw AppError.internalServerError("Error updating goal", error);
+    }
   }
 }

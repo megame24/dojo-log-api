@@ -3,7 +3,10 @@ import { UUIDService } from "../../../shared/infrastructure/services/uuidService
 import Reward from "../../entities/reward";
 
 export interface RewardRepo {
-  findAllByIds: (rewardIds: string[]) => Promise<Reward[]>;
+  findAllByIdsAndUserId: (
+    rewardIds: string[],
+    userId: string
+  ) => Promise<Reward[]>;
   bulkUpsert: (rewards: Reward[]) => void;
 }
 
@@ -14,11 +17,9 @@ export class RewardRepoImpl implements RewardRepo {
     private Op: any
   ) {}
 
-  async findAllByIds(rewardIds: string[]): Promise<Reward[]> {
+  private async getRewards(queryOption: any): Promise<Reward[]> {
     try {
-      const rewardsData: any[] = await this.RewardModel.findAll({
-        where: { id: { [this.Op.in]: rewardIds } },
-      });
+      const rewardsData: any[] = await this.RewardModel.findAll(queryOption);
 
       const rewards = rewardsData.map((rewardData) =>
         Reward.create(
@@ -37,6 +38,17 @@ export class RewardRepoImpl implements RewardRepo {
     } catch (error: any) {
       throw AppError.internalServerError("Error retrieving Rewards", error);
     }
+  }
+
+  async findAllByIdsAndUserId(
+    rewardIds: string[],
+    userId: string
+  ): Promise<Reward[]> {
+    const queryOption = {
+      where: { id: { [this.Op.in]: rewardIds }, userId },
+    };
+
+    return this.getRewards(queryOption);
   }
 
   async bulkUpsert(rewards: Reward[]) {

@@ -22,13 +22,7 @@ export const logRepoImpl = new LogRepoImpl(Log, uuidServiceImpl, Op);
 
 export const rewardRepoImpl = new RewardRepoImpl(uuidServiceImpl, Reward, Op);
 
-export const goalRepoImpl = new GoalRepoImpl(
-  uuidServiceImpl,
-  Goal,
-  Reward,
-  rewardRepoImpl,
-  Op
-);
+export const goalRepoImpl = new GoalRepoImpl(uuidServiceImpl, Goal, Reward, Op);
 
 export const logbookRepoImpl = new LogbookRepoImpl(
   Logbook,

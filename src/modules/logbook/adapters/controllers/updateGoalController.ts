@@ -1,15 +1,16 @@
 import Adapter from "../../../shared/adapters/adapter";
-import { CreateGoal } from "../../useCases/createGoal";
+import { UpdateGoal } from "../../useCases/updateGoal";
 
-export default class CreateGoalController extends Adapter {
-  constructor(private createGoal: CreateGoal) {
+export default class UpdateGoalController extends Adapter {
+  constructor(private updateGoal: UpdateGoal) {
     super();
   }
 
   async execute(req: any, res: any, next: any) {
     try {
-      const { body, files, user, resourceOrParent } = req;
+      const { body, files, user, params } = req;
       const rewardIds = body.rewardIds ? JSON.parse(body.rewardIds) : [];
+      const achieved = body.achieved ? JSON.parse(body.achieved) : undefined;
       const rewardsProps = body.rewardsProps
         ? JSON.parse(body.rewardsProps)
         : {};
@@ -19,19 +20,16 @@ export default class CreateGoalController extends Adapter {
           rewardsProps[file.fieldname].file = file;
       });
 
-      const createGoalDTO = {
+      const updateGoalDTO = {
         userId: user.id,
-        logbook: resourceOrParent,
-        name: body.name,
-        description: body.description,
-        achievementCriteria: body.achievementCriteria,
-        date: body.date,
+        goalId: params.goalId,
+        achieved,
         rewardIds,
         rewardsProps,
       };
 
-      await this.createGoal.execute(createGoalDTO);
-      res.status(201).json({ message: "Goal created successfully" });
+      await this.updateGoal.execute(updateGoalDTO);
+      res.status(200).json({ message: "Goal updated successfully" });
     } catch (error) {
       next(error);
     }

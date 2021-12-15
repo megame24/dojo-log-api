@@ -3,7 +3,7 @@ import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import { Visibility } from "./logbook";
 import Reward from "./reward";
 
-interface GoalProps {
+export interface GoalProps {
   id?: string;
   logbookId: string;
   userId: string;
@@ -16,8 +16,6 @@ interface GoalProps {
   rewards?: Reward[];
 }
 
-// Can't update or delete goal
-// can only achieve goal
 export default class Goal extends Entity {
   private constructor(private props: GoalProps, uuidService: UUIDService) {
     super(props, uuidService);

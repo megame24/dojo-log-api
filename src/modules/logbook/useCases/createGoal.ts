@@ -32,7 +32,16 @@ export class CreateGoalImpl implements CreateGoal {
   ) {}
 
   async execute(createGoalDTO: CreateGoalDTO) {
-    const { rewardIds, rewardsProps, userId, logbook } = createGoalDTO;
+    const { rewardIds, rewardsProps, userId, logbook, date } = createGoalDTO;
+
+    const existingGoal = await this.goalRepo.getGoalByLogbookIdAndDate(
+      <string>logbook.id,
+      date
+    );
+    if (existingGoal)
+      throw AppError.badRequestError(
+        "More than one goal can't share the same date"
+      );
 
     const rewardsLength = Object.keys(rewardsProps).length + rewardIds.length;
     if (rewardsLength > 5) {
@@ -40,7 +49,13 @@ export class CreateGoalImpl implements CreateGoal {
     }
 
     let rewards: Reward[] = [];
-    const retrievedRewards = await this.rewardRepo.findAllByIds(rewardIds);
+    const retrievedRewards = await this.rewardRepo.findAllByIdsAndUserId(
+      rewardIds,
+      userId
+    );
+    if (retrievedRewards.length !== rewardIds.length) {
+      throw AppError.forbiddenError();
+    }
     rewards = [...retrievedRewards];
 
     const createdRewardsPromise: Promise<Reward>[] = Object.values(
@@ -56,6 +71,8 @@ export class CreateGoalImpl implements CreateGoal {
     const createdRewards = await Promise.all(createdRewardsPromise);
     rewards = [...rewards, ...createdRewards];
 
+    if (rewards.length) await this.rewardRepo.bulkUpsert(rewards);
+
     const createGoalProps = {
       logbookId: <string>logbook.id,
       visibility: logbook.visibility,
@@ -64,20 +81,11 @@ export class CreateGoalImpl implements CreateGoal {
       description: createGoalDTO.description,
       achieved: false,
       achievementCriteria: createGoalDTO.achievementCriteria,
-      date: createGoalDTO.date,
+      date,
       rewards,
     };
 
     const goal = Goal.create(createGoalProps, this.uuidService);
-
-    const existingGoal = await this.goalRepo.getGoalByLogbookIdAndDate(
-      <string>logbook.id,
-      goal.date
-    );
-    if (existingGoal)
-      throw AppError.badRequestError(
-        "More than one goal can't share the same date"
-      );
 
     await this.goalRepo.create(goal);
   }
