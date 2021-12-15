@@ -11,7 +11,8 @@
     "allow": {
       "/logbook": ["POST"],
       "/logbook/:logbookId/log": ["POST"],
-      "/logbook/:logbookId/goal": ["POST"]
+      "/logbook/:logbookId/goal": ["POST"],
+      "/logbook/:logbookId/goal/:goalId": ["PUT"]
     },
     "deny": {}
   },
