@@ -9,6 +9,8 @@ export interface LogRepo {
     startDate: Date,
     endDate: Date
   ) => Promise<Log[]>;
+  update: (log: Log) => void;
+  getLogById: (logId: string) => Promise<Log | null>;
 }
 
 export class LogRepoImpl implements LogRepo {
@@ -20,7 +22,7 @@ export class LogRepoImpl implements LogRepo {
 
   async create(log: Log) {
     try {
-      const logProps = {
+      const createLogProps = {
         id: log.id,
         userId: log.userId,
         logbookId: log.logbookId,
@@ -30,9 +32,27 @@ export class LogRepoImpl implements LogRepo {
         durationOfWork: log.durationOfWork,
         proofOfWorkImageUrl: log.proofOfWorkImageUrl,
       };
-      await this.LogModel.create(logProps);
+      await this.LogModel.create(createLogProps);
     } catch (error: any) {
       throw AppError.internalServerError("Error creating Log", error);
+    }
+  }
+
+  async update(log: Log) {
+    try {
+      const updateLogProps = {
+        id: log.id,
+        userId: log.userId,
+        logbookId: log.logbookId,
+        visibility: log.visibility,
+        date: log.date,
+        message: log.message,
+        durationOfWork: log.durationOfWork,
+        proofOfWorkImageUrl: log.proofOfWorkImageUrl,
+      };
+      await this.LogModel.update(updateLogProps, { where: { id: log.id } });
+    } catch (error: any) {
+      throw AppError.internalServerError("Error updating Log", error);
     }
   }
 
@@ -80,5 +100,38 @@ export class LogRepoImpl implements LogRepo {
       },
     };
     return this.getLogs(queryOption);
+  }
+
+  private async getLog(queryOption: any): Promise<Log | null> {
+    let logData: any;
+
+    try {
+      logData = await this.LogModel.findOne(queryOption);
+    } catch (error: any) {
+      throw AppError.internalServerError("Error retrieving Log", error);
+    }
+
+    if (!logData) return null;
+
+    const createLogProps = {
+      id: logData.id,
+      userId: logData.userId,
+      logbookId: logData.logbookId,
+      visibility: logData.visibility,
+      date: logData.date,
+      message: logData.message,
+      durationOfWork: logData.durationOfWork,
+      proofOfWorkImageUrl: logData.proofOfWorkImageUrl,
+    };
+
+    return Log.create(createLogProps, this.uuidService);
+  }
+
+  async getLogById(logId: string): Promise<Log | null> {
+    const queryOption = {
+      where: { id: logId },
+    };
+
+    return this.getLog(queryOption);
   }
 }

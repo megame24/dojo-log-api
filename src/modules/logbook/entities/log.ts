@@ -15,6 +15,7 @@ interface LogProps {
 }
 
 // can't update or delete after 24hrs
+// implement get log
 
 export default class Log extends Entity {
   private static durationOfWorkRegEx =

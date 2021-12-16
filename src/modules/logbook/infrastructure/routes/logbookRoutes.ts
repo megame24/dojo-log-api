@@ -11,6 +11,7 @@ import {
   createLogbookController,
   getLogbookController,
   updateGoalController,
+  updateLogController,
 } from "../../adapters/controllers";
 import { createLogController } from "../../adapters/controllers";
 import { getLiteLogbookImpl } from "../../useCases";
@@ -52,6 +53,19 @@ logbookRouter.post(
   }),
   multer().any(),
   createLogController.execute
+);
+
+logbookRouter.put(
+  "/:logbookId/log/:logId",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.UPDATE,
+    resourceType: "log",
+    getResourceOrParent: getLiteLogbookImpl,
+  }),
+  multer().any(),
+  updateLogController.execute
 );
 
 logbookRouter.post(

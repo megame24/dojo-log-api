@@ -82,7 +82,7 @@ export default class Logbook extends Entity {
               log.date.getFullYear(),
               log.date.getMonth(),
               log.date.getDate()
-            ),
+            ), // Instead of date, save log Ids so we can use it to query logs for that day
           },
         };
       } else {
