@@ -18,6 +18,7 @@ import { CreateRewardImpl } from "./createReward";
 import { GetLiteLogbookImpl } from "./getLiteLogbook";
 import { GetLogbookImpl } from "./getLogbook";
 import { UpdateGoalImpl } from "./updateGoal";
+import { UpdateLogImpl } from "./updateLog";
 
 export const createCategoryImpl = new CreateCategoryImpl(
   categoryRepoImpl,
@@ -58,4 +59,10 @@ export const updateGoalImpl = new UpdateGoalImpl(
   goalRepoImpl,
   rewardRepoImpl,
   uuidServiceImpl
+);
+
+export const updateLogImpl = new UpdateLogImpl(
+  logRepoImpl,
+  uuidServiceImpl,
+  fileServiceImpl
 );

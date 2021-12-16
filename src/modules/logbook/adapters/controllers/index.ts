@@ -5,6 +5,7 @@ import {
   createLogImpl,
   getLogbookImpl,
   updateGoalImpl,
+  updateLogImpl,
 } from "../../useCases";
 import CreateCategoryController from "./createCategoryController";
 import CreateGoalController from "./createGoalController";
@@ -12,6 +13,7 @@ import CreateLogbookController from "./createLogbookController";
 import CreateLogController from "./createLogController";
 import GetLogbookController from "./getLogbookController";
 import UpdateGoalController from "./updateGoalController";
+import UpdateLogController from "./updateLogController";
 
 export const createCategoryController = new CreateCategoryController(
   createCategoryImpl
@@ -28,3 +30,5 @@ export const createGoalController = new CreateGoalController(createGoalImpl);
 export const getLogbookController = new GetLogbookController(getLogbookImpl);
 
 export const updateGoalController = new UpdateGoalController(updateGoalImpl);
+
+export const updateLogController = new UpdateLogController(updateLogImpl);

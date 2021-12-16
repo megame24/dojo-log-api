@@ -35,6 +35,10 @@ class LogbookAccessControl extends AccessControl {
             operation: Operation.CREATE,
             condition: this.privateAccess,
           },
+          {
+            operation: Operation.UPDATE,
+            condition: this.privateAccess,
+          },
         ],
         goal: [
           {

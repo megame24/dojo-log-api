@@ -12,7 +12,7 @@ export default class CreateLogController extends Adapter {
       logbook: req.resourceOrParent,
       message: req.body.message,
       durationOfWork: req.body.durationOfWork,
-      file: req.files[0],
+      ...(req.files && { file: req.files[0] }),
     };
 
     try {
