@@ -78,15 +78,12 @@ export default class Logbook extends Entity {
         heatMap[dayOfYear] = {
           logs: {
             count: 1,
-            date: new Date(
-              log.date.getFullYear(),
-              log.date.getMonth(),
-              log.date.getDate()
-            ), // Instead of date, save log Ids so we can use it to query logs for that day
+            logIds: [log.id],
           },
         };
       } else {
         heatMap[dayOfYear].logs.count += 1;
+        heatMap[dayOfYear].logs.logIds.push(log.id);
       }
     });
   }

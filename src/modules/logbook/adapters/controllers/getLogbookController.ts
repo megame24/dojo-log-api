@@ -20,6 +20,7 @@ export default class GetLogbookController extends Adapter {
         name: logbook.name,
         userId: logbook.userId,
         description: logbook.description,
+        visibility: logbook.visibility,
         category: {
           id: logbook.category.id,
           name: logbook.category.name,

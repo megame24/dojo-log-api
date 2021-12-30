@@ -5,10 +5,8 @@ import UseCase from "../../shared/useCases/useCase";
 import Log from "../entities/log";
 import { LogRepo } from "../infrastructure/repositories/logRepo";
 
-// THIS IS BUGGY, NEED TO RETHINK AUTHORIZATION!!!!
-
-interface UpdateLogDTO {
-  logId: string;
+export interface UpdateLogDTO {
+  log: Log;
   message?: string;
   durationOfWork?: string;
   file?: any;
@@ -26,10 +24,7 @@ export class UpdateLogImpl implements UpdateLog {
   ) {}
 
   async execute(updateLogDTO: UpdateLogDTO) {
-    const { logId, file, message, durationOfWork } = updateLogDTO;
-
-    const outdatedLog = await this.logRepo.getLogById(logId);
-    if (!outdatedLog) throw AppError.notFoundError("Log not found");
+    const { log: outdatedLog, file, message, durationOfWork } = updateLogDTO;
 
     const outdatedLogDateInUTC = Date.UTC(
       outdatedLog.date.getFullYear(),
@@ -56,7 +51,7 @@ export class UpdateLogImpl implements UpdateLog {
       id: outdatedLog.id,
       userId: outdatedLog.userId,
       logbookId: outdatedLog.logbookId,
-      visibility: outdatedLog.visibility, // I NEED TO RETHINK VISIBILITY FOR LOGBOOK CHILDREN, BECAUSE UPDATING THE LOGBOOK'S VISIBILITY SHOULD CASCADE... Ans: Just remove visibility from children!!!
+      visibility: outdatedLog.visibility,
       date: outdatedLog.date,
       message: outdatedLog.message,
       durationOfWork: outdatedLog.durationOfWork,

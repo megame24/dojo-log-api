@@ -14,7 +14,12 @@ import {
   updateLogController,
 } from "../../adapters/controllers";
 import { createLogController } from "../../adapters/controllers";
-import { getLiteLogbookImpl } from "../../useCases";
+import {
+  getLiteGoalImpl,
+  getLiteLogbookImpl,
+  getLiteRewardsImpl,
+  getLogImpl,
+} from "../../useCases";
 import endpointPolicy from "./endpointPolicy.json";
 
 const logbookRouter = express.Router();
@@ -26,6 +31,7 @@ logbookRouter.post(
     accessControl: logbookAccessControl,
     operation: Operation.CREATE,
     resourceType: "logbook",
+    resourcesForAccessCheck: [],
   }),
   createLogbookController.execute
 );
@@ -37,7 +43,9 @@ logbookRouter.get(
     accessControl: logbookAccessControl,
     operation: Operation.GET,
     resourceType: "logbook",
-    getResourceOrParent: getLiteLogbookImpl,
+    resourcesForAccessCheck: [
+      { name: "logbook", getResource: getLiteLogbookImpl },
+    ],
   }),
   getLogbookController.execute
 );
@@ -45,52 +53,60 @@ logbookRouter.get(
 logbookRouter.post(
   "/:logbookId/log",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  multer().any(),
   accessControlMiddleware.executeWrapper({
     accessControl: logbookAccessControl,
     operation: Operation.CREATE,
     resourceType: "log",
-    getResourceOrParent: getLiteLogbookImpl,
+    resourcesForAccessCheck: [
+      { name: "logbook", getResource: getLiteLogbookImpl },
+    ],
   }),
-  multer().any(),
   createLogController.execute
 );
 
 logbookRouter.put(
   "/:logbookId/log/:logId",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  multer().any(),
   accessControlMiddleware.executeWrapper({
     accessControl: logbookAccessControl,
     operation: Operation.UPDATE,
     resourceType: "log",
-    getResourceOrParent: getLiteLogbookImpl,
+    resourcesForAccessCheck: [{ name: "log", getResource: getLogImpl }],
   }),
-  multer().any(),
   updateLogController.execute
 );
 
 logbookRouter.post(
   "/:logbookId/goal",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  multer().any(),
   accessControlMiddleware.executeWrapper({
     accessControl: logbookAccessControl,
     operation: Operation.CREATE,
     resourceType: "goal",
-    getResourceOrParent: getLiteLogbookImpl,
+    resourcesForAccessCheck: [
+      { name: "logbook", getResource: getLiteLogbookImpl },
+      { name: "rewards", getResource: getLiteRewardsImpl },
+    ],
   }),
-  multer().any(),
   createGoalController.execute
 );
 
 logbookRouter.put(
   "/:logbookId/goal/:goalId",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  multer().any(),
   accessControlMiddleware.executeWrapper({
     accessControl: logbookAccessControl,
     operation: Operation.UPDATE,
     resourceType: "goal",
-    getResourceOrParent: getLiteLogbookImpl, /// update to getGoal
+    resourcesForAccessCheck: [
+      { name: "goal", getResource: getLiteGoalImpl },
+      { name: "rewards", getResource: getLiteRewardsImpl },
+    ],
   }),
-  multer().any(),
   updateGoalController.execute
 );
 

@@ -1,6 +1,9 @@
-import { Operation, AccessControl } from "../../accessControl";
+import {
+  Operation,
+  AccessControl,
+  ResourceForAccessCheck,
+} from "../../accessControl";
 import AppError from "../../AppError";
-import UseCase from "../../useCases/useCase";
 import Adapter from "../adapter";
 
 export default class AccessControlMiddleware extends Adapter {
@@ -12,30 +15,40 @@ export default class AccessControlMiddleware extends Adapter {
     accessControl: AccessControl;
     operation: Operation;
     resourceType: string;
-    getResourceOrParent?: UseCase<any, any>;
+    resourcesForAccessCheck: ResourceForAccessCheck[];
   }) {
     return async (req: any, res: any, next: any) => {
       try {
-        let resourceOrParent;
-        if (props.getResourceOrParent) {
-          resourceOrParent = await props.getResourceOrParent.execute({
-            ...req.body,
-            ...req.params,
-            userId: req.user.id,
-          });
-        }
+        const { resourcesForAccessCheck } = props;
+
+        const resourcesPromise = resourcesForAccessCheck.map(
+          (resourceDetails) => {
+            return resourceDetails.getResource.execute({
+              ...req.body,
+              ...req.params,
+              userId: req.user.id,
+            });
+          }
+        );
+        const resolvedResources = await Promise.all(resourcesPromise);
+
+        resolvedResources?.forEach((resource, i) => {
+          resourcesForAccessCheck[i].resource = resource;
+        });
 
         const accessProps = {
           user: req.user,
           operation: props.operation,
           resourceType: props.resourceType,
-          resourceOrParent,
+          resourcesForAccessCheck,
         };
 
         const hasAccess = props.accessControl.hasAccess(accessProps);
         if (!hasAccess) throw AppError.forbiddenError();
 
-        req.resourceOrParent = resourceOrParent;
+        resourcesForAccessCheck.forEach((resourceDetail) => {
+          req[resourceDetail.name] = resourceDetail.resource;
+        });
         next();
       } catch (error) {
         next(error);

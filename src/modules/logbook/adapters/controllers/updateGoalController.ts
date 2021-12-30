@@ -8,8 +8,7 @@ export default class UpdateGoalController extends Adapter {
 
   async execute(req: any, res: any, next: any) {
     try {
-      const { body, files, user, params } = req;
-      const rewardIds = body.rewardIds ? JSON.parse(body.rewardIds) : [];
+      const { body, files, rewards, goal } = req;
       const achieved = body.achieved ? JSON.parse(body.achieved) : undefined;
       const rewardsProps = body.rewardsProps
         ? JSON.parse(body.rewardsProps)
@@ -21,10 +20,9 @@ export default class UpdateGoalController extends Adapter {
       });
 
       const updateGoalDTO = {
-        userId: user.id,
-        goalId: params.goalId,
+        goal,
         achieved,
-        rewardIds,
+        rewards,
         rewardsProps,
       };
 

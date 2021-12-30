@@ -8,10 +8,9 @@ import Goal from "../entities/goal";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 
 interface UpdateGoalDTO {
-  userId: string;
-  goalId: string;
+  goal: Goal;
   achieved: boolean;
-  rewardIds: string[];
+  rewards: Reward[];
   rewardsProps: Partial<CreateRewardDTO>[];
 }
 
@@ -28,26 +27,13 @@ export class UpdateGoalImpl implements UpdateGoal {
   ) {}
 
   async execute(updateGoalDTO: UpdateGoalDTO) {
-    const { rewardIds, rewardsProps, goalId, achieved, userId } = updateGoalDTO;
+    const { rewardsProps, achieved, goal: outdatedGoal } = updateGoalDTO;
+    let { rewards } = updateGoalDTO;
 
-    const outdatedGoal = await this.goalRepo.getGoalById(goalId);
-
-    if (!outdatedGoal) throw AppError.notFoundError("Goal not found");
-
-    const rewardsLength = Object.keys(rewardsProps).length + rewardIds.length;
+    const rewardsLength = Object.keys(rewardsProps).length + rewards.length;
     if (rewardsLength > 5) {
       throw AppError.badRequestError("A Goal can't have more than 5 rewards");
     }
-
-    let rewards: Reward[] = [];
-    const retrievedRewards = await this.rewardRepo.findAllByIdsAndUserId(
-      rewardIds,
-      userId
-    );
-    if (retrievedRewards.length !== rewardIds.length) {
-      throw AppError.forbiddenError();
-    }
-    rewards = [...retrievedRewards];
 
     const createdRewardsPromise: Promise<Reward>[] = Object.values(
       rewardsProps
@@ -55,7 +41,7 @@ export class UpdateGoalImpl implements UpdateGoal {
       const createRewardDTO = {
         ...rewardProps,
         name: <string>rewardProps.name,
-        userId,
+        userId: outdatedGoal.userId,
       };
       return this.createReward.execute(createRewardDTO);
     });

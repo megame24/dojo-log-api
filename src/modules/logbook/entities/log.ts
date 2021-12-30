@@ -14,7 +14,7 @@ interface LogProps {
   proofOfWorkImageUrl?: string;
 }
 
-// can't update or delete after 24hrs
+// can't delete after 24hrs
 // implement get log
 
 export default class Log extends Entity {

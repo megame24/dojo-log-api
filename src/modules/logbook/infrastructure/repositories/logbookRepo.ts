@@ -56,7 +56,10 @@ export class LogbookRepoImpl implements LogbookRepo {
     let logbookData: any;
     try {
       logbookData = await this.LogbookModel.findOne({
-        include: { model: this.CategoryModel, required: true },
+        include: [
+          { model: this.CategoryModel, required: true },
+          ...(queryOption?.include ? queryOption.include : []),
+        ],
         ...queryOption,
       });
     } catch (error: any) {

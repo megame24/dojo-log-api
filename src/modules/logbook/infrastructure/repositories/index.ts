@@ -18,11 +18,17 @@ const {
 
 export const categoryRepoImpl = new CategoryRepoImpl(Category, uuidServiceImpl);
 
-export const logRepoImpl = new LogRepoImpl(Log, uuidServiceImpl, Op);
+export const logRepoImpl = new LogRepoImpl(Log, Logbook, uuidServiceImpl, Op);
 
 export const rewardRepoImpl = new RewardRepoImpl(uuidServiceImpl, Reward, Op);
 
-export const goalRepoImpl = new GoalRepoImpl(uuidServiceImpl, Goal, Reward, Op);
+export const goalRepoImpl = new GoalRepoImpl(
+  uuidServiceImpl,
+  Goal,
+  Reward,
+  Logbook,
+  Op
+);
 
 export const logbookRepoImpl = new LogbookRepoImpl(
   Logbook,
