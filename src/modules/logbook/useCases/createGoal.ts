@@ -15,7 +15,7 @@ interface CreateGoalDTO {
   description?: string;
   achievementCriteria: string;
   date: Date;
-  rewardIds: string[];
+  rewards: Reward[];
   rewardsProps: Partial<CreateRewardDTO>[];
 }
 
@@ -32,7 +32,8 @@ export class CreateGoalImpl implements CreateGoal {
   ) {}
 
   async execute(createGoalDTO: CreateGoalDTO) {
-    const { rewardIds, rewardsProps, userId, logbook, date } = createGoalDTO;
+    const { rewardsProps, userId, logbook, date } = createGoalDTO;
+    let { rewards } = createGoalDTO;
 
     const existingGoal = await this.goalRepo.getGoalByLogbookIdAndDate(
       <string>logbook.id,
@@ -43,20 +44,10 @@ export class CreateGoalImpl implements CreateGoal {
         "More than one goal can't share the same date"
       );
 
-    const rewardsLength = Object.keys(rewardsProps).length + rewardIds.length;
+    const rewardsLength = Object.keys(rewardsProps).length + rewards.length;
     if (rewardsLength > 5) {
       throw AppError.badRequestError("A Goal can't have more than 5 rewards");
     }
-
-    let rewards: Reward[] = [];
-    const retrievedRewards = await this.rewardRepo.findAllByIdsAndUserId(
-      rewardIds,
-      userId
-    );
-    if (retrievedRewards.length !== rewardIds.length) {
-      throw AppError.forbiddenError();
-    }
-    rewards = [...retrievedRewards];
 
     const createdRewardsPromise: Promise<Reward>[] = Object.values(
       rewardsProps

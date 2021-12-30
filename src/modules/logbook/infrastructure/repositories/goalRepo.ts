@@ -16,6 +16,7 @@ export interface GoalRepo {
   ) => Promise<Goal[]>;
   getGoalById: (goalId: string) => Promise<Goal | null>;
   update: (goal: Goal, outdatedRewards: Reward[]) => void;
+  getLiteGoalById: (goalId: string) => Promise<Goal | null>;
 }
 
 export class GoalRepoImpl implements GoalRepo {
@@ -23,6 +24,7 @@ export class GoalRepoImpl implements GoalRepo {
     private uuidService: UUIDService,
     private GoalModel: any,
     private RewardModel: any,
+    private LogbookModel: any,
     private Op: any
   ) {}
 
@@ -32,7 +34,6 @@ export class GoalRepoImpl implements GoalRepo {
         id: goal.id,
         logbookId: goal.logbookId,
         userId: goal.userId,
-        visibility: goal.visibility,
         name: goal.name,
         description: goal.description,
         achieved: goal.achieved,
@@ -75,7 +76,7 @@ export class GoalRepoImpl implements GoalRepo {
       id: goalData.id,
       logbookId: goalData.logbookId,
       userId: goalData.userId,
-      visibility: goalData.visibility,
+      visibility: goalData.Logbook.visibility,
       name: goalData.name,
       description: goalData.description,
       achieved: goalData.achieved,
@@ -87,12 +88,15 @@ export class GoalRepoImpl implements GoalRepo {
     return Goal.create(createGoalProps, this.uuidService);
   }
 
-  private async getGoals(queryOption: any): Promise<Goal[]> {
+  private async getGoals(queryOption: any, logbookData: any): Promise<Goal[]> {
     let goalsData: any[];
 
     try {
       goalsData = await this.GoalModel.findAll({
-        include: { model: this.RewardModel, required: false },
+        include: [
+          { model: this.RewardModel, required: false },
+          ...(queryOption?.include ? queryOption.include : []),
+        ],
         ...queryOption,
       });
     } catch (error: any) {
@@ -118,7 +122,7 @@ export class GoalRepoImpl implements GoalRepo {
         id: goalData.id,
         logbookId: goalData.logbookId,
         userId: goalData.userId,
-        visibility: goalData.visibility,
+        visibility: logbookData.visibility,
         name: goalData.name,
         description: goalData.description,
         achieved: goalData.achieved,
@@ -137,7 +141,10 @@ export class GoalRepoImpl implements GoalRepo {
     logbookId: string,
     date: Date
   ): Promise<Goal | null> {
-    const queryOption = { where: { logbookId, date } };
+    const queryOption = {
+      where: { logbookId, date },
+      include: { model: this.LogbookModel, required: true },
+    };
 
     return this.getGoal(queryOption);
   }
@@ -145,7 +152,19 @@ export class GoalRepoImpl implements GoalRepo {
   async getGoalById(goalId: string): Promise<Goal | null> {
     const queryOption = {
       where: { id: goalId },
-      include: { model: this.RewardModel, required: false },
+      include: [
+        { model: this.LogbookModel, required: true },
+        { model: this.RewardModel, required: false },
+      ],
+    };
+
+    return this.getGoal(queryOption);
+  }
+
+  async getLiteGoalById(goalId: string): Promise<Goal | null> {
+    const queryOption = {
+      where: { id: goalId },
+      include: { model: this.LogbookModel, required: true },
     };
 
     return this.getGoal(queryOption);
@@ -165,7 +184,11 @@ export class GoalRepoImpl implements GoalRepo {
         },
       },
     };
-    return this.getGoals(queryOption);
+
+    const logbookData = await this.LogbookModel.findByPk(logbookId);
+    if (!logbookData) throw AppError.notFoundError("Logbook not found");
+
+    return this.getGoals(queryOption, logbookData);
   }
 
   async update(goal: Goal, outdatedRewards: Reward[] = []) {
@@ -175,7 +198,6 @@ export class GoalRepoImpl implements GoalRepo {
           id: goal.id,
           logbookId: goal.logbookId,
           userId: goal.userId,
-          visibility: goal.visibility,
           name: goal.name,
           description: goal.description,
           achieved: goal.achieved,

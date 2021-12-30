@@ -16,6 +16,7 @@ export interface LogRepo {
 export class LogRepoImpl implements LogRepo {
   constructor(
     private LogModel: any,
+    private LogbookModel: any,
     private uuidService: UUIDService,
     private Op: any
   ) {}
@@ -26,7 +27,6 @@ export class LogRepoImpl implements LogRepo {
         id: log.id,
         userId: log.userId,
         logbookId: log.logbookId,
-        visibility: log.visibility,
         date: log.date,
         message: log.message,
         durationOfWork: log.durationOfWork,
@@ -44,7 +44,6 @@ export class LogRepoImpl implements LogRepo {
         id: log.id,
         userId: log.userId,
         logbookId: log.logbookId,
-        visibility: log.visibility,
         date: log.date,
         message: log.message,
         durationOfWork: log.durationOfWork,
@@ -56,7 +55,7 @@ export class LogRepoImpl implements LogRepo {
     }
   }
 
-  private async getLogs(queryOption: any): Promise<Log[]> {
+  private async getLogs(queryOption: any, logbookData: any): Promise<Log[]> {
     let logsData: any[];
 
     try {
@@ -72,7 +71,7 @@ export class LogRepoImpl implements LogRepo {
         id: logData.id,
         userId: logData.userId,
         logbookId: logData.logbookId,
-        visibility: logData.visibility,
+        visibility: logbookData.visibility,
         date: logData.date,
         message: logData.message,
         durationOfWork: logData.durationOfWork,
@@ -99,7 +98,11 @@ export class LogRepoImpl implements LogRepo {
         },
       },
     };
-    return this.getLogs(queryOption);
+
+    const logbookData = await this.LogbookModel.findByPk(logbookId);
+    if (!logbookData) throw AppError.notFoundError("Logbook not found");
+
+    return this.getLogs(queryOption, logbookData);
   }
 
   private async getLog(queryOption: any): Promise<Log | null> {
@@ -117,7 +120,7 @@ export class LogRepoImpl implements LogRepo {
       id: logData.id,
       userId: logData.userId,
       logbookId: logData.logbookId,
-      visibility: logData.visibility,
+      visibility: logData.Logbook.visibility,
       date: logData.date,
       message: logData.message,
       durationOfWork: logData.durationOfWork,
@@ -130,6 +133,7 @@ export class LogRepoImpl implements LogRepo {
   async getLogById(logId: string): Promise<Log | null> {
     const queryOption = {
       where: { id: logId },
+      include: { model: this.LogbookModel, required: true },
     };
 
     return this.getLog(queryOption);

@@ -70,7 +70,14 @@ export default class Goal extends Entity {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
-  private static validateDate(date: Date): ValidationResult {
+  private static validateDate(prop: {
+    date: Date;
+    id: string | undefined;
+  }): ValidationResult {
+    const { date, id } = prop;
+    // only check for backdating on create
+    if (id) return Goal.validValidationResult;
+
     const now = new Date();
     const beginningOfToday = Goal.formatDate(now);
     if (date < beginningOfToday) {
@@ -103,7 +110,7 @@ export default class Goal extends Entity {
       this.isRequiredValidation
     );
     props.date = this.formatDate(props.date);
-    this.validateProp(props.date, this.validateDate);
+    this.validateProp({ date: props.date, id: props.id }, this.validateDate);
 
     this.validateProp(
       { key: "achievementCriteria", value: props.achievementCriteria },

@@ -8,11 +8,12 @@ export default class CreateGoalController extends Adapter {
 
   async execute(req: any, res: any, next: any) {
     try {
-      const { body, files, user, resourceOrParent } = req;
-      const rewardIds = body.rewardIds ? JSON.parse(body.rewardIds) : [];
+      const { body, files, user, logbook, rewards } = req;
       const rewardsProps = body.rewardsProps
         ? JSON.parse(body.rewardsProps)
         : {};
+      let date = new Date(body.date);
+      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
       files?.forEach((file: any) => {
         if (rewardsProps[file.fieldname])
@@ -21,12 +22,12 @@ export default class CreateGoalController extends Adapter {
 
       const createGoalDTO = {
         userId: user.id,
-        logbook: resourceOrParent,
+        logbook,
         name: body.name,
         description: body.description,
         achievementCriteria: body.achievementCriteria,
-        date: body.date,
-        rewardIds,
+        date,
+        rewards,
         rewardsProps,
       };
 

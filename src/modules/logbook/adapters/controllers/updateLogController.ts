@@ -8,11 +8,15 @@ export default class UpdateLogController extends Adapter {
 
   async execute(req: any, res: any, next: any) {
     const updateLogDTO = {
-      logId: req.params.logId,
+      log: req.log,
       message: req.body.message,
       durationOfWork: req.body.durationOfWork,
-      ...(req.files && { file: req.files[0] }),
+      file: null,
     };
+
+    if (req.files) {
+      updateLogDTO.file = req.files[0];
+    }
 
     try {
       await this.updateLog.execute(updateLogDTO);

@@ -5,8 +5,6 @@ import {
 } from "../shared/accessControl";
 import { Role } from "../users/api";
 
-// INCLUDE CHECKING FOR VERIFIED!!!!
-
 class LogbookAccessControl extends AccessControl {
   private policy: any = {
     ADMIN: {

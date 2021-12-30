@@ -2,6 +2,8 @@
 const { Model } = require("sequelize");
 const { Visibility } = require("./json/enums.json");
 
+// INCLUDE UPDATED BY!!!!
+
 module.exports = (sequelize, DataTypes) => {
   class Logbook extends Model {
     static associate(models) {

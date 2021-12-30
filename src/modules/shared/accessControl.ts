@@ -1,5 +1,6 @@
 import { Visibility } from "../logbook/api";
 import { User, Role } from "../users/api";
+import UseCase from "./useCases/useCase";
 
 export enum Operation {
   CREATE = "CREATE",
@@ -8,11 +9,17 @@ export enum Operation {
   DELETE = "DELETE",
 }
 
+export interface ResourceForAccessCheck {
+  name: string;
+  getResource: UseCase<any, any>;
+  resource?: any;
+}
+
 export interface BaseAccessProps {
   user: User;
   operation: Operation;
   resourceType: string;
-  resourceOrParent?: any;
+  resourcesForAccessCheck: ResourceForAccessCheck[];
 }
 
 interface AccessProps extends BaseAccessProps {
@@ -27,9 +34,11 @@ export abstract class AccessControl {
     this.isOwner = this.isOwner.bind(this);
     this.privateAccess = this.privateAccess.bind(this);
     this.privatePublicAccess = this.privatePublicAccess.bind(this);
+    this.pass = this.pass.bind(this);
   }
 
-  protected pass(): boolean {
+  protected pass(user: User): boolean {
+    if (!this.isVerified(user)) return false;
     return true;
   }
 
@@ -43,21 +52,69 @@ export abstract class AccessControl {
     return user.role === Role.ADMIN;
   }
 
-  protected isOwner(user: User, resourceOrParent: any): boolean {
-    if (!this.isVerified(user) || !resourceOrParent) return false;
-    return user.id === resourceOrParent.userId;
-  }
+  protected isOwner(
+    user: User,
+    resourcesForAccessCheck: ResourceForAccessCheck[]
+  ): boolean {
+    if (!this.isVerified(user) || !resourcesForAccessCheck.length) return false;
+    for (let i = 0; i < resourcesForAccessCheck.length; i++) {
+      const resourceDetail = resourcesForAccessCheck[i];
+      const { resource } = resourceDetail;
+      let isOwner: boolean;
 
-  protected privateAccess(user: User, resourceOrParent: any): boolean {
-    if (!user || !resourceOrParent) return false;
-    return this.isAdmin(user) || this.isOwner(user, resourceOrParent);
-  }
+      if (Array.isArray(resource)) {
+        for (let j = 0; j < resource.length; j++) {
+          const childResource = resource[j];
 
-  protected privatePublicAccess(user: User, resourceOrParent: any): boolean {
-    if (!user || !resourceOrParent) return false;
-    if (resourceOrParent.visibility === Visibility.private) {
-      return this.privateAccess(user, resourceOrParent);
+          isOwner = user.id === childResource.userId;
+          if (!isOwner) return false;
+        }
+      } else {
+        isOwner = user.id === resource.userId;
+        if (!isOwner) return false;
+      }
     }
+
+    return true;
+  }
+
+  protected privateAccess(
+    user: User,
+    resourcesForAccessCheck: ResourceForAccessCheck[]
+  ): boolean {
+    if (!user || !resourcesForAccessCheck.length) return false;
+    if (this.isAdmin(user)) return true;
+    return this.isOwner(user, resourcesForAccessCheck);
+  }
+
+  protected privatePublicAccess(
+    user: User,
+    resourcesForAccessCheck: ResourceForAccessCheck[]
+  ): boolean {
+    if (!user || !resourcesForAccessCheck.length) return false;
+
+    for (let i = 0; i < resourcesForAccessCheck.length; i++) {
+      const resourceDetail = resourcesForAccessCheck[i];
+      const { resource } = resourceDetail;
+      let accessStatus: boolean;
+
+      if (Array.isArray(resource)) {
+        for (let j = 0; j < resource.length; j++) {
+          const childResource = resource[j];
+
+          if (childResource.visibility === Visibility.private) {
+            accessStatus = this.privateAccess(user, [resourceDetail]);
+            if (!accessStatus) return false;
+          }
+        }
+      } else {
+        if (resource.visibility === Visibility.private) {
+          accessStatus = this.privateAccess(user, [resourceDetail]);
+          if (!accessStatus) return false;
+        }
+      }
+    }
+
     return true;
   }
 
@@ -70,13 +127,13 @@ export abstract class AccessControl {
   }
 
   protected checkAccess(props: AccessProps): boolean {
-    const { user, policy, resourceType, resourceOrParent } = props;
+    const { user, policy, resourceType, resourcesForAccessCheck } = props;
 
     if (policy[resourceType]) {
       const resourceOperationPolicy = this.getResourceOperationPolicy(props);
       if (
         resourceOperationPolicy &&
-        resourceOperationPolicy.condition(user, resourceOrParent)
+        resourceOperationPolicy.condition(user, resourcesForAccessCheck)
       )
         return true;
     }

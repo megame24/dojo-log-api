@@ -1,6 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
-const { Visibility } = require("./json/enums.json");
+
+// INCLUDE UPDATED BY!!!!
 
 module.exports = (sequelize, DataTypes) => {
   class Log extends Model {
@@ -38,10 +39,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       date: {
         type: DataTypes.DATE,
-        allowNull: false,
-      },
-      visibility: {
-        type: DataTypes.ENUM(Visibility),
         allowNull: false,
       },
     },
