@@ -1,5 +1,6 @@
 import Entity, { ValidationResult } from "../../shared/entities/entity";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
+import { DateService } from "../infrastructure/services/dateService";
 import { Visibility } from "./logbook";
 import Reward from "./reward";
 
@@ -16,7 +17,7 @@ export interface GoalProps {
   rewards?: Reward[];
 }
 
-// implement get goal
+// implement get goal???
 
 export default class Goal extends Entity {
   private constructor(private props: GoalProps, uuidService: UUIDService) {
@@ -63,30 +64,35 @@ export default class Goal extends Entity {
     return this.props.rewards;
   }
 
-  private static formatDate(date: Date): Date {
+  private static formatDate(date: Date, dateService: DateService): Date {
     if (typeof date === "string") {
       date = new Date(date);
     }
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    return dateService.getTimelessDate(date);
   }
 
   private static validateDate(prop: {
     date: Date;
     id: string | undefined;
+    dateService: DateService;
   }): ValidationResult {
-    const { date, id } = prop;
+    const { date, id, dateService } = prop;
     // only check for backdating on create
     if (id) return Goal.validValidationResult;
 
     const now = new Date();
-    const beginningOfToday = Goal.formatDate(now);
+    const beginningOfToday = Goal.formatDate(now, dateService);
     if (date < beginningOfToday) {
       return { isValid: false, message: "Can't set Goal date in the past" };
     }
     return Goal.validValidationResult;
   }
 
-  static create(props: GoalProps, uuidService: UUIDService): Goal {
+  static create(
+    props: GoalProps,
+    uuidService: UUIDService,
+    dateService: DateService
+  ): Goal {
     this.validateProp(
       { key: "logbookId", value: props.logbookId },
       this.isRequiredValidation
@@ -109,8 +115,11 @@ export default class Goal extends Entity {
       { key: "date", value: props.date },
       this.isRequiredValidation
     );
-    props.date = this.formatDate(props.date);
-    this.validateProp({ date: props.date, id: props.id }, this.validateDate);
+    props.date = this.formatDate(props.date, dateService);
+    this.validateProp(
+      { date: props.date, id: props.id, dateService },
+      this.validateDate
+    );
 
     this.validateProp(
       { key: "achievementCriteria", value: props.achievementCriteria },

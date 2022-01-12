@@ -1,5 +1,7 @@
 export interface DateService {
   getDayOfYear: (date: Date) => number;
+  getDateInUTC: (date: Date) => number;
+  getTimelessDate: (date: Date) => Date;
 }
 
 export class DateServiceImpl implements DateService {
@@ -14,5 +16,13 @@ export class DateServiceImpl implements DateService {
     const dayInMilliseconds = 1000 * 60 * 60 * 24;
     const dayOfYear = diff / dayInMilliseconds;
     return dayOfYear;
+  }
+
+  getDateInUTC(date: Date): number {
+    return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  getTimelessDate(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
 }

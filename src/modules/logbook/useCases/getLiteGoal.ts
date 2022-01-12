@@ -3,6 +3,8 @@ import UseCase from "../../shared/useCases/useCase";
 import Goal from "../entities/goal";
 import { GoalRepo } from "../infrastructure/repositories/goalRepo";
 
+// BUGGY, CHANGE TO GET GOAL!!!!!
+
 interface GetLiteGoalDTO {
   goalId: string;
 }

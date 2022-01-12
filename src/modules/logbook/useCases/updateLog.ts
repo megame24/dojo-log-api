@@ -4,6 +4,7 @@ import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
 import Log from "../entities/log";
 import { LogRepo } from "../infrastructure/repositories/logRepo";
+import { DateService } from "../infrastructure/services/dateService";
 
 export interface UpdateLogDTO {
   log: Log;
@@ -20,23 +21,18 @@ export class UpdateLogImpl implements UpdateLog {
   constructor(
     private logRepo: LogRepo,
     private uuidService: UUIDService,
-    private fileService: FileService
+    private fileService: FileService,
+    private dateService: DateService
   ) {}
 
   async execute(updateLogDTO: UpdateLogDTO) {
     const { log: outdatedLog, file, message, durationOfWork } = updateLogDTO;
 
-    const outdatedLogDateInUTC = Date.UTC(
-      outdatedLog.date.getFullYear(),
-      outdatedLog.date.getMonth(),
-      outdatedLog.date.getDate()
+    const outdatedLogDateInUTC = this.dateService.getDateInUTC(
+      outdatedLog.date
     );
-    const todayDate = new Date();
-    const todayDateInUTC = Date.UTC(
-      todayDate.getFullYear(),
-      todayDate.getMonth(),
-      todayDate.getDate()
-    );
+    const todayDateInUTC = this.dateService.getDateInUTC(new Date());
+
     if (outdatedLogDateInUTC !== todayDateInUTC)
       throw AppError.badRequestError("Can't update previous days' logs");
 

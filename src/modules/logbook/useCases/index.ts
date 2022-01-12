@@ -15,6 +15,7 @@ import { CreateGoalImpl } from "./createGoal";
 import { CreateLogImpl } from "./createLog";
 import { CreateLogbookImpl } from "./createLogbook";
 import { CreateRewardImpl } from "./createReward";
+import { DeleteLogImpl } from "./deleteLog";
 import { GetLiteGoalImpl } from "./getLiteGoal";
 import { GetLiteLogbookImpl } from "./getLiteLogbook";
 import { GetLiteRewardsImpl } from "./getLiteRewards";
@@ -52,7 +53,8 @@ export const createGoalImpl = new CreateGoalImpl(
   uuidServiceImpl,
   createRewardImpl,
   goalRepoImpl,
-  rewardRepoImpl
+  rewardRepoImpl,
+  dateServiceImpl
 );
 
 export const getLogbookImpl = new GetLogbookImpl(logbookRepoImpl);
@@ -61,13 +63,15 @@ export const updateGoalImpl = new UpdateGoalImpl(
   createRewardImpl,
   goalRepoImpl,
   rewardRepoImpl,
-  uuidServiceImpl
+  uuidServiceImpl,
+  dateServiceImpl
 );
 
 export const updateLogImpl = new UpdateLogImpl(
   logRepoImpl,
   uuidServiceImpl,
-  fileServiceImpl
+  fileServiceImpl,
+  dateServiceImpl
 );
 
 export const getLiteGoalImpl = new GetLiteGoalImpl(goalRepoImpl);
@@ -75,3 +79,9 @@ export const getLiteGoalImpl = new GetLiteGoalImpl(goalRepoImpl);
 export const getLiteRewardsImpl = new GetLiteRewardsImpl(rewardRepoImpl);
 
 export const getLogImpl = new GetLogImpl(logRepoImpl);
+
+export const deleteLogImpl = new DeleteLogImpl(
+  logRepoImpl,
+  fileServiceImpl,
+  dateServiceImpl
+);
