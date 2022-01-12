@@ -17,7 +17,6 @@ export interface GoalRepo {
   ) => Promise<Goal[]>;
   getGoalById: (goalId: string) => Promise<Goal | null>;
   update: (goal: Goal, outdatedRewards: Reward[]) => void;
-  getLiteGoalById: (goalId: string) => Promise<Goal | null>;
 }
 
 export class GoalRepoImpl implements GoalRepo {
@@ -158,15 +157,6 @@ export class GoalRepoImpl implements GoalRepo {
         { model: this.LogbookModel, required: true },
         { model: this.RewardModel, required: false },
       ],
-    };
-
-    return this.getGoal(queryOption);
-  }
-
-  async getLiteGoalById(goalId: string): Promise<Goal | null> {
-    const queryOption = {
-      where: { id: goalId },
-      include: { model: this.LogbookModel, required: true },
     };
 
     return this.getGoal(queryOption);

@@ -16,7 +16,7 @@ import {
 } from "../../adapters/controllers";
 import { createLogController } from "../../adapters/controllers";
 import {
-  getLiteGoalImpl,
+  getGoalImpl,
   getLiteLogbookImpl,
   getLiteRewardsImpl,
   getLogImpl,
@@ -116,7 +116,7 @@ logbookRouter.put(
     operation: Operation.UPDATE,
     resourceType: "goal",
     resourcesForAccessCheck: [
-      { name: "goal", getResource: getLiteGoalImpl },
+      { name: "goal", getResource: getGoalImpl },
       { name: "rewards", getResource: getLiteRewardsImpl },
     ],
   }),

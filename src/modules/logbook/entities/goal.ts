@@ -17,8 +17,6 @@ export interface GoalProps {
   rewards?: Reward[];
 }
 
-// implement get goal???
-
 export default class Goal extends Entity {
   private constructor(private props: GoalProps, uuidService: UUIDService) {
     super(props, uuidService);
