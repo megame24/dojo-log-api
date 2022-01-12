@@ -6,6 +6,7 @@ import Logbook from "../entities/logbook";
 import Reward from "../entities/reward";
 import { GoalRepo } from "../infrastructure/repositories/goalRepo";
 import { RewardRepo } from "../infrastructure/repositories/rewardRepo";
+import { DateService } from "../infrastructure/services/dateService";
 import { CreateReward, CreateRewardDTO } from "./createReward";
 
 interface CreateGoalDTO {
@@ -28,7 +29,8 @@ export class CreateGoalImpl implements CreateGoal {
     private uuidService: UUIDService,
     private createReward: CreateReward,
     private goalRepo: GoalRepo,
-    private rewardRepo: RewardRepo
+    private rewardRepo: RewardRepo,
+    private dateService: DateService
   ) {}
 
   async execute(createGoalDTO: CreateGoalDTO) {
@@ -76,7 +78,11 @@ export class CreateGoalImpl implements CreateGoal {
       rewards,
     };
 
-    const goal = Goal.create(createGoalProps, this.uuidService);
+    const goal = Goal.create(
+      createGoalProps,
+      this.uuidService,
+      this.dateService
+    );
 
     await this.goalRepo.create(goal);
   }

@@ -11,6 +11,7 @@ export interface LogRepo {
   ) => Promise<Log[]>;
   update: (log: Log) => void;
   getLogById: (logId: string) => Promise<Log | null>;
+  delete: (log: Log) => void;
 }
 
 export class LogRepoImpl implements LogRepo {
@@ -52,6 +53,14 @@ export class LogRepoImpl implements LogRepo {
       await this.LogModel.update(updateLogProps, { where: { id: log.id } });
     } catch (error: any) {
       throw AppError.internalServerError("Error updating Log", error);
+    }
+  }
+
+  async delete(log: Log) {
+    try {
+      await this.LogModel.destroy({ where: { id: log.id } });
+    } catch (error: any) {
+      throw AppError.internalServerError("Error deleting Log", error);
     }
   }
 

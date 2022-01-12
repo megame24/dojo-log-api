@@ -2,6 +2,7 @@ import AppError from "../../../shared/AppError";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
 import Goal from "../../entities/goal";
 import Reward from "../../entities/reward";
+import { DateService } from "../services/dateService";
 
 export interface GoalRepo {
   create: (goal: Goal) => void;
@@ -25,7 +26,8 @@ export class GoalRepoImpl implements GoalRepo {
     private GoalModel: any,
     private RewardModel: any,
     private LogbookModel: any,
-    private Op: any
+    private Op: any,
+    private dateService: DateService
   ) {}
 
   async create(goal: Goal) {
@@ -85,7 +87,7 @@ export class GoalRepoImpl implements GoalRepo {
       rewards,
     };
 
-    return Goal.create(createGoalProps, this.uuidService);
+    return Goal.create(createGoalProps, this.uuidService, this.dateService);
   }
 
   private async getGoals(queryOption: any, logbookData: any): Promise<Goal[]> {
@@ -131,7 +133,7 @@ export class GoalRepoImpl implements GoalRepo {
         rewards,
       };
 
-      return Goal.create(createGoalProps, this.uuidService);
+      return Goal.create(createGoalProps, this.uuidService, this.dateService);
     });
 
     return Promise.all(goals);

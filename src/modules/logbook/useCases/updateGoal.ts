@@ -6,6 +6,7 @@ import AppError from "../../shared/AppError";
 import Reward from "../entities/reward";
 import Goal from "../entities/goal";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
+import { DateService } from "../infrastructure/services/dateService";
 
 interface UpdateGoalDTO {
   goal: Goal;
@@ -23,7 +24,8 @@ export class UpdateGoalImpl implements UpdateGoal {
     private createReward: CreateReward,
     private goalRepo: GoalRepo,
     private rewardRepo: RewardRepo,
-    private uuidService: UUIDService
+    private uuidService: UUIDService,
+    private dateService: DateService
   ) {}
 
   async execute(updateGoalDTO: UpdateGoalDTO) {
@@ -67,7 +69,11 @@ export class UpdateGoalImpl implements UpdateGoal {
       updateGoalProps.achieved = achieved;
     }
 
-    const updatedGoal = Goal.create(updateGoalProps, this.uuidService);
+    const updatedGoal = Goal.create(
+      updateGoalProps,
+      this.uuidService,
+      this.dateService
+    );
 
     const outdatedRewards = outdatedGoal.rewards || [];
     await this.goalRepo.update(updatedGoal, outdatedRewards);

@@ -10,6 +10,8 @@ interface RewardProps {
 }
 
 // can only delete
+// implement get rewards of a user
+
 export default class Reward extends Entity {
   private constructor(private props: RewardProps, uuidService: UUIDService) {
     super(props, uuidService);

@@ -9,6 +9,7 @@ import { logbookAccessControl } from "../../accessControl";
 import {
   createGoalController,
   createLogbookController,
+  deleteLogController,
   getLogbookController,
   updateGoalController,
   updateLogController,
@@ -76,6 +77,18 @@ logbookRouter.put(
     resourcesForAccessCheck: [{ name: "log", getResource: getLogImpl }],
   }),
   updateLogController.execute
+);
+
+logbookRouter.delete(
+  "/:logbookId/log/:logId",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.DELETE,
+    resourceType: "log",
+    resourcesForAccessCheck: [{ name: "log", getResource: getLogImpl }],
+  }),
+  deleteLogController.execute
 );
 
 logbookRouter.post(

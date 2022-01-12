@@ -27,7 +27,8 @@ export const goalRepoImpl = new GoalRepoImpl(
   Goal,
   Reward,
   Logbook,
-  Op
+  Op,
+  dateServiceImpl
 );
 
 export const logbookRepoImpl = new LogbookRepoImpl(

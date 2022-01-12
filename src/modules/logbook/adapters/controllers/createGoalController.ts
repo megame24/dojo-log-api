@@ -1,8 +1,12 @@
 import Adapter from "../../../shared/adapters/adapter";
+import { DateService } from "../../infrastructure/services/dateService";
 import { CreateGoal } from "../../useCases/createGoal";
 
 export default class CreateGoalController extends Adapter {
-  constructor(private createGoal: CreateGoal) {
+  constructor(
+    private createGoal: CreateGoal,
+    private dateService: DateService
+  ) {
     super();
   }
 
@@ -13,7 +17,7 @@ export default class CreateGoalController extends Adapter {
         ? JSON.parse(body.rewardsProps)
         : {};
       let date = new Date(body.date);
-      date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      date = this.dateService.getTimelessDate(date);
 
       files?.forEach((file: any) => {
         if (rewardsProps[file.fieldname])
