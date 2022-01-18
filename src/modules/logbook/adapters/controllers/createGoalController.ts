@@ -34,8 +34,8 @@ export default class CreateGoalController extends Adapter {
         rewardsProps,
       };
 
-      await this.createGoal.execute(createGoalDTO);
-      res.status(201).json({ message: "Goal created successfully" });
+      const goal = await this.createGoal.execute(createGoalDTO);
+      res.status(201).json({ goalId: goal.id });
     } catch (error) {
       next(error);
     }

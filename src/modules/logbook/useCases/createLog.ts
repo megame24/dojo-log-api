@@ -13,8 +13,8 @@ interface CreateLogDTO {
   file?: any;
 }
 
-export interface CreateLog extends UseCase<CreateLogDTO, void> {
-  execute: (createLogDTO: CreateLogDTO) => void;
+export interface CreateLog extends UseCase<CreateLogDTO, Promise<Log>> {
+  execute: (createLogDTO: CreateLogDTO) => Promise<Log>;
 }
 
 export class CreateLogImpl implements CreateLog {
@@ -24,7 +24,7 @@ export class CreateLogImpl implements CreateLog {
     private fileService: FileService
   ) {}
 
-  async execute(createLogDTO: CreateLogDTO) {
+  async execute(createLogDTO: CreateLogDTO): Promise<Log> {
     let proofOfWorkImageUrl;
     if (createLogDTO.file) {
       proofOfWorkImageUrl = await this.fileService.uploadFile(
@@ -44,5 +44,6 @@ export class CreateLogImpl implements CreateLog {
     const log = Log.create(createLogProps, this.uuidService);
 
     await this.logRepo.create(log);
+    return log;
   }
 }

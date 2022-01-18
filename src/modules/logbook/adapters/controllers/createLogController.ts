@@ -16,8 +16,8 @@ export default class CreateLogController extends Adapter {
     };
 
     try {
-      await this.createLog.execute(createLogDTO);
-      res.status(201).json({ message: "Log created successfully" });
+      const log = await this.createLog.execute(createLogDTO);
+      res.status(201).json({ logId: log.id });
     } catch (error) {
       next(error);
     }
