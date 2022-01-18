@@ -9,18 +9,19 @@
   "USER": {
     "inherits": "GUEST",
     "allow": {
-      "/logbook": ["POST"],
-      "/logbook/:logbookId/log": ["POST"],
-      "/logbook/:logbookId/log/:logId": ["PUT", "DELETE"],
-      "/logbook/:logbookId/goal": ["POST"],
-      "/logbook/:logbookId/goal/:goalId": ["PUT"]
+      "/logbooks": ["POST"],
+      "/logbooks/:logbookId/logs": ["POST"],
+      "/logbooks/:logbookId/logs/:logId": ["PUT", "DELETE"],
+      "/logbooks/:logbookId/goals": ["POST"],
+      "/logbooks/:logbookId/goals/:goalId": ["PUT"]
     },
     "deny": {}
   },
   "GUEST": {
     "inherits": "",
     "allow": {
-      "/logbook/:logbookId": ["GET"]
+      "/logbooks/:logbookId": ["GET"],
+      "/logbooks/:logbookId/logs": ["GET"]
     },
     "deny": {}
   }

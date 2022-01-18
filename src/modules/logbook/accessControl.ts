@@ -10,7 +10,7 @@ class LogbookAccessControl extends AccessControl {
     ADMIN: {
       inherits: "USER",
       allow: {
-        category: [
+        categories: [
           {
             operation: Operation.CREATE,
             condition: this.pass,
@@ -22,13 +22,13 @@ class LogbookAccessControl extends AccessControl {
     USER: {
       inherits: "GUEST",
       allow: {
-        logbook: [
+        logbooks: [
           {
             operation: Operation.CREATE,
             condition: this.pass,
           },
         ],
-        log: [
+        logs: [
           {
             operation: Operation.CREATE,
             condition: this.privateAccess,
@@ -42,7 +42,7 @@ class LogbookAccessControl extends AccessControl {
             condition: this.privateAccess,
           },
         ],
-        goal: [
+        goals: [
           {
             operation: Operation.CREATE,
             condition: this.privateAccess,
@@ -58,7 +58,13 @@ class LogbookAccessControl extends AccessControl {
     GUEST: {
       inherits: "",
       allow: {
-        logbook: [
+        logbooks: [
+          {
+            operation: Operation.GET,
+            condition: this.privatePublicAccess,
+          },
+        ],
+        logs: [
           {
             operation: Operation.GET,
             condition: this.privatePublicAccess,
