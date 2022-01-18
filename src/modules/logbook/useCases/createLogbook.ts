@@ -14,8 +14,9 @@ interface CreateLogbookDTO {
   categoryId: string;
 }
 
-export interface CreateLogbook extends UseCase<CreateLogbookDTO, void> {
-  execute: (createLogbookDTO: CreateLogbookDTO) => void;
+export interface CreateLogbook
+  extends UseCase<CreateLogbookDTO, Promise<Logbook>> {
+  execute: (createLogbookDTO: CreateLogbookDTO) => Promise<Logbook>;
 }
 
 export class CreateLogbookImpl implements CreateLogbook {
@@ -26,7 +27,7 @@ export class CreateLogbookImpl implements CreateLogbook {
     private dateService: DateService
   ) {}
 
-  async execute(createLogbookDTO: CreateLogbookDTO) {
+  async execute(createLogbookDTO: CreateLogbookDTO): Promise<Logbook> {
     const { userId, name, description, visibility, categoryId } =
       createLogbookDTO;
 
@@ -47,5 +48,6 @@ export class CreateLogbookImpl implements CreateLogbook {
     );
 
     await this.logbookRepo.create(logbook);
+    return logbook;
   }
 }

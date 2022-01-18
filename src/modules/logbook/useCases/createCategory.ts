@@ -8,8 +8,9 @@ interface CreateCategoryDTO {
   name: string;
 }
 
-export interface CreateCategory extends UseCase<CreateCategoryDTO, void> {
-  execute: (createCategoryDTO: CreateCategoryDTO) => void;
+export interface CreateCategory
+  extends UseCase<CreateCategoryDTO, Promise<Category>> {
+  execute: (createCategoryDTO: CreateCategoryDTO) => Promise<Category>;
 }
 
 export class CreateCategoryImpl implements CreateCategory {
@@ -18,7 +19,7 @@ export class CreateCategoryImpl implements CreateCategory {
     private uuidService: UUIDService
   ) {}
 
-  async execute(createCategoryDTO: CreateCategoryDTO) {
+  async execute(createCategoryDTO: CreateCategoryDTO): Promise<Category> {
     const { name } = createCategoryDTO;
 
     const categoryWithSameName = await this.categoryRepo.getCategoryByName(
@@ -30,5 +31,6 @@ export class CreateCategoryImpl implements CreateCategory {
 
     const category = Category.create({ name }, this.uuidService);
     await this.categoryRepo.create(category);
+    return category;
   }
 }

@@ -20,8 +20,8 @@ interface CreateGoalDTO {
   rewardsProps: Partial<CreateRewardDTO>[];
 }
 
-export interface CreateGoal extends UseCase<CreateGoalDTO, void> {
-  execute: (createGoalDTO: CreateGoalDTO) => void;
+export interface CreateGoal extends UseCase<CreateGoalDTO, Promise<Goal>> {
+  execute: (createGoalDTO: CreateGoalDTO) => Promise<Goal>;
 }
 
 export class CreateGoalImpl implements CreateGoal {
@@ -33,7 +33,7 @@ export class CreateGoalImpl implements CreateGoal {
     private dateService: DateService
   ) {}
 
-  async execute(createGoalDTO: CreateGoalDTO) {
+  async execute(createGoalDTO: CreateGoalDTO): Promise<Goal> {
     const { rewardsProps, userId, logbook, date } = createGoalDTO;
     let { rewards } = createGoalDTO;
 
@@ -85,5 +85,6 @@ export class CreateGoalImpl implements CreateGoal {
     );
 
     await this.goalRepo.create(goal);
+    return goal;
   }
 }

@@ -16,8 +16,8 @@ export default class CreateLogbookController extends Adapter {
     };
 
     try {
-      await this.createLogbook.execute(createLogbookDTO);
-      res.status(201).json({ message: "Logbook created successfully" });
+      const logbook = await this.createLogbook.execute(createLogbookDTO);
+      res.status(201).json({ logbookId: logbook.id });
     } catch (error) {
       next(error);
     }
