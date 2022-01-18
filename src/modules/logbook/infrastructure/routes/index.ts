@@ -5,6 +5,6 @@ import logbookRouter from "./logbookRoutes";
 const logbookModuleRouter = express.Router();
 
 logbookModuleRouter.use("/categories", categoryRouter);
-logbookModuleRouter.use("/logbook", logbookRouter);
+logbookModuleRouter.use("/logbooks", logbookRouter);
 
 export default logbookModuleRouter;

@@ -5,7 +5,8 @@ export interface DateService {
 }
 
 export class DateServiceImpl implements DateService {
-  getDayOfYear(date: Date): number {
+  getDayOfYear(date: Date | string): number {
+    date = this.convertDateStringToDate(date);
     const dateInUTC = Date.UTC(
       date.getFullYear(),
       date.getMonth(),
@@ -18,11 +19,18 @@ export class DateServiceImpl implements DateService {
     return dayOfYear;
   }
 
-  getDateInUTC(date: Date): number {
+  getDateInUTC(date: Date | string): number {
+    date = this.convertDateStringToDate(date);
     return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
-  getTimelessDate(date: Date): Date {
+  getTimelessDate(date: Date | string): Date {
+    date = this.convertDateStringToDate(date);
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  private convertDateStringToDate(date: Date | string): Date {
+    if (typeof date === "string") return new Date(date);
+    return date;
   }
 }

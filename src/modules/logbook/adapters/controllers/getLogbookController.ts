@@ -27,7 +27,7 @@ export default class GetLogbookController extends Adapter {
         },
         heatmap: logbook.heatMap,
       };
-      res.status(200).json({ logbookResponseDTO });
+      res.status(200).json(logbookResponseDTO);
     } catch (error) {
       next(error);
     }

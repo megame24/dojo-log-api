@@ -16,8 +16,7 @@ export default class CreateGoalController extends Adapter {
       const rewardsProps = body.rewardsProps
         ? JSON.parse(body.rewardsProps)
         : {};
-      let date = new Date(body.date);
-      date = this.dateService.getTimelessDate(date);
+      const date = this.dateService.getTimelessDate(body.date);
 
       files?.forEach((file: any) => {
         if (rewardsProps[file.fieldname])

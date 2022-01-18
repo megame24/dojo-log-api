@@ -63,9 +63,6 @@ export default class Goal extends Entity {
   }
 
   private static formatDate(date: Date, dateService: DateService): Date {
-    if (typeof date === "string") {
-      date = new Date(date);
-    }
     return dateService.getTimelessDate(date);
   }
 

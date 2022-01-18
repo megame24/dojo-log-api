@@ -11,6 +11,7 @@ import {
   createLogbookController,
   deleteLogController,
   getLogbookController,
+  getLogsController,
   updateGoalController,
   updateLogController,
 } from "../../adapters/controllers";
@@ -31,7 +32,7 @@ logbookRouter.post(
   accessControlMiddleware.executeWrapper({
     accessControl: logbookAccessControl,
     operation: Operation.CREATE,
-    resourceType: "logbook",
+    resourceType: "logbooks",
     resourcesForAccessCheck: [],
   }),
   createLogbookController.execute
@@ -43,7 +44,7 @@ logbookRouter.get(
   accessControlMiddleware.executeWrapper({
     accessControl: logbookAccessControl,
     operation: Operation.GET,
-    resourceType: "logbook",
+    resourceType: "logbooks",
     resourcesForAccessCheck: [
       { name: "logbook", getResource: getLiteLogbookImpl },
     ],
@@ -52,13 +53,13 @@ logbookRouter.get(
 );
 
 logbookRouter.post(
-  "/:logbookId/log",
+  "/:logbookId/logs",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   multer().any(),
   accessControlMiddleware.executeWrapper({
     accessControl: logbookAccessControl,
     operation: Operation.CREATE,
-    resourceType: "log",
+    resourceType: "logs",
     resourcesForAccessCheck: [
       { name: "logbook", getResource: getLiteLogbookImpl },
     ],
@@ -66,39 +67,53 @@ logbookRouter.post(
   createLogController.execute
 );
 
+logbookRouter.get(
+  "/:logbookId/logs",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.GET,
+    resourceType: "logs",
+    resourcesForAccessCheck: [
+      { name: "logbook", getResource: getLiteLogbookImpl },
+    ],
+  }),
+  getLogsController.execute
+);
+
 logbookRouter.put(
-  "/:logbookId/log/:logId",
+  "/:logbookId/logs/:logId",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   multer().any(),
   accessControlMiddleware.executeWrapper({
     accessControl: logbookAccessControl,
     operation: Operation.UPDATE,
-    resourceType: "log",
+    resourceType: "logs",
     resourcesForAccessCheck: [{ name: "log", getResource: getLogImpl }],
   }),
   updateLogController.execute
 );
 
 logbookRouter.delete(
-  "/:logbookId/log/:logId",
+  "/:logbookId/logs/:logId",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   accessControlMiddleware.executeWrapper({
     accessControl: logbookAccessControl,
     operation: Operation.DELETE,
-    resourceType: "log",
+    resourceType: "logs",
     resourcesForAccessCheck: [{ name: "log", getResource: getLogImpl }],
   }),
   deleteLogController.execute
 );
 
 logbookRouter.post(
-  "/:logbookId/goal",
+  "/:logbookId/goals",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   multer().any(),
   accessControlMiddleware.executeWrapper({
     accessControl: logbookAccessControl,
     operation: Operation.CREATE,
-    resourceType: "goal",
+    resourceType: "goals",
     resourcesForAccessCheck: [
       { name: "logbook", getResource: getLiteLogbookImpl },
       { name: "rewards", getResource: getLiteRewardsImpl },
@@ -108,13 +123,13 @@ logbookRouter.post(
 );
 
 logbookRouter.put(
-  "/:logbookId/goal/:goalId",
+  "/:logbookId/goals/:goalId",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   multer().any(),
   accessControlMiddleware.executeWrapper({
     accessControl: logbookAccessControl,
     operation: Operation.UPDATE,
-    resourceType: "goal",
+    resourceType: "goals",
     resourcesForAccessCheck: [
       { name: "goal", getResource: getGoalImpl },
       { name: "rewards", getResource: getLiteRewardsImpl },

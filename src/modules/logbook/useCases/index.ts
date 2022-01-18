@@ -21,6 +21,7 @@ import { GetLiteLogbookImpl } from "./getLiteLogbook";
 import { GetLiteRewardsImpl } from "./getLiteRewards";
 import { GetLogImpl } from "./getLog";
 import { GetLogbookImpl } from "./getLogbook";
+import { GetLogsImpl } from "./getLogs";
 import { UpdateGoalImpl } from "./updateGoal";
 import { UpdateLogImpl } from "./updateLog";
 
@@ -85,3 +86,5 @@ export const deleteLogImpl = new DeleteLogImpl(
   fileServiceImpl,
   dateServiceImpl
 );
+
+export const getLogsImpl = new GetLogsImpl(logRepoImpl);
