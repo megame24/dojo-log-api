@@ -14,8 +14,6 @@ interface LogProps {
   proofOfWorkImageUrl?: string;
 }
 
-// implement get logs
-
 export default class Log extends Entity {
   private static durationOfWorkRegEx =
     /^(2[0-3][h]|[0-1]?[0-9][h])$|^((([0]?|[1-5]{1})[0-9])[m])$|^((2[0-3][h]|[0-1]?[0-9][h])\s((([0]?|[1-5]{1})[0-9])[m]))$/;

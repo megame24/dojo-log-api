@@ -1,5 +1,6 @@
 import AppError from "../../../shared/AppError";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
+import { User } from "../../../users/api";
 import Log from "../../entities/log";
 
 export interface LogRepo {
@@ -9,7 +10,7 @@ export interface LogRepo {
     startDate: Date,
     endDate: Date
   ) => Promise<Log[]>;
-  update: (log: Log) => void;
+  update: (log: Log, updatedBy: User) => void;
   getLogById: (logId: string) => Promise<Log | null>;
   delete: (log: Log) => void;
 }
@@ -39,7 +40,7 @@ export class LogRepoImpl implements LogRepo {
     }
   }
 
-  async update(log: Log) {
+  async update(log: Log, updatedBy: User) {
     try {
       const updateLogProps = {
         id: log.id,
@@ -49,6 +50,7 @@ export class LogRepoImpl implements LogRepo {
         message: log.message,
         durationOfWork: log.durationOfWork,
         proofOfWorkImageUrl: log.proofOfWorkImageUrl,
+        updatedBy: updatedBy.id,
       };
       await this.LogModel.update(updateLogProps, { where: { id: log.id } });
     } catch (error: any) {

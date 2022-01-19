@@ -2,12 +2,11 @@
 const { Model } = require("sequelize");
 const { Visibility } = require("./json/enums.json");
 
-// INCLUDE UPDATED BY!!!!
-
 module.exports = (sequelize, DataTypes) => {
   class Logbook extends Model {
     static associate(models) {
       Logbook.belongsTo(models.User, { foreignKey: "userId" });
+      Logbook.belongsTo(models.User, { foreignKey: "updatedBy" });
       Logbook.belongsTo(models.Category, { foreignKey: "categoryId" });
       Logbook.hasMany(models.Log, { foreignKey: "logbookId" });
       Logbook.hasMany(models.Goal, { foreignKey: "logbookId" });
@@ -24,8 +23,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.UUID,
       },
+      updatedBy: {
+        allowNull: true,
+        type: DataTypes.UUID,
+      },
       categoryId: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.UUID,
       },
       name: {

@@ -29,6 +29,7 @@ interface CreateLogbookProps extends BaseLogbookProps {
 }
 
 // can update and delete, delete should cascade
+// can also update the category, make category optional
 
 export default class Logbook extends Entity {
   private constructor(private props: LogbookProps, uuidService: UUIDService) {

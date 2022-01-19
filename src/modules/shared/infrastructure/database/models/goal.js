@@ -1,13 +1,12 @@
 "use strict";
 const { Model } = require("sequelize");
 
-// INCLUDE UPDATED BY!!!!
-
 module.exports = (sequelize, DataTypes) => {
   class Goal extends Model {
     static associate(models) {
       Goal.belongsTo(models.Logbook, { foreignKey: "logbookId" });
       Goal.belongsTo(models.User, { foreignKey: "userId" });
+      Goal.belongsTo(models.User, { foreignKey: "updatedBy" });
       Goal.belongsToMany(models.Reward, {
         through: "GoalRewards",
         foreignKey: "goalId",
@@ -27,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       userId: {
         allowNull: false,
+        type: DataTypes.UUID,
+      },
+      updatedBy: {
+        allowNull: true,
         type: DataTypes.UUID,
       },
       name: {

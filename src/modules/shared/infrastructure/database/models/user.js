@@ -8,8 +8,11 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       User.hasMany(models.PersistentToken, { foreignKey: "userId" });
       User.hasMany(models.Logbook, { foreignKey: "userId" });
+      User.hasMany(models.Logbook, { foreignKey: "updatedBy" });
       User.hasMany(models.Log, { foreignKey: "userId" });
+      User.hasMany(models.Log, { foreignKey: "updatedBy" });
       User.hasMany(models.Goal, { foreignKey: "userId" });
+      User.hasMany(models.Goal, { foreignKey: "updatedBy" });
     }
   }
   User.init(
