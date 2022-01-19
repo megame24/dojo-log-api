@@ -12,6 +12,7 @@ export default class UpdateLogController extends Adapter {
       message: req.body.message,
       durationOfWork: req.body.durationOfWork,
       file: null,
+      user: req.user,
     };
 
     if (req.files) {

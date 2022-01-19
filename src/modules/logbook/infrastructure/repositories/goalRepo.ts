@@ -1,5 +1,6 @@
 import AppError from "../../../shared/AppError";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
+import { User } from "../../../users/api";
 import Goal from "../../entities/goal";
 import Reward from "../../entities/reward";
 import { DateService } from "../services/dateService";
@@ -16,7 +17,7 @@ export interface GoalRepo {
     endDate: Date
   ) => Promise<Goal[]>;
   getGoalById: (goalId: string) => Promise<Goal | null>;
-  update: (goal: Goal, outdatedRewards: Reward[]) => void;
+  update: (goal: Goal, outdatedRewards: Reward[], updatedBy: User) => void;
 }
 
 export class GoalRepoImpl implements GoalRepo {
@@ -183,7 +184,7 @@ export class GoalRepoImpl implements GoalRepo {
     return this.getGoals(queryOption, logbookData);
   }
 
-  async update(goal: Goal, outdatedRewards: Reward[] = []) {
+  async update(goal: Goal, outdatedRewards: Reward[] = [], updatedBy: User) {
     try {
       const updatedData = await this.GoalModel.update(
         {
@@ -195,6 +196,7 @@ export class GoalRepoImpl implements GoalRepo {
           achieved: goal.achieved,
           achievementCriteria: goal.achievementCriteria,
           date: goal.date,
+          updatedBy: updatedBy.id,
         },
         {
           where: { id: goal.id },

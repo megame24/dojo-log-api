@@ -8,7 +8,7 @@ export default class UpdateGoalController extends Adapter {
 
   async execute(req: any, res: any, next: any) {
     try {
-      const { body, files, rewards, goal } = req;
+      const { body, files, rewards, goal, user } = req;
       const achieved = body.achieved ? JSON.parse(body.achieved) : undefined;
       const rewardsProps = body.rewardsProps
         ? JSON.parse(body.rewardsProps)
@@ -24,6 +24,7 @@ export default class UpdateGoalController extends Adapter {
         achieved,
         rewards,
         rewardsProps,
+        user,
       };
 
       await this.updateGoal.execute(updateGoalDTO);

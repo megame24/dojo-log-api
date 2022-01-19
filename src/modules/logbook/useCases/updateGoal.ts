@@ -7,12 +7,14 @@ import Reward from "../entities/reward";
 import Goal from "../entities/goal";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import { DateService } from "../infrastructure/services/dateService";
+import { User } from "../../users/api";
 
 interface UpdateGoalDTO {
   goal: Goal;
   achieved: boolean;
   rewards: Reward[];
   rewardsProps: Partial<CreateRewardDTO>[];
+  user: User;
 }
 
 export interface UpdateGoal extends UseCase<UpdateGoalDTO, void> {
@@ -29,7 +31,7 @@ export class UpdateGoalImpl implements UpdateGoal {
   ) {}
 
   async execute(updateGoalDTO: UpdateGoalDTO) {
-    const { rewardsProps, achieved, goal: outdatedGoal } = updateGoalDTO;
+    const { rewardsProps, achieved, goal: outdatedGoal, user } = updateGoalDTO;
     let { rewards } = updateGoalDTO;
 
     const rewardsLength = Object.keys(rewardsProps).length + rewards.length;
@@ -76,6 +78,6 @@ export class UpdateGoalImpl implements UpdateGoal {
     );
 
     const outdatedRewards = outdatedGoal.rewards || [];
-    await this.goalRepo.update(updatedGoal, outdatedRewards);
+    await this.goalRepo.update(updatedGoal, outdatedRewards, user);
   }
 }
