@@ -43,7 +43,7 @@ export class CreateGoalImpl implements CreateGoal {
     );
     if (existingGoal)
       throw AppError.badRequestError(
-        "More than one goal can't share the same date"
+        "More than one goal can't share the same date in the same Logbook"
       );
 
     const rewardsLength = Object.keys(rewardsProps).length + rewards.length;
