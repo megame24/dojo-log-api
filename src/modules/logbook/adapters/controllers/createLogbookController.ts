@@ -7,11 +7,13 @@ export default class CreateLogbookController extends Adapter {
   }
 
   async execute(req: any, res: any, next: any) {
+    const { name, description, visibility, categoryId } = req.body;
+
     const createLogbookDTO = {
-      name: req.body.name,
-      description: req.body.description,
-      visibility: req.body.visibility,
-      categoryId: req.body.categoryId,
+      name,
+      description,
+      visibility,
+      categoryId,
       userId: req.user.id,
     };
 

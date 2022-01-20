@@ -10,6 +10,7 @@
     "inherits": "GUEST",
     "allow": {
       "/logbooks": ["POST"],
+      "/logbooks/:logbookId": ["PUT"],
       "/logbooks/:logbookId/logs": ["POST"],
       "/logbooks/:logbookId/logs/:logId": ["PUT", "DELETE"],
       "/logbooks/:logbookId/goals": ["POST"],

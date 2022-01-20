@@ -1,5 +1,6 @@
 import AppError from "../../../shared/AppError";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
+import { User } from "../../../users/api";
 import Category from "../../entities/category";
 import Goal from "../../entities/goal";
 import Log from "../../entities/log";
@@ -15,6 +16,7 @@ interface GetByIdQueryOption {
 
 export interface LogbookRepo {
   create: (logbook: Logbook) => void;
+  update: (logbook: Logbook, updatedBy: User) => void;
   getLiteLogbookById: (logbookId: string) => Promise<Logbook | null>;
   getLogbookById: (
     logbookId: string,
@@ -40,11 +42,30 @@ export class LogbookRepoImpl implements LogbookRepo {
         userId: logbook.userId,
         description: logbook.description,
         visibility: logbook.visibility,
-        categoryId: logbook.category.id,
+        categoryId: logbook.category?.id,
       };
       await this.LogbookModel.create(logbookProps);
     } catch (error: any) {
       throw AppError.internalServerError("Error creating Logbook", error);
+    }
+  }
+
+  async update(logbook: Logbook, updatedBy: User) {
+    try {
+      const updateLogbookProps = {
+        id: logbook.id,
+        name: logbook.name,
+        userId: logbook.userId,
+        description: logbook.description,
+        visibility: logbook.visibility,
+        categoryId: logbook.category?.id,
+        updatedBy: updatedBy.id,
+      };
+      await this.LogbookModel.update(updateLogbookProps, {
+        where: { id: logbook.id },
+      });
+    } catch (error: any) {
+      throw AppError.internalServerError("Error updating Logbook", error);
     }
   }
 
@@ -57,7 +78,7 @@ export class LogbookRepoImpl implements LogbookRepo {
     try {
       logbookData = await this.LogbookModel.findOne({
         include: [
-          { model: this.CategoryModel, required: true },
+          { model: this.CategoryModel, required: false },
           ...(queryOption?.include ? queryOption.include : []),
         ],
         ...queryOption,
@@ -69,10 +90,13 @@ export class LogbookRepoImpl implements LogbookRepo {
     if (!logbookData) return null;
 
     const categoryData = logbookData.Category;
-    const category = Category.create(
-      { id: categoryData.id, name: categoryData.name },
-      this.uuidService
-    );
+    let category;
+    if (categoryData) {
+      category = Category.create(
+        { id: categoryData.id, name: categoryData.name },
+        this.uuidService
+      );
+    }
 
     const createLogbookProps = {
       id: logbookData.id,

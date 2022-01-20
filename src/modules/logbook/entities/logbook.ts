@@ -16,7 +16,7 @@ interface BaseLogbookProps {
   name: string;
   description?: string;
   visibility: Visibility;
-  category: Category;
+  category?: Category | null | undefined;
 }
 
 interface LogbookProps extends BaseLogbookProps {
@@ -56,7 +56,7 @@ export default class Logbook extends Entity {
     return this.props.visibility;
   }
 
-  get category(): Category {
+  get category(): Category | null | undefined {
     return this.props.category;
   }
 
@@ -156,10 +156,6 @@ export default class Logbook extends Entity {
         Enum: Visibility,
       },
       this.validateEnum
-    );
-    this.validateProp(
-      { key: "Category", value: props.category },
-      this.isRequiredValidation
     );
 
     const heatMap = this.createHeatMap(props, dateService);

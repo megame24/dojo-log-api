@@ -27,6 +27,10 @@ class LogbookAccessControl extends AccessControl {
             operation: Operation.CREATE,
             condition: this.pass,
           },
+          {
+            operation: Operation.UPDATE,
+            condition: this.privateAccess,
+          },
         ],
         logs: [
           {

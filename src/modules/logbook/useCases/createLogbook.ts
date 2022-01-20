@@ -11,7 +11,7 @@ interface CreateLogbookDTO {
   name: string;
   description?: string;
   visibility: Visibility;
-  categoryId: string;
+  categoryId?: string;
 }
 
 export interface CreateLogbook
@@ -31,8 +31,10 @@ export class CreateLogbookImpl implements CreateLogbook {
     const { userId, name, description, visibility, categoryId } =
       createLogbookDTO;
 
-    const category = await this.categoryRepo.getCategoryById(categoryId);
-    if (!category) throw AppError.notFoundError("Category not found");
+    let category;
+    if (categoryId) {
+      category = await this.categoryRepo.getCategoryById(categoryId);
+    }
 
     const createLogbookProps = {
       userId,

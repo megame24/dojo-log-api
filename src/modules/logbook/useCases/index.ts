@@ -24,6 +24,7 @@ import { GetLogbookImpl } from "./getLogbook";
 import { GetLogsImpl } from "./getLogs";
 import { UpdateGoalImpl } from "./updateGoal";
 import { UpdateLogImpl } from "./updateLog";
+import { UpdateLogbookImpl } from "./updateLogbook";
 
 export const createCategoryImpl = new CreateCategoryImpl(
   categoryRepoImpl,
@@ -88,3 +89,10 @@ export const deleteLogImpl = new DeleteLogImpl(
 );
 
 export const getLogsImpl = new GetLogsImpl(logRepoImpl);
+
+export const updateLogbookImpl = new UpdateLogbookImpl(
+  logbookRepoImpl,
+  uuidServiceImpl,
+  categoryRepoImpl,
+  dateServiceImpl
+);
