@@ -8,6 +8,7 @@ import {
   getLogbookImpl,
   getLogsImpl,
   updateGoalImpl,
+  updateLogbookImpl,
   updateLogImpl,
 } from "../../useCases";
 import CreateCategoryController from "./createCategoryController";
@@ -18,6 +19,7 @@ import DeleteLogController from "./deleteLogController";
 import GetLogbookController from "./getLogbookController";
 import GetLogsController from "./getLogsController";
 import UpdateGoalController from "./updateGoalController";
+import UpdateLogbookController from "./updateLogbookController";
 import UpdateLogController from "./updateLogController";
 
 export const createCategoryController = new CreateCategoryController(
@@ -46,4 +48,8 @@ export const deleteLogController = new DeleteLogController(deleteLogImpl);
 export const getLogsController = new GetLogsController(
   getLogsImpl,
   dateServiceImpl
+);
+
+export const updateLogbookController = new UpdateLogbookController(
+  updateLogbookImpl
 );

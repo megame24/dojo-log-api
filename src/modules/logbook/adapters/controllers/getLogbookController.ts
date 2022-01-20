@@ -21,12 +21,15 @@ export default class GetLogbookController extends Adapter {
         userId: logbook.userId,
         description: logbook.description,
         visibility: logbook.visibility,
-        category: {
-          id: logbook.category.id,
-          name: logbook.category.name,
-        },
         heatmap: logbook.heatMap,
+        ...(logbook.category && {
+          category: {
+            id: logbook.category.id,
+            name: logbook.category.name,
+          },
+        }),
       };
+
       res.status(200).json(logbookResponseDTO);
     } catch (error) {
       next(error);
