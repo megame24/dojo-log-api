@@ -9,6 +9,7 @@
   "USER": {
     "inherits": "GUEST",
     "allow": {
+      "/rewards": ["GET"],
       "/logbooks": ["POST"],
       "/logbooks/:logbookId": ["PUT"],
       "/logbooks/:logbookId/logs": ["POST"],

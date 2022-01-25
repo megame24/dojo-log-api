@@ -22,6 +22,12 @@ class LogbookAccessControl extends AccessControl {
     USER: {
       inherits: "GUEST",
       allow: {
+        rewards: [
+          {
+            operation: Operation.GET,
+            condition: this.pass,
+          },
+        ],
         logbooks: [
           {
             operation: Operation.CREATE,

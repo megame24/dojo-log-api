@@ -22,6 +22,7 @@ import { GetLiteRewardsImpl } from "./getLiteRewards";
 import { GetLogImpl } from "./getLog";
 import { GetLogbookImpl } from "./getLogbook";
 import { GetLogsImpl } from "./getLogs";
+import { GetRewardsImpl } from "./getRewards";
 import { UpdateGoalImpl } from "./updateGoal";
 import { UpdateLogImpl } from "./updateLog";
 import { UpdateLogbookImpl } from "./updateLogbook";
@@ -96,3 +97,5 @@ export const updateLogbookImpl = new UpdateLogbookImpl(
   categoryRepoImpl,
   dateServiceImpl
 );
+
+export const getRewardsImpl = new GetRewardsImpl(rewardRepoImpl);

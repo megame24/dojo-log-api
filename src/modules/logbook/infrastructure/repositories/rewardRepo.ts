@@ -4,6 +4,7 @@ import Reward from "../../entities/reward";
 
 export interface RewardRepo {
   getRewardsByIds: (rewardIds: string[]) => Promise<Reward[]>;
+  getRewardsByUserId: (userId: string) => Promise<Reward[]>;
   bulkUpsert: (rewards: Reward[]) => void;
 }
 
@@ -40,6 +41,16 @@ export class RewardRepoImpl implements RewardRepo {
   async getRewardsByIds(rewardIds: string[]): Promise<Reward[]> {
     const queryOption = {
       where: { id: { [this.Op.in]: rewardIds } },
+    };
+
+    return this.getRewards(queryOption);
+  }
+
+  async getRewardsByUserId(userId: string): Promise<Reward[]> {
+    if (!userId) throw AppError.badRequestError("userId is required");
+
+    const queryOption = {
+      where: { userId },
     };
 
     return this.getRewards(queryOption);
