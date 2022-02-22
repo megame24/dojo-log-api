@@ -16,3 +16,5 @@ Ideas:
 - Explore removing report and admin intervention from private logbooks????!!!!
 
 - Make the URLs more user friendly by using username instead of IDs
+
+- App wide refactor (You can create helper functions in each class [adapters, useCases, entities])
