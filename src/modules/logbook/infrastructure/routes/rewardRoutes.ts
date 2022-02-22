@@ -15,7 +15,7 @@ rewardRouter.get(
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   accessControlMiddleware.executeWrapper({
     accessControl: logbookAccessControl,
-    operation: Operation.GET,
+    operation: Operation.GET_MANY,
     resourceType: "rewards",
     resourcesForAccessCheck: [],
   }),

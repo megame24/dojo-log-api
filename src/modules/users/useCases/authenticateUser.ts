@@ -33,6 +33,7 @@ export class AuthenticateUserImpl implements AuthenticateUser {
         role: Role.GUEST,
         isPasswordHashed: false,
         isPasswordRequired: false,
+        verified: true,
       };
       const guestUser = User.create(
         guestUserProps,

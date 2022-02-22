@@ -6,6 +6,7 @@ import {
   createLogImpl,
   deleteLogImpl,
   getLogbookImpl,
+  getLogbooksImpl,
   getLogsImpl,
   getRewardsImpl,
   updateGoalImpl,
@@ -18,6 +19,7 @@ import CreateLogbookController from "./createLogbookController";
 import CreateLogController from "./createLogController";
 import DeleteLogController from "./deleteLogController";
 import GetLogbookController from "./getLogbookController";
+import GetLogbooksController from "./getLogbooksController";
 import GetLogsController from "./getLogsController";
 import GetRewardsController from "./getRewardsController";
 import UpdateGoalController from "./updateGoalController";
@@ -57,3 +59,5 @@ export const updateLogbookController = new UpdateLogbookController(
 );
 
 export const getRewardsController = new GetRewardsController(getRewardsImpl);
+
+export const getLogbooksController = new GetLogbooksController(getLogbooksImpl);
