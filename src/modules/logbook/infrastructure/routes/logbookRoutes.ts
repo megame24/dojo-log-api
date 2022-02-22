@@ -47,7 +47,8 @@ logbookRouter.get(
     accessControl: logbookAccessControl,
     operation: Operation.GET_MANY,
     resourceType: "logbooks",
-    resourcesForAccessCheck: [],
+    resourcesForAccessCheck: [], // EXPLORE USING THIS TO GET USER BY USERNAME AND PASS ID
+    // TO ENABLE US HAVE A URL LIKE: "/:username/logbooks"
   }),
   getLogbooksController.execute
 );

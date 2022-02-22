@@ -6,6 +6,7 @@ export interface CategoryRepo {
   create: (category: Category) => void;
   getCategoryByName: (name: string) => Promise<Category | null>;
   getCategoryById: (id: string) => Promise<Category | null>;
+  delete: (category: Category) => void;
 }
 
 export class CategoryRepoImpl implements CategoryRepo {
@@ -55,5 +56,13 @@ export class CategoryRepoImpl implements CategoryRepo {
     const queryOption = { where: { id } };
 
     return this.getCategory(queryOption);
+  }
+
+  async delete(category: Category) {
+    try {
+      await this.CategoryModel.destroy({ where: { id: category.id } });
+    } catch (error: any) {
+      throw AppError.internalServerError("Error deleting Category", error);
+    }
   }
 }

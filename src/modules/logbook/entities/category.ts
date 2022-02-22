@@ -6,8 +6,6 @@ interface CategoryProps {
   name: string;
 }
 
-// delete category
-
 export default class Category extends Entity {
   private constructor(private props: CategoryProps, uuidService: UUIDService) {
     super(props, uuidService);

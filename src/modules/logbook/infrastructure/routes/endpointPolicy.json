@@ -2,7 +2,8 @@
   "ADMIN": {
     "inherits": "USER",
     "allow": {
-      "/categories": ["POST"]
+      "/categories": ["POST"],
+      "/categories/:categoryId": ["DELETE"]
     },
     "deny": {}
   },
