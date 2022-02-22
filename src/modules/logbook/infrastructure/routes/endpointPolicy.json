@@ -22,6 +22,7 @@
   "GUEST": {
     "inherits": "",
     "allow": {
+      "/logbooks": ["GET"],
       "/logbooks/:logbookId": ["GET"],
       "/logbooks/:logbookId/logs": ["GET"]
     },

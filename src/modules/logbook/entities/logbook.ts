@@ -29,7 +29,6 @@ interface CreateLogbookProps extends BaseLogbookProps {
 }
 
 // can delete
-// get logbooks (lite)
 
 export default class Logbook extends Entity {
   private constructor(private props: LogbookProps, uuidService: UUIDService) {

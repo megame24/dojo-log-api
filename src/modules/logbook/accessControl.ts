@@ -24,7 +24,7 @@ class LogbookAccessControl extends AccessControl {
       allow: {
         rewards: [
           {
-            operation: Operation.GET,
+            operation: Operation.GET_MANY,
             condition: this.pass,
           },
         ],
@@ -70,13 +70,17 @@ class LogbookAccessControl extends AccessControl {
       allow: {
         logbooks: [
           {
-            operation: Operation.GET,
+            operation: Operation.GET_ONE,
             condition: this.privatePublicAccess,
+          },
+          {
+            operation: Operation.GET_MANY,
+            condition: this.pass,
           },
         ],
         logs: [
           {
-            operation: Operation.GET,
+            operation: Operation.GET_MANY,
             condition: this.privatePublicAccess,
           },
         ],

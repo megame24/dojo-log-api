@@ -4,14 +4,18 @@ import { User } from "../../../users/api";
 import Category from "../../entities/category";
 import Goal from "../../entities/goal";
 import Log from "../../entities/log";
-import Logbook from "../../entities/logbook";
+import Logbook, { Visibility } from "../../entities/logbook";
 import { DateService } from "../services/dateService";
 import { GoalRepo } from "./goalRepo";
 import { LogRepo } from "./logRepo";
 
-interface GetByIdQueryOption {
+interface GetLogbookByIdQueryOption {
   startDate: Date;
   endDate: Date;
+}
+
+interface GetLogbooksByUserIdQueryOption {
+  includePrivateLogbooks: boolean;
 }
 
 export interface LogbookRepo {
@@ -20,8 +24,12 @@ export interface LogbookRepo {
   getLiteLogbookById: (logbookId: string) => Promise<Logbook | null>;
   getLogbookById: (
     logbookId: string,
-    getByIdQueryOption: GetByIdQueryOption
+    getLogbookByIdQueryOption: GetLogbookByIdQueryOption
   ) => Promise<Logbook | null>;
+  getLogbooksByUserId: (
+    userId: string,
+    getLogbooksByUserIdQueryOption: GetLogbooksByUserIdQueryOption
+  ) => Promise<Logbook[]>;
 }
 
 export class LogbookRepoImpl implements LogbookRepo {
@@ -126,10 +134,10 @@ export class LogbookRepoImpl implements LogbookRepo {
 
   async getLogbookById(
     logbookId: string,
-    getByIdQueryOption: GetByIdQueryOption
+    getLogbookByIdQueryOption: GetLogbookByIdQueryOption
   ): Promise<Logbook | null> {
     if (!logbookId) throw AppError.badRequestError("logbookId is required");
-    const { startDate, endDate } = getByIdQueryOption;
+    const { startDate, endDate } = getLogbookByIdQueryOption;
 
     const goals = await this.goalRepo.getGoalsByLogbookIdStartAndEndDates(
       logbookId,
@@ -145,5 +153,58 @@ export class LogbookRepoImpl implements LogbookRepo {
     const queryOption = { where: { id: logbookId } };
 
     return this.getLogbook(queryOption, goals, logs);
+  }
+
+  private async getLogbooks(queryOption: any): Promise<Logbook[]> {
+    try {
+      const logbooksData: any[] = await this.LogbookModel.findAll(queryOption);
+
+      const logbooks = logbooksData.map((logbookData) => {
+        const categoryData = logbookData.Category;
+        let category;
+        if (categoryData) {
+          category = Category.create(
+            { id: categoryData.id, name: categoryData.name },
+            this.uuidService
+          );
+        }
+
+        return Logbook.create(
+          {
+            id: logbookData.id,
+            userId: logbookData.userId,
+            name: logbookData.name,
+            description: logbookData.description,
+            visibility: logbookData.visibility,
+            category,
+          },
+          this.uuidService,
+          this.dateService
+        );
+      });
+
+      return logbooks;
+    } catch (error: any) {
+      throw AppError.internalServerError("Error retrieving Logbooks", error);
+    }
+  }
+
+  async getLogbooksByUserId(
+    userId: string,
+    getLogbooksByUserIdQueryOption: GetLogbooksByUserIdQueryOption
+  ): Promise<Logbook[]> {
+    if (!userId) throw AppError.badRequestError("userId is required");
+
+    const { includePrivateLogbooks } = getLogbooksByUserIdQueryOption;
+
+    const queryOption: any = {
+      where: { userId, visibility: Visibility.public },
+      include: { model: this.CategoryModel, required: false },
+    };
+    if (includePrivateLogbooks) {
+      delete queryOption.where.visibility;
+    }
+
+    return this.getLogbooks(queryOption);
   }
 }

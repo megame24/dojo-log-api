@@ -11,6 +11,7 @@ import {
   createLogbookController,
   deleteLogController,
   getLogbookController,
+  getLogbooksController,
   getLogsController,
   updateGoalController,
   updateLogbookController,
@@ -40,11 +41,23 @@ logbookRouter.post(
 );
 
 logbookRouter.get(
+  "",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.GET_MANY,
+    resourceType: "logbooks",
+    resourcesForAccessCheck: [],
+  }),
+  getLogbooksController.execute
+);
+
+logbookRouter.get(
   "/:logbookId",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   accessControlMiddleware.executeWrapper({
     accessControl: logbookAccessControl,
-    operation: Operation.GET,
+    operation: Operation.GET_ONE,
     resourceType: "logbooks",
     resourcesForAccessCheck: [
       { name: "logbook", getResource: getLiteLogbookImpl },
@@ -87,7 +100,7 @@ logbookRouter.get(
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   accessControlMiddleware.executeWrapper({
     accessControl: logbookAccessControl,
-    operation: Operation.GET,
+    operation: Operation.GET_MANY,
     resourceType: "logs",
     resourcesForAccessCheck: [
       { name: "logbook", getResource: getLiteLogbookImpl },

@@ -4,7 +4,8 @@ import UseCase from "./useCases/useCase";
 
 export enum Operation {
   CREATE = "CREATE",
-  GET = "GET",
+  GET_ONE = "GET_ONE",
+  GET_MANY = "GET_MANY",
   UPDATE = "UPDATE",
   DELETE = "DELETE",
 }

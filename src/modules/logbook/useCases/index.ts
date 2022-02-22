@@ -21,6 +21,7 @@ import { GetLiteLogbookImpl } from "./getLiteLogbook";
 import { GetLiteRewardsImpl } from "./getLiteRewards";
 import { GetLogImpl } from "./getLog";
 import { GetLogbookImpl } from "./getLogbook";
+import { GetLogbooksImpl } from "./getLogbooks";
 import { GetLogsImpl } from "./getLogs";
 import { GetRewardsImpl } from "./getRewards";
 import { UpdateGoalImpl } from "./updateGoal";
@@ -99,3 +100,5 @@ export const updateLogbookImpl = new UpdateLogbookImpl(
 );
 
 export const getRewardsImpl = new GetRewardsImpl(rewardRepoImpl);
+
+export const getLogbooksImpl = new GetLogbooksImpl(logbookRepoImpl);
