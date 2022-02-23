@@ -18,6 +18,7 @@ import { CreateRewardImpl } from "./createReward";
 import { DeleteCategoryImpl } from "./deleteCategory";
 import { DeleteLogImpl } from "./deleteLog";
 import { DeleteLogbookImpl } from "./deleteLogbook";
+import { DeleteRewardImpl } from "./deleteReward";
 import { GetCategoryImpl } from "./getCategory";
 import { GetGoalImpl } from "./getGoal";
 import { GetLiteLogbookImpl } from "./getLiteLogbook";
@@ -26,6 +27,7 @@ import { GetLogImpl } from "./getLog";
 import { GetLogbookImpl } from "./getLogbook";
 import { GetLogbooksImpl } from "./getLogbooks";
 import { GetLogsImpl } from "./getLogs";
+import { GetRewardImpl } from "./getReward";
 import { GetRewardsImpl } from "./getRewards";
 import { UpdateGoalImpl } from "./updateGoal";
 import { UpdateLogImpl } from "./updateLog";
@@ -111,3 +113,7 @@ export const deleteCategoryImpl = new DeleteCategoryImpl(categoryRepoImpl);
 export const getCategoryImpl = new GetCategoryImpl(categoryRepoImpl);
 
 export const deleteLogbookImpl = new DeleteLogbookImpl(logbookRepoImpl);
+
+export const deleteRewardImpl = new DeleteRewardImpl(rewardRepoImpl);
+
+export const getRewardImpl = new GetRewardImpl(rewardRepoImpl);

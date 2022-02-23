@@ -5,7 +5,11 @@ import {
   endpointPermissionsMiddleware,
 } from "../../../shared/adapters/middleware";
 import { logbookAccessControl } from "../../accessControl";
-import { getRewardsController } from "../../adapters/controllers";
+import {
+  deleteRewardController,
+  getRewardsController,
+} from "../../adapters/controllers";
+import { getRewardImpl } from "../../useCases";
 import endpointPolicy from "./endpointPolicy.json";
 
 const rewardRouter = express.Router();
@@ -20,6 +24,18 @@ rewardRouter.get(
     resourcesForAccessCheck: [],
   }),
   getRewardsController.execute
+);
+
+rewardRouter.delete(
+  "/:rewardId",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.DELETE,
+    resourceType: "rewards",
+    resourcesForAccessCheck: [{ name: "reward", getResource: getRewardImpl }],
+  }),
+  deleteRewardController.execute
 );
 
 export default rewardRouter;

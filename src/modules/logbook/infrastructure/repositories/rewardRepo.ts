@@ -6,6 +6,8 @@ export interface RewardRepo {
   getRewardsByIds: (rewardIds: string[]) => Promise<Reward[]>;
   getRewardsByUserId: (userId: string) => Promise<Reward[]>;
   bulkUpsert: (rewards: Reward[]) => void;
+  delete: (reward: Reward) => void;
+  getRewardById: (rewardId: string) => Promise<Reward | null>;
 }
 
 export class RewardRepoImpl implements RewardRepo {
@@ -72,5 +74,47 @@ export class RewardRepoImpl implements RewardRepo {
     } catch (error: any) {
       throw AppError.internalServerError("Error creating Rewards", error);
     }
+  }
+
+  async delete(reward: Reward) {
+    try {
+      await this.RewardModel.destroy({ where: { id: reward.id } });
+    } catch (error: any) {
+      throw AppError.internalServerError("Error deleting Reward", error);
+    }
+  }
+
+  private async getReward(queryOption: any): Promise<Reward | null> {
+    let rewardData: any;
+    try {
+      rewardData = await this.RewardModel.findOne(queryOption);
+    } catch (error: any) {
+      throw AppError.internalServerError("Error retrieving Reward", error);
+    }
+
+    if (!rewardData) return null;
+
+    const reward = Reward.create(
+      {
+        id: rewardData.id,
+        userId: rewardData.userId,
+        name: rewardData.name,
+        description: rewardData.description,
+        imageUrl: rewardData.imageUrl,
+      },
+      this.uuidService
+    );
+
+    return reward;
+  }
+
+  async getRewardById(rewardId: string): Promise<Reward | null> {
+    if (!rewardId) throw AppError.badRequestError("rewardId is required");
+
+    const queryOption = {
+      where: { id: rewardId },
+    };
+
+    return this.getReward(queryOption);
   }
 }

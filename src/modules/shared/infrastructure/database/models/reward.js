@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       Reward.belongsToMany(models.Goal, {
         through: "GoalRewards",
         foreignKey: "rewardId",
+        onDelete: "cascade",
       });
       Reward.belongsTo(models.User, { foreignKey: "userId" });
     }
