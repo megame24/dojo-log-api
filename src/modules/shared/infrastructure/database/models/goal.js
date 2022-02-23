@@ -4,12 +4,16 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Goal extends Model {
     static associate(models) {
-      Goal.belongsTo(models.Logbook, { foreignKey: "logbookId" });
+      Goal.belongsTo(models.Logbook, {
+        foreignKey: "logbookId",
+        onDelete: "cascade",
+      });
       Goal.belongsTo(models.User, { foreignKey: "userId" });
       Goal.belongsTo(models.User, { foreignKey: "updatedBy" });
       Goal.belongsToMany(models.Reward, {
         through: "GoalRewards",
         foreignKey: "goalId",
+        onDelete: "cascade",
       });
     }
   }
