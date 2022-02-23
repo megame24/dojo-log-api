@@ -9,8 +9,6 @@ interface RewardProps {
   imageUrl?: string;
 }
 
-// can only delete
-
 export default class Reward extends Entity {
   private constructor(private props: RewardProps, uuidService: UUIDService) {
     super(props, uuidService);

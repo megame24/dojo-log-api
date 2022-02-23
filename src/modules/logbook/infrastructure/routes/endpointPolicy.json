@@ -11,6 +11,7 @@
     "inherits": "GUEST",
     "allow": {
       "/rewards": ["GET"],
+      "/rewards/:rewardId": ["DELETE"],
       "/logbooks": ["POST"],
       "/logbooks/:logbookId": ["PUT", "DELETE"],
       "/logbooks/:logbookId/logs": ["POST"],
