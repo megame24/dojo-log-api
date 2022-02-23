@@ -12,7 +12,7 @@
     "allow": {
       "/rewards": ["GET"],
       "/logbooks": ["POST"],
-      "/logbooks/:logbookId": ["PUT"],
+      "/logbooks/:logbookId": ["PUT", "DELETE"],
       "/logbooks/:logbookId/logs": ["POST"],
       "/logbooks/:logbookId/logs/:logId": ["PUT", "DELETE"],
       "/logbooks/:logbookId/goals": ["POST"],

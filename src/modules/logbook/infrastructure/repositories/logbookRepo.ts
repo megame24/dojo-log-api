@@ -30,6 +30,7 @@ export interface LogbookRepo {
     userId: string,
     getLogbooksByUserIdQueryOption: GetLogbooksByUserIdQueryOption
   ) => Promise<Logbook[]>;
+  delete: (logbook: Logbook) => void;
 }
 
 export class LogbookRepoImpl implements LogbookRepo {
@@ -206,5 +207,13 @@ export class LogbookRepoImpl implements LogbookRepo {
     }
 
     return this.getLogbooks(queryOption);
+  }
+
+  async delete(logbook: Logbook) {
+    try {
+      await this.LogbookModel.destroy({ where: { id: logbook.id } });
+    } catch (error: any) {
+      throw AppError.internalServerError("Error deleting Logbook", error);
+    }
   }
 }

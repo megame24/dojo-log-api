@@ -5,6 +5,7 @@ import {
   createLogbookImpl,
   createLogImpl,
   deleteCategoryImpl,
+  deleteLogbookImpl,
   deleteLogImpl,
   getLogbookImpl,
   getLogbooksImpl,
@@ -19,6 +20,7 @@ import CreateGoalController from "./createGoalController";
 import CreateLogbookController from "./createLogbookController";
 import CreateLogController from "./createLogController";
 import DeleteCategoryController from "./deleteCategoryController";
+import DeleteLogbookController from "./deleteLogbookController";
 import DeleteLogController from "./deleteLogController";
 import GetLogbookController from "./getLogbookController";
 import GetLogbooksController from "./getLogbooksController";
@@ -66,4 +68,8 @@ export const getLogbooksController = new GetLogbooksController(getLogbooksImpl);
 
 export const deleteCategoryController = new DeleteCategoryController(
   deleteCategoryImpl
+);
+
+export const deleteLogbookController = new DeleteLogbookController(
+  deleteLogbookImpl
 );

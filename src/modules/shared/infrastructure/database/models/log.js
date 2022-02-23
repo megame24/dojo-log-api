@@ -4,7 +4,10 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Log extends Model {
     static associate(models) {
-      Log.belongsTo(models.Logbook, { foreignKey: "logbookId" });
+      Log.belongsTo(models.Logbook, {
+        foreignKey: "logbookId",
+        onDelete: "cascade",
+      });
       Log.belongsTo(models.User, { foreignKey: "userId" });
       Log.belongsTo(models.User, { foreignKey: "updatedBy" });
     }
