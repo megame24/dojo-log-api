@@ -10,11 +10,15 @@ Ideas:
 - Notification system (Don't have to be real time for first release)
  - Notify when you achieved a streak
  - " when approaching a goal (1 day before, email and in-app)
+ - Notify at an arbitrary time of the day if a streak is about to be broken
 
 - Follow and explore system
+ - Social network module??
 
 - Explore removing report and admin intervention from private logbooks????!!!!
 
 - Make the URLs more user friendly by using username instead of IDs
 
 - App wide refactor (You can create helper functions in each class [adapters, useCases, entities])
+
+- LET'S MAKE IT A MOBILE APP!!!!! :)
