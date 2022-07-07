@@ -1,11 +1,11 @@
 import AppError from "../../../shared/AppError";
+import { DateService } from "../../../shared/infrastructure/services/dateService";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
 import { User } from "../../../users/api";
 import Category from "../../entities/category";
 import Goal from "../../entities/goal";
 import Log from "../../entities/log";
 import Logbook, { Visibility } from "../../entities/logbook";
-import { DateService } from "../services/dateService";
 import { GoalRepo } from "./goalRepo";
 import { LogRepo } from "./logRepo";
 

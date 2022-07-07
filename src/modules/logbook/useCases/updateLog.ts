@@ -1,11 +1,11 @@
 import AppError from "../../shared/AppError";
+import { DateService } from "../../shared/infrastructure/services/dateService";
 import { FileService } from "../../shared/infrastructure/services/fileService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
 import { User } from "../../users/api";
 import Log from "../entities/log";
 import { LogRepo } from "../infrastructure/repositories/logRepo";
-import { DateService } from "../infrastructure/services/dateService";
 
 export interface UpdateLogDTO {
   log: Log;

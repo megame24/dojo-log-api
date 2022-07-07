@@ -1,9 +1,9 @@
 import AppError from "../../../shared/AppError";
+import { DateService } from "../../../shared/infrastructure/services/dateService";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
 import { User } from "../../../users/api";
 import Goal from "../../entities/goal";
 import Reward from "../../entities/reward";
-import { DateService } from "../services/dateService";
 
 export interface GoalRepo {
   create: (goal: Goal) => void;

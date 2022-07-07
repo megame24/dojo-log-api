@@ -2,7 +2,7 @@ import Entity from "../../shared/entities/entity";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import { SecurityService } from "../infrastructure/services/securityService";
 
-export enum TokenType {
+export enum TokenOrCodeType {
   verification = "verification",
   resetPassword = "resetPassword",
 }
@@ -10,7 +10,7 @@ export enum TokenType {
 interface PersistentTokenProps {
   id?: string;
   userId: string;
-  type: TokenType;
+  type: TokenOrCodeType;
   token?: string;
 }
 
@@ -34,7 +34,7 @@ export default class PersistentToken extends Entity {
     return this.props.token;
   }
 
-  get type(): TokenType {
+  get type(): TokenOrCodeType {
     return this.props.type;
   }
 
@@ -48,7 +48,7 @@ export default class PersistentToken extends Entity {
       this.isRequiredValidation
     );
     this.validateProp(
-      { key: "token type", value: props.type, Enum: TokenType },
+      { key: "token type", value: props.type, Enum: TokenOrCodeType },
       this.validateEnum
     );
 

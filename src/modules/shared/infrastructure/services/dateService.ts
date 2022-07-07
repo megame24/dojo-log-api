@@ -1,10 +1,19 @@
+export type TimeMetric = "d" | "h" | "m";
+
 export interface DateService {
   getDayOfYear: (date: Date) => number;
   getDateInUTC: (date: Date) => number;
   getTimelessDate: (date: Date) => Date;
+  addTimeToDate: (
+    date: Date,
+    timeValue: number,
+    timeMetric: TimeMetric
+  ) => Date;
 }
 
 export class DateServiceImpl implements DateService {
+  constructor(private dayjs: any) {}
+
   getDayOfYear(date: Date | string): number {
     date = this.convertDateStringToDate(date);
     const dateInUTC = Date.UTC(
@@ -27,6 +36,10 @@ export class DateServiceImpl implements DateService {
   getTimelessDate(date: Date | string): Date {
     date = this.convertDateStringToDate(date);
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
+
+  addTimeToDate(date: Date, timeValue: number, timeMetric: TimeMetric): Date {
+    return this.dayjs(date).add(timeValue, timeMetric);
   }
 
   private convertDateStringToDate(date: Date | string): Date {

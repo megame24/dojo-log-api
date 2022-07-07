@@ -1,6 +1,8 @@
 import models from "../../../shared/infrastructure/database/models";
-import { uuidServiceImpl } from "../../../shared/infrastructure/services";
-import { dateServiceImpl } from "../services";
+import {
+  dateServiceImpl,
+  uuidServiceImpl,
+} from "../../../shared/infrastructure/services";
 import { CategoryRepoImpl } from "./categoryRepo";
 import { GoalRepoImpl } from "./goalRepo";
 import { LogbookRepoImpl } from "./logbookRepo";

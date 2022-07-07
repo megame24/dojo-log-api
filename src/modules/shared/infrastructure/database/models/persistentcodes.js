@@ -3,12 +3,12 @@ const { Model } = require("sequelize");
 const { TokenOrCodeType } = require("./json/enums.json");
 
 module.exports = (sequelize, DataTypes) => {
-  class PersistentToken extends Model {
+  class PersistentCode extends Model {
     static associate(models) {
-      PersistentToken.belongsTo(models.User, { foreignKey: "userId" });
+      PersistentCode.belongsTo(models.User, { foreignKey: "userId" });
     }
   }
-  PersistentToken.init(
+  PersistentCode.init(
     {
       id: {
         allowNull: false,
@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.UUID,
       },
-      token: {
+      encryptedCode: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -27,11 +27,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM(TokenOrCodeType),
         allowNull: false,
       },
+      expiresIn: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
     },
     {
       sequelize,
-      modelName: "PersistentToken",
+      modelName: "PersistentCode",
     }
   );
-  return PersistentToken;
+  return PersistentCode;
 };

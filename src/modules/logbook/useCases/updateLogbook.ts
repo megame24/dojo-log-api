@@ -1,3 +1,4 @@
+import { DateService } from "../../shared/infrastructure/services/dateService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
 import { User } from "../../users/api";
@@ -5,7 +6,6 @@ import { Visibility } from "../api";
 import Logbook from "../entities/logbook";
 import { CategoryRepo } from "../infrastructure/repositories/categoryRepo";
 import { LogbookRepo } from "../infrastructure/repositories/logbookRepo";
-import { DateService } from "../infrastructure/services/dateService";
 
 interface UpdateLogbookDTO {
   logbook: Logbook;

@@ -25,6 +25,8 @@ export class MockSecurityService implements SecurityService {
   compare = jest.fn();
   generateToken = jest.fn();
   verifyToken = jest.fn();
+  generateRandomDigits = jest.fn();
+  getExpiryDate = jest.fn();
 }
 
 export class MockUUIDService implements UUIDService {

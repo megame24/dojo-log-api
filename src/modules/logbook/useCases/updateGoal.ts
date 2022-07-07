@@ -6,8 +6,8 @@ import AppError from "../../shared/AppError";
 import Reward from "../entities/reward";
 import Goal from "../entities/goal";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
-import { DateService } from "../infrastructure/services/dateService";
 import { User } from "../../users/api";
+import { DateService } from "../../shared/infrastructure/services/dateService";
 
 interface UpdateGoalDTO {
   goal: Goal;

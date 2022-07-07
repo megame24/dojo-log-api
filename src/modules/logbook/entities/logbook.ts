@@ -1,6 +1,6 @@
 import Entity from "../../shared/entities/entity";
+import { DateService } from "../../shared/infrastructure/services/dateService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
-import { DateService } from "../infrastructure/services/dateService";
 import Category from "./category";
 import Goal from "./goal";
 import Log from "./log";
