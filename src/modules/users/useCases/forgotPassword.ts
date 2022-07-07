@@ -2,7 +2,7 @@ import AppError from "../../shared/AppError";
 import { EmailService } from "../../shared/infrastructure/services/emailService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
-import PersistentToken, { TokenType } from "../entities/persistentToken";
+import PersistentToken, { TokenOrCodeType } from "../entities/persistentToken";
 import { PersistentTokenRepo } from "../infrastructure/repositories/persistentTokenRepo";
 import { UserRepo } from "../infrastructure/repositories/userRepository";
 import { SecurityService } from "../infrastructure/services/securityService";
@@ -33,10 +33,13 @@ export class ForgotPasswordImpl implements ForgotPassword {
     const userId = <string>user.id;
     await this.persistentTokenRepo.deleteMany({
       userId,
-      type: TokenType.resetPassword,
+      type: TokenOrCodeType.resetPassword,
     });
 
-    const persistentTokenProps = { userId, type: TokenType.resetPassword };
+    const persistentTokenProps = {
+      userId,
+      type: TokenOrCodeType.resetPassword,
+    };
     const verificationToken = PersistentToken.create(
       persistentTokenProps,
       this.securityService,

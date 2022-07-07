@@ -1,5 +1,5 @@
 {
   "Role": ["ADMIN", "USER"],
-  "TokenType": ["verification", "resetPassword"],
+  "TokenOrCodeType": ["verification", "resetPassword"],
   "Visibility": ["public", "private"]
 }

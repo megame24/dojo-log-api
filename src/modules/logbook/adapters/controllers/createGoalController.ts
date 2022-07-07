@@ -1,5 +1,5 @@
 import Adapter from "../../../shared/adapters/adapter";
-import { DateService } from "../../infrastructure/services/dateService";
+import { DateService } from "../../../shared/infrastructure/services/dateService";
 import { CreateGoal } from "../../useCases/createGoal";
 
 export default class CreateGoalController extends Adapter {

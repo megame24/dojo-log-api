@@ -1,9 +1,9 @@
 import AppError from "../../shared/AppError";
+import { DateService } from "../../shared/infrastructure/services/dateService";
 import { FileService } from "../../shared/infrastructure/services/fileService";
 import UseCase from "../../shared/useCases/useCase";
 import Log from "../entities/log";
 import { LogRepo } from "../infrastructure/repositories/logRepo";
-import { DateService } from "../infrastructure/services/dateService";
 
 interface DeleteLogDTO {
   log: Log;

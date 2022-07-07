@@ -1,4 +1,4 @@
-import { dateServiceImpl } from "../../infrastructure/services";
+import { dateServiceImpl } from "../../../shared/infrastructure/services";
 import {
   createCategoryImpl,
   createGoalImpl,

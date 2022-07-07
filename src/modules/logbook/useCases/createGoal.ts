@@ -1,4 +1,5 @@
 import AppError from "../../shared/AppError";
+import { DateService } from "../../shared/infrastructure/services/dateService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
 import Goal from "../entities/goal";
@@ -6,7 +7,6 @@ import Logbook from "../entities/logbook";
 import Reward from "../entities/reward";
 import { GoalRepo } from "../infrastructure/repositories/goalRepo";
 import { RewardRepo } from "../infrastructure/repositories/rewardRepo";
-import { DateService } from "../infrastructure/services/dateService";
 import { CreateReward, CreateRewardDTO } from "./createReward";
 
 interface CreateGoalDTO {

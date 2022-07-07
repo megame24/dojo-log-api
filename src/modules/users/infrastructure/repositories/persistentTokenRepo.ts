@@ -1,11 +1,13 @@
 import AppError from "../../../shared/AppError";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
-import PersistentToken, { TokenType } from "../../entities/persistentToken";
+import PersistentToken, {
+  TokenOrCodeType,
+} from "../../entities/persistentToken";
 import { SecurityService } from "../services/securityService";
 
-interface DeleteManyQueryOption {
+export interface DeleteManyQueryOption {
   userId: string;
-  type?: TokenType;
+  type?: TokenOrCodeType;
 }
 
 export interface PersistentTokenRepo {

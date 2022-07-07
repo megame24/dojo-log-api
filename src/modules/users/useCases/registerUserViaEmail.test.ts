@@ -4,7 +4,6 @@ import {
   MockUserRepo,
   MockUUIDService,
 } from "../testUtils";
-import User from "../entities/user";
 
 const mockUserRepo = new MockUserRepo();
 

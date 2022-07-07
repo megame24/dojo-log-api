@@ -1,6 +1,6 @@
 import Entity, { ValidationResult } from "../../shared/entities/entity";
+import { DateService } from "../../shared/infrastructure/services/dateService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
-import { DateService } from "../infrastructure/services/dateService";
 import { Visibility } from "./logbook";
 import Reward from "./reward";
 
@@ -10,9 +10,9 @@ export interface GoalProps {
   userId: string;
   visibility: Visibility;
   name: string;
-  description?: string;
+  description?: string; // TODO: remove
   achieved: boolean;
-  achievementCriteria: string;
+  achievementCriteria: string; // TODO: make optional
   date: Date;
   rewards?: Reward[];
 }

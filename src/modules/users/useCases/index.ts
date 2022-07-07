@@ -1,5 +1,6 @@
 import { securityServiceImpl } from "../infrastructure/services";
 import {
+  persistentCodeRepoImpl,
   persistentTokenRepoImpl,
   userRepoImpl,
 } from "../infrastructure/repositories";
@@ -40,6 +41,7 @@ export const authenticateUserImpl = new AuthenticateUserImpl(
 
 export const sendVerificationImpl = new SendVerificationImpl(
   persistentTokenRepoImpl,
+  persistentCodeRepoImpl,
   securityServiceImpl,
   emailServiceImpl,
   uuidServiceImpl

@@ -13,7 +13,9 @@ export default class SendVerificationMiddleware extends Adapter {
     };
 
     try {
-      await this.sendVerification.execute(sendVerificationDTO);
+      await this.sendVerification.execute(sendVerificationDTO, {
+        mode: "code",
+      });
     } catch (error) {
       console.log(error);
     }
