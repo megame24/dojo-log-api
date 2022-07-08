@@ -8,7 +8,7 @@ interface PersistentCodeProps {
   userId: string;
   type: TokenOrCodeType;
   encryptedCode?: string;
-  code?: string;
+  rawCode?: string;
   expiresIn?: Date;
 }
 
@@ -28,8 +28,8 @@ export default class PersistentCode extends Entity {
     return this.props.userId;
   }
 
-  get code(): string | undefined {
-    return this.props.code;
+  get rawCode(): string | undefined {
+    return this.props.rawCode;
   }
 
   get encryptedCode(): string | undefined {
@@ -59,8 +59,8 @@ export default class PersistentCode extends Entity {
     );
 
     if (!props.encryptedCode) {
-      props.code = securityService.generateRandomDigits();
-      props.encryptedCode = await securityService.hash(props.code);
+      props.rawCode = securityService.generateRandomDigits();
+      props.encryptedCode = await securityService.hash(props.rawCode);
     }
 
     if (!props.expiresIn) {
