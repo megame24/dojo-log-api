@@ -7,6 +7,13 @@ import { PersistentCodeRepo } from "../infrastructure/repositories/persistentCod
 import { PersistentTokenRepo } from "../infrastructure/repositories/persistentTokenRepo";
 import { SecurityService } from "../infrastructure/services/securityService";
 
+export const constants = {
+  useCaseMode: {
+    CODE: "code",
+    TOKEN: "token",
+  },
+};
+
 interface SendVerificationDTO {
   userId: string;
   email: string;
@@ -32,11 +39,34 @@ export class SendVerificationImpl implements SendVerification {
     sendVerificationDTO: SendVerificationDTO,
     config?: UseCaseConfig
   ) {
-    if (config?.mode === "code") {
+    if (config?.mode === constants.useCaseMode.CODE) {
       await this.executeViaCode(sendVerificationDTO);
     } else {
       this.executeViaToken(sendVerificationDTO);
     }
+  }
+
+  private async executeViaCode(sendVerificationDTO: SendVerificationDTO) {
+    const { userId, email } = sendVerificationDTO;
+
+    await this.persistentCodeRepo.deleteByUserIdAndType(
+      userId,
+      TokenOrCodeType.verification
+    );
+
+    const persistentCodeProps = {
+      userId,
+      type: TokenOrCodeType.verification,
+    };
+    const verificationCode = await PersistentCode.create(
+      persistentCodeProps,
+      this.securityService,
+      this.uuidService
+    );
+
+    await this.persistentCodeRepo.create(verificationCode);
+
+    await this.emailService.sendVerificationMail(email, verificationCode);
   }
 
   private async executeViaToken(sendVerificationDTO: SendVerificationDTO) {
@@ -59,28 +89,5 @@ export class SendVerificationImpl implements SendVerification {
     await this.persistentTokenRepo.create(verificationToken);
 
     await this.emailService.sendVerificationMail(email, verificationToken);
-  }
-
-  private async executeViaCode(sendVerificationDTO: SendVerificationDTO) {
-    const { userId, email } = sendVerificationDTO;
-
-    await this.persistentCodeRepo.deleteMany({
-      userId,
-      type: TokenOrCodeType.verification,
-    });
-
-    const persistentTokenProps = {
-      userId,
-      type: TokenOrCodeType.verification,
-    };
-    const verificationCode = await PersistentCode.create(
-      persistentTokenProps,
-      this.securityService,
-      this.uuidService
-    );
-
-    await this.persistentCodeRepo.create(verificationCode);
-
-    await this.emailService.sendVerificationMail(email, verificationCode);
   }
 }

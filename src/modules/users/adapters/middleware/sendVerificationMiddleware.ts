@@ -1,5 +1,5 @@
 import Adapter from "../../../shared/adapters/adapter";
-import { SendVerification } from "../../useCases/sendVerification";
+import { constants, SendVerification } from "../../useCases/sendVerification";
 
 export default class SendVerificationMiddleware extends Adapter {
   constructor(private sendVerification: SendVerification) {
@@ -14,7 +14,7 @@ export default class SendVerificationMiddleware extends Adapter {
 
     try {
       await this.sendVerification.execute(sendVerificationDTO, {
-        mode: "code",
+        mode: constants.useCaseMode.CODE,
       });
     } catch (error) {
       console.log(error);

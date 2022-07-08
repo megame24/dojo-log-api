@@ -2,16 +2,14 @@ import AppError from "../../../shared/AppError";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
 import PersistentCode from "../../entities/persistentCode";
 import { SecurityService } from "../services/securityService";
-import { DeleteManyQueryOption } from "./persistentTokenRepo";
 
 export interface PersistentCodeRepo {
   create: (persistentCode: PersistentCode) => void;
-  getByUserIdAndCode: (
+  getByUserIdAndType: (
     userId: string,
-    code: string
+    type: string
   ) => Promise<PersistentCode | null>;
-  deleteOne: (persistentCode: PersistentCode) => void;
-  deleteMany: (deleteManyQueryOption: DeleteManyQueryOption) => void;
+  deleteByUserIdAndType: (userId: string, type: string) => void;
 }
 
 export class PersistentCodeRepoImpl implements PersistentCodeRepo {
@@ -39,13 +37,10 @@ export class PersistentCodeRepoImpl implements PersistentCodeRepo {
     }
   }
 
-  async deleteOne(persistentCode: PersistentCode) {
+  async deleteByUserIdAndType(userId: string, type: string) {
     try {
       await this.PersistentCodeModel.destroy({
-        where: {
-          userId: persistentCode.userId,
-          code: persistentCode.code,
-        },
+        where: { userId, type },
       });
     } catch (error: any) {
       throw AppError.internalServerError(
@@ -55,36 +50,20 @@ export class PersistentCodeRepoImpl implements PersistentCodeRepo {
     }
   }
 
-  async deleteMany(deleteManyQueryOption: DeleteManyQueryOption) {
-    try {
-      await this.PersistentCodeModel.destroy({
-        where: {
-          userId: deleteManyQueryOption.userId,
-          type: deleteManyQueryOption.type,
-        },
-      });
-    } catch (error: any) {
-      throw AppError.internalServerError(
-        "Error deleting persistentCode",
-        error
-      );
-    }
-  }
-
-  async getByUserIdAndCode(
+  async getByUserIdAndType(
     userId: string,
-    code: string
+    type: string
   ): Promise<PersistentCode | null> {
     try {
       const codeData = await this.PersistentCodeModel.findOne({
-        where: { userId, code },
+        where: { userId, type },
       });
       if (!codeData) return null;
       return PersistentCode.create(
         {
           id: codeData.id,
           userId: codeData.userId,
-          code: codeData.code,
+          encryptedCode: codeData.encryptedCode,
           type: codeData.type,
           expiresIn: codeData.expiresIn,
         },
