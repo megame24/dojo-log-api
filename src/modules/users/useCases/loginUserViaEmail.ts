@@ -25,7 +25,7 @@ export class LoginUserViaEmailImpl implements LoginUserViaEmail {
     });
     if (!user) throw AppError.unauthorizedError("Authentication failed");
 
-    const passwordMatch = await this.securityService.compare(
+    const passwordMatch = await this.securityService.compareHash(
       loginUserDTO.password,
       <string>user.password
     );
@@ -35,6 +35,7 @@ export class LoginUserViaEmailImpl implements LoginUserViaEmail {
     const authToken = this.securityService.generateToken({
       id: user.id,
       username: user.username,
+      verified: user.verified,
     });
     return authToken;
   }

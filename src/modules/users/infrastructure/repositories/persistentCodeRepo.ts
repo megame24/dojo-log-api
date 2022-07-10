@@ -58,6 +58,7 @@ export class PersistentCodeRepoImpl implements PersistentCodeRepo {
       const codeData = await this.PersistentCodeModel.findOne({
         where: { userId, type },
       });
+      console.log(codeData);
       if (!codeData) return null;
       return PersistentCode.create(
         {

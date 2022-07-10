@@ -58,6 +58,7 @@ export class RegisterUserViaEmailImpl implements RegisterUserViaEmail {
     const authToken = this.securityService.generateToken({
       id: user.id,
       username: user.username,
+      verified: user.verified,
     });
     return { user, authToken };
   }
