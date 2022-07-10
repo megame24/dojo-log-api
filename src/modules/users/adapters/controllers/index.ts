@@ -1,24 +1,23 @@
 import {
   forgotPasswordImpl,
-  loginUserViaEmailImpl,
-  registerUserViaEmailImpl,
+  loginUserImpl,
+  registerUserImpl,
   resetPasswordImpl,
   sendVerificationImpl,
   verifyUserImpl,
 } from "../../useCases";
-import RegisterUserViaEmailController from "./registerUserViaEmailController";
-import LoginUserViaEmailController from "./loginUserViaEmailController";
+import RegisterUserController from "./registerUserController";
+import LoginUserController from "./loginUserController";
 import VerifyUserController from "./verifyUserController";
 import SendVerificationController from "./sendVerificationController";
 import ForgotPasswordController from "./forgotPasswordController";
 import ResetPasswordController from "./resetPasswordController";
 
-export const registerUserViaEmailController =
-  new RegisterUserViaEmailController(registerUserViaEmailImpl);
-
-export const loginUserViaEmailController = new LoginUserViaEmailController(
-  loginUserViaEmailImpl
+export const registerUserController = new RegisterUserController(
+  registerUserImpl
 );
+
+export const loginUserController = new LoginUserController(loginUserImpl);
 
 export const verifyUserController = new VerifyUserController(verifyUserImpl);
 

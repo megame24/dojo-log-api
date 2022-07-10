@@ -1,4 +1,4 @@
-import { RegisterUserViaEmailImpl } from "./registerUserViaEmail";
+import { RegisterUserImpl } from "./registerUser";
 import {
   MockSecurityService,
   MockUserRepo,
@@ -7,7 +7,7 @@ import {
 
 const mockUserRepo = new MockUserRepo();
 
-const registerUserViaEmail = new RegisterUserViaEmailImpl(
+const registerUser = new RegisterUserImpl(
   new MockSecurityService(),
   new MockUUIDService(),
   mockUserRepo
@@ -27,7 +27,7 @@ describe("Registering a user via email", () => {
     mockUserRepo.getUserByEmail.mockResolvedValueOnce({});
 
     try {
-      await registerUserViaEmail.execute(registerUserDTO);
+      await registerUser.execute(registerUserDTO);
     } catch (err: any) {
       error = err;
     }
@@ -42,7 +42,7 @@ describe("Registering a user via email", () => {
     mockUserRepo.getUserByUsername.mockResolvedValueOnce({});
 
     try {
-      await registerUserViaEmail.execute(registerUserDTO);
+      await registerUser.execute(registerUserDTO);
     } catch (err: any) {
       error = err;
     }
@@ -57,7 +57,7 @@ describe("Registering a user via email", () => {
     mockUserRepo.getUserByUsername.mockResolvedValueOnce(null);
 
     try {
-      await registerUserViaEmail.execute(registerUserDTO);
+      await registerUser.execute(registerUserDTO);
     } catch (err: any) {
       error = err;
     }

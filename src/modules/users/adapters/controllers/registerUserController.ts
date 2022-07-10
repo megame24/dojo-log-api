@@ -1,8 +1,8 @@
 import Adapter from "../../../shared/adapters/adapter";
-import { RegisterUserViaEmail } from "../../useCases/registerUserViaEmail";
+import { RegisterUser } from "../../useCases/registerUser";
 
-export default class RegisterUserViaEmailController extends Adapter {
-  constructor(private registerUserViaEmail: RegisterUserViaEmail) {
+export default class RegisterUserController extends Adapter {
+  constructor(private registerUser: RegisterUser) {
     super();
   }
 
@@ -16,7 +16,7 @@ export default class RegisterUserViaEmailController extends Adapter {
     };
 
     try {
-      const { user, authToken } = await this.registerUserViaEmail.execute(
+      const { user, authToken } = await this.registerUser.execute(
         registerUserDTO
       );
       res.status(201).json({ authToken });

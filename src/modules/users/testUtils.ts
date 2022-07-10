@@ -4,7 +4,7 @@ import { UUIDService } from "../shared/infrastructure/services/uuidService";
 import { PersistentTokenRepo } from "./infrastructure/repositories/persistentTokenRepo";
 import { UserRepo } from "./infrastructure/repositories/userRepository";
 import { SecurityService } from "./infrastructure/services/securityService";
-import { RegisterUserViaEmail } from "./useCases/registerUserViaEmail";
+import { RegisterUser } from "./useCases/registerUser";
 
 export class MockUserRepo implements UserRepo {
   create = jest.fn();
@@ -34,7 +34,7 @@ export class MockUUIDService implements UUIDService {
   generate = jest.fn().mockReturnValue("this_is_a_random_uuid");
 }
 
-export class MockRegisterUserViaEmail implements RegisterUserViaEmail {
+export class MockRegisterUser implements RegisterUser {
   execute = jest.fn();
 }
 

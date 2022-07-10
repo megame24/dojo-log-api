@@ -17,12 +17,12 @@ interface ReturnValue {
   authToken: string;
 }
 
-export interface RegisterUserViaEmail
+export interface RegisterUser
   extends UseCase<RegisterUserDTO, Promise<ReturnValue>> {
   execute: (registerUserDTO: RegisterUserDTO) => Promise<ReturnValue>;
 }
 
-export class RegisterUserViaEmailImpl implements RegisterUserViaEmail {
+export class RegisterUserImpl implements RegisterUser {
   constructor(
     private securityService: SecurityService,
     private uuidService: UUIDService,

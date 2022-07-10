@@ -1,8 +1,8 @@
 import Adapter from "../../../shared/adapters/adapter";
-import { LoginUserViaEmail } from "../../useCases/loginUserViaEmail";
+import { LoginUser } from "../../useCases/loginUser";
 
-export default class LoginUserViaEmailController extends Adapter {
-  constructor(private loginUserViaEmail: LoginUserViaEmail) {
+export default class LoginUserController extends Adapter {
+  constructor(private loginUser: LoginUser) {
     super();
   }
 
@@ -14,7 +14,7 @@ export default class LoginUserViaEmailController extends Adapter {
     };
 
     try {
-      const authToken = await this.loginUserViaEmail.execute(loginUserDTO);
+      const authToken = await this.loginUser.execute(loginUserDTO);
       res.status(200).json({ authToken });
     } catch (error) {
       next(error);

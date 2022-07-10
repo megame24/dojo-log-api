@@ -1,8 +1,8 @@
 import express from "express";
 import { endpointPermissionsMiddleware } from "../../../shared/adapters/middleware";
 import {
-  registerUserViaEmailController,
-  loginUserViaEmailController,
+  registerUserController,
+  loginUserController,
   verifyUserController,
   sendVerificationController,
   forgotPasswordController,
@@ -16,14 +16,14 @@ const userRouter = express.Router();
 userRouter.post(
   "/register",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
-  registerUserViaEmailController.execute,
+  registerUserController.execute,
   sendVerificationMiddleware.execute
 );
 
 userRouter.post(
   "/login",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
-  loginUserViaEmailController.execute
+  loginUserController.execute
 );
 
 userRouter.put(
