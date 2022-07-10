@@ -1,18 +1,12 @@
 import { EmailService } from "../../shared/infrastructure/services/emailService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase, { UseCaseConfig } from "../../shared/useCases/useCase";
+import constants from "../config/constants";
 import PersistentCode from "../entities/persistentCode";
 import PersistentToken, { TokenOrCodeType } from "../entities/persistentToken";
 import { PersistentCodeRepo } from "../infrastructure/repositories/persistentCodeRepo";
 import { PersistentTokenRepo } from "../infrastructure/repositories/persistentTokenRepo";
 import { SecurityService } from "../infrastructure/services/securityService";
-
-export const constants = {
-  useCaseMode: {
-    CODE: "code",
-    TOKEN: "token",
-  },
-};
 
 interface SendVerificationDTO {
   userId: string;
@@ -39,10 +33,10 @@ export class SendVerificationImpl implements SendVerification {
     sendVerificationDTO: SendVerificationDTO,
     config?: UseCaseConfig
   ) {
-    if (config?.mode === constants.useCaseMode.CODE) {
-      await this.executeViaCode(sendVerificationDTO);
+    if (config?.mode === constants.verifyMode.CODE) {
+      return this.executeViaCode(sendVerificationDTO);
     } else {
-      this.executeViaToken(sendVerificationDTO);
+      return this.executeViaToken(sendVerificationDTO);
     }
   }
 

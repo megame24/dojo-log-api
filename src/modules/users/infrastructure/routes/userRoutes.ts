@@ -27,13 +27,13 @@ userRouter.post(
 );
 
 userRouter.put(
-  "/:userId/verify/:token",
+  "/verify",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   verifyUserController.execute
 );
 
 userRouter.get(
-  "/:userId/send-verification",
+  "/send-verification",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   sendVerificationController.execute
 );

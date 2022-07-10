@@ -22,7 +22,7 @@ export class MockPersistentTokenRepo implements PersistentTokenRepo {
 
 export class MockSecurityService implements SecurityService {
   hash = jest.fn().mockResolvedValue("hashed-password");
-  compare = jest.fn();
+  compareHash = jest.fn();
   generateToken = jest.fn();
   verifyToken = jest.fn();
   generateRandomDigits = jest.fn();

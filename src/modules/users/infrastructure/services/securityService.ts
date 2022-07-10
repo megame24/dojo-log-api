@@ -5,7 +5,7 @@ import {
 
 export interface SecurityService {
   hash: (plaintext: string) => Promise<string>;
-  compare: (plainText: string, hash: string) => Promise<boolean>;
+  compareHash: (plainText: string, hash: string) => Promise<boolean>;
   generateToken: (payload: any, expiresIn?: string) => string;
   generateRandomDigits: (length?: number) => string;
   verifyToken: (token: string) => any;
@@ -27,7 +27,7 @@ export class SecurityServiceImpl implements SecurityService {
     return this.bcrypt.hash(plaintext, this.saltRounds);
   }
 
-  compare(plainText: string, hash: string): Promise<boolean> {
+  compareHash(plainText: string, hash: string): Promise<boolean> {
     return this.bcrypt.compare(plainText, hash);
   }
 

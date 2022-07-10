@@ -1,4 +1,5 @@
 import Adapter from "../../../shared/adapters/adapter";
+import constants from "../../config/constants";
 import { VerifyUser } from "../../useCases/verifyUser";
 
 export default class VerifyUserController extends Adapter {
@@ -7,12 +8,17 @@ export default class VerifyUserController extends Adapter {
   }
 
   async execute(req: any, res: any, next: any) {
-    const { userId, token } = req.params;
-    const verifyUserDTO = { userId, token };
+    const { body, user } = req;
+    const verifyUserDTO = {
+      userId: user.id,
+      code: body.code,
+    };
 
     try {
-      await this.verifyUser.execute(verifyUserDTO);
-      res.status(200).json({ message: "Verification successful" });
+      const authToken = await this.verifyUser.execute(verifyUserDTO, {
+        mode: constants.verifyMode.CODE,
+      });
+      res.status(200).json({ authToken });
     } catch (error) {
       next(error);
     }

@@ -30,6 +30,7 @@ export const loginUserViaEmailImpl = new LoginUserViaEmailImpl(
 export const verifyUserImpl = new VerifyUserImpl(
   userRepoImpl,
   persistentTokenRepoImpl,
+  persistentCodeRepoImpl,
   securityServiceImpl
 );
 

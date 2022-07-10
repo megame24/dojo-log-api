@@ -3,18 +3,19 @@
     "inherits": "USER",
     "allow": {},
     "deny": {
-      "/users/:userId/send-verification": ["GET"]
+      "/users/send-verification": ["GET"],
+      "/users/verify": ["PUT"]
     }
   },
   "USER": {
     "inherits": "GUEST",
     "allow": {
-      "/users/:userId/send-verification": ["GET"]
+      "/users/send-verification": ["GET"],
+      "/users/verify": ["PUT"]
     },
     "deny": {
       "/users/register": ["POST"],
       "/users/login": ["POST"],
-      "/users/:userId/verify/:token": ["PUT"],
       "/users/forgot-password": ["POST"],
       "/users/:userId/reset-password/:token": ["PUT"]
     }
@@ -24,7 +25,6 @@
     "allow": {
       "/users/register": ["POST"],
       "/users/login": ["POST"],
-      "/users/:userId/verify/:token": ["PUT"],
       "/users/forgot-password": ["POST"],
       "/users/:userId/reset-password/:token": ["PUT"]
     },
