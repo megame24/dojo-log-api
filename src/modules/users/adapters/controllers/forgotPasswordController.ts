@@ -13,10 +13,10 @@ export default class ForgotPasswordController extends Adapter {
     };
 
     try {
-      await this.forgotPassword.execute(forgotPasswordDTO, {
+      const userId = await this.forgotPassword.execute(forgotPasswordDTO, {
         mode: constants.verifyMode.CODE,
       });
-      res.status(200).json({ message: "Reset password mail sent" });
+      res.status(200).json({ userId });
     } catch (error) {
       next(error);
     }

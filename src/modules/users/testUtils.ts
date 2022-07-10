@@ -1,3 +1,4 @@
+import { DateService } from "../shared/infrastructure/services/dateService";
 import { EmailService } from "../shared/infrastructure/services/emailService";
 import { UUIDService } from "../shared/infrastructure/services/uuidService";
 import { PersistentTokenRepo } from "./infrastructure/repositories/persistentTokenRepo";
@@ -55,4 +56,11 @@ export const mockUserModel = {
 export class MockEmailService implements EmailService {
   sendVerificationMail = jest.fn();
   sendPasswordResetMail = jest.fn();
+}
+
+export class MockDateService implements DateService {
+  getDayOfYear = jest.fn();
+  getDateInUTC = jest.fn();
+  getTimelessDate = jest.fn();
+  addTimeToDate = jest.fn();
 }
