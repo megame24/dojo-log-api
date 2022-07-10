@@ -4,8 +4,8 @@ import {
   persistentTokenRepoImpl,
   userRepoImpl,
 } from "../infrastructure/repositories";
-import { RegisterUserViaEmailImpl } from "./registerUserViaEmail";
-import { LoginUserViaEmailImpl } from "./loginUserViaEmail";
+import { RegisterUserImpl } from "./registerUser";
+import { LoginUserImpl } from "./loginUser";
 import { VerifyUserImpl } from "./verifyUser";
 import { AuthenticateUserImpl } from "./authenticateUser";
 import { SendVerificationImpl } from "./sendVerification";
@@ -16,13 +16,13 @@ import {
 import { ForgotPasswordImpl } from "./forgotPassword";
 import { ResetPasswordImpl } from "./resetPassword";
 
-export const registerUserViaEmailImpl = new RegisterUserViaEmailImpl(
+export const registerUserImpl = new RegisterUserImpl(
   securityServiceImpl,
   uuidServiceImpl,
   userRepoImpl
 );
 
-export const loginUserViaEmailImpl = new LoginUserViaEmailImpl(
+export const loginUserImpl = new LoginUserImpl(
   securityServiceImpl,
   userRepoImpl
 );

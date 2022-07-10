@@ -8,12 +8,11 @@ interface LoginUserDTO {
   password: string;
 }
 
-export interface LoginUserViaEmail
-  extends UseCase<LoginUserDTO, Promise<string>> {
+export interface LoginUser extends UseCase<LoginUserDTO, Promise<string>> {
   execute: (loginUserDTO: LoginUserDTO) => Promise<string>;
 }
 
-export class LoginUserViaEmailImpl implements LoginUserViaEmail {
+export class LoginUserImpl implements LoginUser {
   constructor(
     private securityService: SecurityService,
     private userRepo: UserRepo
