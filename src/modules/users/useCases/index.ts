@@ -50,6 +50,7 @@ export const sendVerificationImpl = new SendVerificationImpl(
 
 export const forgotPasswordImpl = new ForgotPasswordImpl(
   persistentTokenRepoImpl,
+  persistentCodeRepoImpl,
   userRepoImpl,
   securityServiceImpl,
   emailServiceImpl,
