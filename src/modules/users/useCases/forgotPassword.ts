@@ -18,7 +18,7 @@ export interface ForgotPassword extends UseCase<ForgotPasswordDTO, void> {
   execute: (
     forgotPasswordDTO: ForgotPasswordDTO,
     config?: UseCaseConfig
-  ) => void;
+  ) => Promise<string | void>;
 }
 
 export class ForgotPasswordImpl implements ForgotPassword {
@@ -31,7 +31,10 @@ export class ForgotPasswordImpl implements ForgotPassword {
     private uuidService: UUIDService
   ) {}
 
-  async execute(forgotPasswordDTO: ForgotPasswordDTO, config?: UseCaseConfig) {
+  async execute(
+    forgotPasswordDTO: ForgotPasswordDTO,
+    config?: UseCaseConfig
+  ): Promise<string | void> {
     if (config?.mode === constants.verifyMode.CODE) {
       return this.executeViaCode(forgotPasswordDTO);
     } else {
@@ -39,7 +42,7 @@ export class ForgotPasswordImpl implements ForgotPassword {
     }
   }
 
-  async executeViaCode(forgotPasswordDTO: ForgotPasswordDTO) {
+  async executeViaCode(forgotPasswordDTO: ForgotPasswordDTO): Promise<string> {
     const { email } = forgotPasswordDTO;
 
     const user = await this.userRepo.getUserByEmail(email);
@@ -61,8 +64,9 @@ export class ForgotPasswordImpl implements ForgotPassword {
       this.uuidService
     );
     await this.persistentCodeRepo.create(verificationCode);
-
     await this.emailService.sendPasswordResetMail(email, verificationCode);
+
+    return <string>user.id;
   }
 
   async executeViaToken(forgotPasswordDTO: ForgotPasswordDTO) {

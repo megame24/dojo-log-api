@@ -60,5 +60,6 @@ export const forgotPasswordImpl = new ForgotPasswordImpl(
 export const resetPasswordImpl = new ResetPasswordImpl(
   userRepoImpl,
   persistentTokenRepoImpl,
+  persistentCodeRepoImpl,
   securityServiceImpl
 );

@@ -45,7 +45,7 @@ userRouter.post(
 );
 
 userRouter.put(
-  "/:userId/reset-password/:token",
+  "/:userId/reset-password",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   resetPasswordController.execute
 );
