@@ -12,14 +12,8 @@ interface RegisterUserDTO {
   name: string;
 }
 
-interface ReturnValue {
-  user: User;
-  authToken: string;
-}
-
-export interface RegisterUser
-  extends UseCase<RegisterUserDTO, Promise<ReturnValue>> {
-  execute: (registerUserDTO: RegisterUserDTO) => Promise<ReturnValue>;
+export interface RegisterUser extends UseCase<RegisterUserDTO, Promise<User>> {
+  execute: (registerUserDTO: RegisterUserDTO) => Promise<User>;
 }
 
 export class RegisterUserImpl implements RegisterUser {
@@ -29,7 +23,7 @@ export class RegisterUserImpl implements RegisterUser {
     private userRepo: UserRepo
   ) {}
 
-  async execute(registerUserDTO: RegisterUserDTO): Promise<ReturnValue> {
+  async execute(registerUserDTO: RegisterUserDTO): Promise<User> {
     const userWithSameEmail = await this.userRepo.getUserByEmail(
       registerUserDTO.email
     );
@@ -55,11 +49,6 @@ export class RegisterUserImpl implements RegisterUser {
     );
     await this.userRepo.create(user);
 
-    const authToken = this.securityService.generateToken({
-      id: user.id,
-      username: user.username,
-      verified: user.verified,
-    });
-    return { user, authToken };
+    return user;
   }
 }

@@ -2,27 +2,24 @@
   "ADMIN": {
     "inherits": "USER",
     "allow": {},
-    "deny": {
-      "/users/send-verification": ["GET"],
-      "/users/verify": ["PUT"]
-    }
+    "deny": {}
   },
   "USER": {
     "inherits": "GUEST",
-    "allow": {
-      "/users/send-verification": ["GET"],
-      "/users/verify": ["PUT"]
-    },
+    "allow": {},
     "deny": {
+      "/users/:userId/send-verification": ["GET"],
+      "/users/:userId/verify": ["PUT"],
       "/users/register": ["POST"],
       "/users/login": ["POST"],
-      "/users/forgot-password": ["POST"],
-      "/users/:userId/reset-password": ["PUT"]
+      "/users/forgot-password": ["POST"]
     }
   },
   "GUEST": {
     "inherits": "",
     "allow": {
+      "/users/:userId/send-verification": ["GET"],
+      "/users/:userId/verify": ["PUT"],
       "/users/register": ["POST"],
       "/users/login": ["POST"],
       "/users/forgot-password": ["POST"],

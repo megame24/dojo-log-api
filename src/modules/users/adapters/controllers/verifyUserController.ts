@@ -8,9 +8,9 @@ export default class VerifyUserController extends Adapter {
   }
 
   async execute(req: any, res: any, next: any) {
-    const { body, user } = req;
+    const { body, params } = req;
     const verifyUserDTO = {
-      userId: user.id,
+      userId: params.userId,
       code: body.code,
     };
 

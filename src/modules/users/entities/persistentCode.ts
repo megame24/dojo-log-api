@@ -59,7 +59,7 @@ export default class PersistentCode extends Entity {
     );
 
     if (!props.encryptedCode) {
-      props.rawCode = securityService.generateRandomDigits();
+      props.rawCode = securityService.generateRandomDigits(4);
       props.encryptedCode = await securityService.hash(props.rawCode);
     }
 
