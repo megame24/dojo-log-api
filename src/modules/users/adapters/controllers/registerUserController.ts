@@ -16,10 +16,8 @@ export default class RegisterUserController extends Adapter {
     };
 
     try {
-      const { user, authToken } = await this.registerUser.execute(
-        registerUserDTO
-      );
-      res.status(201).json({ authToken });
+      const user = await this.registerUser.execute(registerUserDTO);
+      res.status(201).json({ userId: user.id });
       req.user = user;
       next();
     } catch (error) {
