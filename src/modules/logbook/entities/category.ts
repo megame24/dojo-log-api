@@ -4,6 +4,7 @@ import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 interface CategoryProps {
   id?: string;
   name: string;
+  color: string;
 }
 
 export default class Category extends Entity {
@@ -19,14 +20,23 @@ export default class Category extends Entity {
     return this.props.name;
   }
 
-  private static formatName(name: string): string {
+  get color(): string {
+    return this.props.color;
+  }
+
+  private static formatProp(name: string): string {
     return name.trim().toLowerCase();
   }
 
   static create(props: CategoryProps, uuidService: UUIDService): Category {
     this.validateProp({ key: "Name", value: props.name }, this.validateString);
+    this.validateProp(
+      { key: "Color", value: props.color },
+      this.validateString
+    );
 
-    props.name = this.formatName(props.name);
+    props.name = this.formatProp(props.name);
+    props.color = this.formatProp(props.color);
 
     return new Category(props, uuidService);
   }

@@ -7,10 +7,10 @@ export default class CreateCategoryController extends Adapter {
   }
 
   async execute(req: any, res: any, next: any) {
-    const { name } = req.body;
+    const { name, color } = req.body;
 
     try {
-      const category = await this.createCategory.execute({ name });
+      const category = await this.createCategory.execute({ name, color });
       res.status(201).json({ categoryId: category.id });
     } catch (error) {
       next(error);

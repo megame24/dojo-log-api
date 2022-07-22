@@ -17,6 +17,7 @@ export class CategoryRepoImpl implements CategoryRepo {
       const categoryProps = {
         id: category.id,
         name: category.name,
+        color: category.color,
       };
       await this.CategoryModel.create(categoryProps);
     } catch (error: any) {
@@ -38,6 +39,7 @@ export class CategoryRepoImpl implements CategoryRepo {
     const categoryProps = {
       id: categoryData.id,
       name: categoryData.name,
+      color: categoryData.color,
     };
 
     return Category.create(categoryProps, this.uuidService);

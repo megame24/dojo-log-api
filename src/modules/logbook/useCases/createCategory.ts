@@ -6,6 +6,7 @@ import { CategoryRepo } from "../infrastructure/repositories/categoryRepo";
 
 interface CreateCategoryDTO {
   name: string;
+  color: string;
 }
 
 export interface CreateCategory
@@ -20,7 +21,7 @@ export class CreateCategoryImpl implements CreateCategory {
   ) {}
 
   async execute(createCategoryDTO: CreateCategoryDTO): Promise<Category> {
-    const { name } = createCategoryDTO;
+    const { name, color } = createCategoryDTO;
 
     const categoryWithSameName = await this.categoryRepo.getCategoryByName(
       name
@@ -29,7 +30,7 @@ export class CreateCategoryImpl implements CreateCategory {
       throw AppError.badRequestError("Category with that name already exists");
     }
 
-    const category = Category.create({ name }, this.uuidService);
+    const category = Category.create({ name, color }, this.uuidService);
     await this.categoryRepo.create(category);
     return category;
   }
