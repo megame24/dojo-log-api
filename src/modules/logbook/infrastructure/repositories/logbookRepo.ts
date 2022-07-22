@@ -102,7 +102,11 @@ export class LogbookRepoImpl implements LogbookRepo {
     let category;
     if (categoryData) {
       category = Category.create(
-        { id: categoryData.id, name: categoryData.name },
+        {
+          id: categoryData.id,
+          name: categoryData.name,
+          color: categoryData.color,
+        },
         this.uuidService
       );
     }
@@ -165,7 +169,11 @@ export class LogbookRepoImpl implements LogbookRepo {
         let category;
         if (categoryData) {
           category = Category.create(
-            { id: categoryData.id, name: categoryData.name },
+            {
+              id: categoryData.id,
+              name: categoryData.name,
+              color: categoryData.color,
+            },
             this.uuidService
           );
         }
