@@ -16,6 +16,10 @@ class LogbookAccessControl extends AccessControl {
             condition: this.pass,
           },
           {
+            operation: Operation.GET_MANY,
+            condition: this.pass,
+          },
+          {
             operation: Operation.DELETE,
             condition: this.pass,
           },
