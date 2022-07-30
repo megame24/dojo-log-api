@@ -8,7 +8,9 @@ import { logbookAccessControl } from "../../accessControl";
 import {
   createCategoryController,
   deleteCategoryController,
+  getCategoriesController,
 } from "../../adapters/controllers";
+import GetCategoriesController from "../../adapters/controllers/getCategoriesController";
 import { getCategoryImpl } from "../../useCases";
 import endpointPolicy from "./endpointPolicy.json";
 
@@ -38,6 +40,18 @@ categoryRouter.delete(
     ],
   }),
   deleteCategoryController.execute
+);
+
+categoryRouter.get(
+  "",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.GET_MANY,
+    resourceType: "categories",
+    resourcesForAccessCheck: [],
+  }),
+  getCategoriesController.execute
 );
 
 export default categoryRouter;

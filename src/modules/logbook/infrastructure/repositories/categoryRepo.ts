@@ -7,6 +7,7 @@ export interface CategoryRepo {
   getCategoryByName: (name: string) => Promise<Category | null>;
   getCategoryById: (id: string) => Promise<Category | null>;
   delete: (category: Category) => void;
+  getAll: () => Promise<Category[]>;
 }
 
 export class CategoryRepoImpl implements CategoryRepo {
@@ -65,6 +66,26 @@ export class CategoryRepoImpl implements CategoryRepo {
       await this.CategoryModel.destroy({ where: { id: category.id } });
     } catch (error: any) {
       throw AppError.internalServerError("Error deleting Category", error);
+    }
+  }
+
+  async getAll(): Promise<Category[]> {
+    try {
+      const categoriesData: any[] = await this.CategoryModel.findAll();
+
+      const categories = categoriesData.map((categoryData) => {
+        const categoryProps = {
+          id: categoryData.id,
+          name: categoryData.name,
+          color: categoryData.color,
+        };
+
+        return Category.create(categoryProps, this.uuidService);
+      });
+
+      return categories;
+    } catch (error: any) {
+      throw AppError.internalServerError("Error retrieving Categories", error);
     }
   }
 }
