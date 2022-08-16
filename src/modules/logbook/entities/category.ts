@@ -5,6 +5,7 @@ interface CategoryProps {
   id?: string;
   name: string;
   color: string;
+  iconName: string;
 }
 
 export default class Category extends Entity {
@@ -24,6 +25,10 @@ export default class Category extends Entity {
     return this.props.color;
   }
 
+  get iconName(): string {
+    return this.props.iconName;
+  }
+
   private static formatProp(name: string): string {
     return name.trim().toLowerCase();
   }
@@ -32,6 +37,10 @@ export default class Category extends Entity {
     this.validateProp({ key: "Name", value: props.name }, this.validateString);
     this.validateProp(
       { key: "Color", value: props.color },
+      this.validateString
+    );
+    this.validateProp(
+      { key: "Icon Name", value: props.iconName },
       this.validateString
     );
 

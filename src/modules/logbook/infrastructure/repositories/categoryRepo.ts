@@ -8,6 +8,7 @@ export interface CategoryRepo {
   getCategoryById: (id: string) => Promise<Category | null>;
   delete: (category: Category) => void;
   getAll: () => Promise<Category[]>;
+  update: (Category: Category) => void;
 }
 
 export class CategoryRepoImpl implements CategoryRepo {
@@ -19,10 +20,26 @@ export class CategoryRepoImpl implements CategoryRepo {
         id: category.id,
         name: category.name,
         color: category.color,
+        iconName: category.iconName,
       };
       await this.CategoryModel.create(categoryProps);
     } catch (error: any) {
       throw AppError.internalServerError("Error creating Category", error);
+    }
+  }
+
+  async update(category: Category) {
+    try {
+      const updateCategoryProps = {
+        name: category.name,
+        color: category.color,
+        iconName: category.iconName,
+      };
+      await this.CategoryModel.update(updateCategoryProps, {
+        where: { id: category.id },
+      });
+    } catch (error: any) {
+      throw AppError.internalServerError("Error updating Category", error);
     }
   }
 
@@ -41,6 +58,7 @@ export class CategoryRepoImpl implements CategoryRepo {
       id: categoryData.id,
       name: categoryData.name,
       color: categoryData.color,
+      iconName: categoryData.iconName,
     };
 
     return Category.create(categoryProps, this.uuidService);
@@ -78,6 +96,7 @@ export class CategoryRepoImpl implements CategoryRepo {
           id: categoryData.id,
           name: categoryData.name,
           color: categoryData.color,
+          iconName: categoryData.iconName,
         };
 
         return Category.create(categoryProps, this.uuidService);

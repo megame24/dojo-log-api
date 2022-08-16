@@ -3,7 +3,7 @@
     "inherits": "USER",
     "allow": {
       "/categories": ["POST", "GET"],
-      "/categories/:categoryId": ["DELETE"]
+      "/categories/:categoryId": ["DELETE", "PUT"]
     },
     "deny": {}
   },

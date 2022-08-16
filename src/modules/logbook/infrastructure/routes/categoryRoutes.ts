@@ -9,8 +9,8 @@ import {
   createCategoryController,
   deleteCategoryController,
   getCategoriesController,
+  updateCategoryController,
 } from "../../adapters/controllers";
-import GetCategoriesController from "../../adapters/controllers/getCategoriesController";
 import { getCategoryImpl } from "../../useCases";
 import endpointPolicy from "./endpointPolicy.json";
 
@@ -40,6 +40,20 @@ categoryRouter.delete(
     ],
   }),
   deleteCategoryController.execute
+);
+
+categoryRouter.put(
+  "/:categoryId",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.UPDATE,
+    resourceType: "categories",
+    resourcesForAccessCheck: [
+      { name: "category", getResource: getCategoryImpl },
+    ],
+  }),
+  updateCategoryController.execute
 );
 
 categoryRouter.get(

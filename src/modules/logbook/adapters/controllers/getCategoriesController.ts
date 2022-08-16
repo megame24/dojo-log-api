@@ -14,6 +14,7 @@ export default class GetCategoriesController extends Adapter {
         id: category.id,
         name: category.name,
         color: category.color,
+        iconName: category.iconName,
       }));
 
       res.status(200).json(categoriesResponseDTO);
