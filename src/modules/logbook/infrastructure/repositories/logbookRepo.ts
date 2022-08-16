@@ -106,6 +106,7 @@ export class LogbookRepoImpl implements LogbookRepo {
           id: categoryData.id,
           name: categoryData.name,
           color: categoryData.color,
+          iconName: categoryData.iconName,
         },
         this.uuidService
       );
@@ -173,6 +174,7 @@ export class LogbookRepoImpl implements LogbookRepo {
               id: categoryData.id,
               name: categoryData.name,
               color: categoryData.color,
+              iconName: categoryData.iconName,
             },
             this.uuidService
           );

@@ -30,6 +30,7 @@ import { GetLogbooksImpl } from "./getLogbooks";
 import { GetLogsImpl } from "./getLogs";
 import { GetRewardImpl } from "./getReward";
 import { GetRewardsImpl } from "./getRewards";
+import { UpdateCategoryImpl } from "./updateCategory";
 import { UpdateGoalImpl } from "./updateGoal";
 import { UpdateLogImpl } from "./updateLog";
 import { UpdateLogbookImpl } from "./updateLogbook";
@@ -120,3 +121,8 @@ export const deleteRewardImpl = new DeleteRewardImpl(rewardRepoImpl);
 export const getRewardImpl = new GetRewardImpl(rewardRepoImpl);
 
 export const getCategoriesImpl = new GetCategoriesImpl(categoryRepoImpl);
+
+export const updateCategoryImpl = new UpdateCategoryImpl(
+  categoryRepoImpl,
+  uuidServiceImpl
+);

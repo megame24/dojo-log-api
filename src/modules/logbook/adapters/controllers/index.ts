@@ -16,6 +16,7 @@ import {
   updateGoalImpl,
   updateLogbookImpl,
   updateLogImpl,
+  updateCategoryImpl,
 } from "../../useCases";
 import CreateCategoryController from "./createCategoryController";
 import CreateGoalController from "./createGoalController";
@@ -30,6 +31,7 @@ import GetLogbookController from "./getLogbookController";
 import GetLogbooksController from "./getLogbooksController";
 import GetLogsController from "./getLogsController";
 import GetRewardsController from "./getRewardsController";
+import UpdateCategoryController from "./updateCategoryController";
 import UpdateGoalController from "./updateGoalController";
 import UpdateLogbookController from "./updateLogbookController";
 import UpdateLogController from "./updateLogController";
@@ -84,4 +86,8 @@ export const deleteRewardController = new DeleteRewardController(
 
 export const getCategoriesController = new GetCategoriesController(
   getCategoriesImpl
+);
+
+export const updateCategoryController = new UpdateCategoryController(
+  updateCategoryImpl
 );

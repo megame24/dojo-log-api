@@ -4,38 +4,47 @@ import UseCase from "../../shared/useCases/useCase";
 import Category from "../entities/category";
 import { CategoryRepo } from "../infrastructure/repositories/categoryRepo";
 
-interface CreateCategoryDTO {
+interface UpdateCategoryDTO {
   name: string;
   color: string;
   iconName: string;
+  category: Category;
 }
 
-export interface CreateCategory
-  extends UseCase<CreateCategoryDTO, Promise<Category>> {
-  execute: (createCategoryDTO: CreateCategoryDTO) => Promise<Category>;
+export interface UpdateCategory
+  extends UseCase<UpdateCategoryDTO, Promise<Category>> {
+  execute: (updateCategoryDTO: UpdateCategoryDTO) => Promise<Category>;
 }
 
-export class CreateCategoryImpl implements CreateCategory {
+export class UpdateCategoryImpl implements UpdateCategory {
   constructor(
     private categoryRepo: CategoryRepo,
     private uuidService: UUIDService
   ) {}
 
-  async execute(createCategoryDTO: CreateCategoryDTO): Promise<Category> {
-    const { name, color, iconName } = createCategoryDTO;
+  async execute(updateCategoryDTO: UpdateCategoryDTO): Promise<Category> {
+    const {
+      name,
+      color,
+      iconName,
+      category: outdatedCategory,
+    } = updateCategoryDTO;
 
     const categoryWithSameName = await this.categoryRepo.getCategoryByName(
       name
     );
-    if (categoryWithSameName) {
+    if (
+      categoryWithSameName &&
+      outdatedCategory.id !== categoryWithSameName.id
+    ) {
       throw AppError.badRequestError("Category with that name already exists");
     }
 
     const category = Category.create(
-      { name, color, iconName },
+      { id: outdatedCategory.id, name, color, iconName },
       this.uuidService
     );
-    await this.categoryRepo.create(category);
+    await this.categoryRepo.update(category);
     return category;
   }
 }

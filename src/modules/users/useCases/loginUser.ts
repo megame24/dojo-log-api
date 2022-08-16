@@ -36,6 +36,7 @@ export class LoginUserImpl implements LoginUser {
       username: user.username,
       verified: user.verified,
       role: user.role,
+      name: user.name,
     });
     return authToken;
   }

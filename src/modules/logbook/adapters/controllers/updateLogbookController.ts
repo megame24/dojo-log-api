@@ -20,7 +20,7 @@ export default class UpdateLogbookController extends Adapter {
 
     try {
       await this.updateLogbook.execute(updateLogbookDTO);
-      res.status(200).json({ message: "Logbook updated successfully " });
+      res.status(200).json({ message: "Logbook updated successfully" });
     } catch (error) {
       next(error);
     }

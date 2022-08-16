@@ -22,3 +22,9 @@ Ideas:
 - App wide refactor (You can create helper functions in each class [adapters, useCases, entities])
 
 - LET'S MAKE IT A MOBILE APP!!!!! :)
+
+- Very important!!! (share feature)
+  - share your logbook with a mentor, friend or group
+  - different levels of access (editor, readonly/viewer, etc)
+  - will have to track who made what change
+  - can be potentially monetized

@@ -23,6 +23,10 @@ class LogbookAccessControl extends AccessControl {
             operation: Operation.DELETE,
             condition: this.pass,
           },
+          {
+            operation: Operation.UPDATE,
+            condition: this.pass,
+          },
         ],
       },
       deny: {},
