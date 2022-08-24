@@ -2,7 +2,7 @@
   "ADMIN": {
     "inherits": "USER",
     "allow": {
-      "/categories": ["POST", "GET"],
+      "/categories": ["POST"],
       "/categories/:categoryId": ["DELETE", "PUT"]
     },
     "deny": {}
@@ -10,6 +10,7 @@
   "USER": {
     "inherits": "GUEST",
     "allow": {
+      "/categories": ["GET"],
       "/rewards": ["GET"],
       "/rewards/:rewardId": ["DELETE"],
       "/logbooks": ["POST"],
