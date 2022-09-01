@@ -63,4 +63,8 @@ export class MockDateService implements DateService {
   getDateInUTC = jest.fn();
   getTimelessDate = jest.fn();
   addTimeToDate = jest.fn();
+  getStartOfCurrentWeek = jest.fn();
+  getEndOfCurrentWeek = jest.fn();
+  getStartOfCurrentYear = jest.fn();
+  getEndOfCurrentYear = jest.fn();
 }

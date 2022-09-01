@@ -5,7 +5,8 @@ import { LogbookRepo } from "../infrastructure/repositories/logbookRepo";
 
 interface GetLogbookDTO {
   logbookId: string;
-  year: number;
+  startDate: Date;
+  endDate: Date;
 }
 
 export interface GetLogbook extends UseCase<GetLogbookDTO, Promise<Logbook>> {
@@ -16,14 +17,11 @@ export class GetLogbookImpl implements GetLogbook {
   constructor(private logbookRepo: LogbookRepo) {}
 
   async execute(getLogbookDTO: GetLogbookDTO): Promise<Logbook> {
-    const { logbookId, year } = getLogbookDTO;
-
-    const startOfYear = new Date(year, 0, 1);
-    const endOfYear = new Date(year, 11, 31);
+    const { logbookId, startDate, endDate } = getLogbookDTO;
 
     const logbook = await this.logbookRepo.getLogbookById(logbookId, {
-      startDate: startOfYear,
-      endDate: endOfYear,
+      startDate,
+      endDate,
     });
 
     if (!logbook) throw AppError.notFoundError("Logbook not found");

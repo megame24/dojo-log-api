@@ -3,12 +3,16 @@ export type TimeMetric = "d" | "h" | "m";
 export interface DateService {
   getDayOfYear: (date: Date) => number;
   getDateInUTC: (date: Date) => number;
-  getTimelessDate: (date: Date) => Date;
+  getTimelessDate: (date: Date | string) => Date;
   addTimeToDate: (
     date: Date,
     timeValue: number,
     timeMetric: TimeMetric
   ) => Date;
+  getStartOfCurrentWeek: () => Date;
+  getEndOfCurrentWeek: () => Date;
+  getStartOfCurrentYear: () => Date;
+  getEndOfCurrentYear: () => Date;
 }
 
 export class DateServiceImpl implements DateService {
@@ -40,6 +44,22 @@ export class DateServiceImpl implements DateService {
 
   addTimeToDate(date: Date, timeValue: number, timeMetric: TimeMetric): Date {
     return this.dayjs(date).add(timeValue, timeMetric);
+  }
+
+  getStartOfCurrentWeek(): Date {
+    return this.dayjs().startOf("w").toISOString();
+  }
+
+  getEndOfCurrentWeek(): Date {
+    return this.dayjs().endOf("w").toISOString();
+  }
+
+  getStartOfCurrentYear(): Date {
+    return this.dayjs().startOf("y").toISOString();
+  }
+
+  getEndOfCurrentYear(): Date {
+    return this.dayjs().endOf("y").toISOString();
   }
 
   private convertDateStringToDate(date: Date | string): Date {

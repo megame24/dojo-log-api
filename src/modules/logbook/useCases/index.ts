@@ -108,7 +108,10 @@ export const updateLogbookImpl = new UpdateLogbookImpl(
 
 export const getRewardsImpl = new GetRewardsImpl(rewardRepoImpl);
 
-export const getLogbooksImpl = new GetLogbooksImpl(logbookRepoImpl);
+export const getLogbooksImpl = new GetLogbooksImpl(
+  logbookRepoImpl,
+  getLogbookImpl
+);
 
 export const deleteCategoryImpl = new DeleteCategoryImpl(categoryRepoImpl);
 
