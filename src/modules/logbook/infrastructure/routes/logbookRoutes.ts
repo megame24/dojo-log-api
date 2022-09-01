@@ -49,7 +49,7 @@ logbookRouter.get(
     operation: Operation.GET_MANY,
     resourceType: "logbooks",
     resourcesForAccessCheck: [], // EXPLORE USING THIS TO GET USER BY USERNAME AND PASS ID
-    // TO ENABLE US HAVE A URL LIKE: "/:username/logbooks"
+    // TO ENABLE US HAVE A URL LIKE: "/:username/logbooks" (alternatively, have a facade url)
   }),
   getLogbooksController.execute
 );

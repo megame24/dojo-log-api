@@ -2,10 +2,13 @@ import UseCase from "../../shared/useCases/useCase";
 import { Role, User } from "../../users/api";
 import Logbook from "../entities/logbook";
 import { LogbookRepo } from "../infrastructure/repositories/logbookRepo";
+import { GetLogbook } from "./getLogbook";
 
 interface GetLogbooksDTO {
   userId: string;
   user: User;
+  startDate: Date;
+  endDate: Date;
 }
 
 export interface GetLogbooks
@@ -14,10 +17,13 @@ export interface GetLogbooks
 }
 
 export class GetLogbooksImpl implements GetLogbooks {
-  constructor(private logbookRepo: LogbookRepo) {}
+  constructor(
+    private logbookRepo: LogbookRepo,
+    private getLogbook: GetLogbook
+  ) {}
 
   async execute(getLogbooksDTO: GetLogbooksDTO): Promise<Logbook[]> {
-    const { userId, user } = getLogbooksDTO;
+    const { userId, user, startDate, endDate } = getLogbooksDTO;
 
     let includePrivateLogbooks = false;
     const isOwner = user.id === userId;
@@ -27,9 +33,23 @@ export class GetLogbooksImpl implements GetLogbooks {
       includePrivateLogbooks = true;
     }
 
-    const logbooks = this.logbookRepo.getLogbooksByUserId(userId, {
-      includePrivateLogbooks,
+    const lightLogbooks = await this.logbookRepo.getLightLogbooksByUserId(
+      userId,
+      {
+        includePrivateLogbooks,
+      }
+    );
+
+    const logbookPromise: any = lightLogbooks.map((lightLogbook) => {
+      return this.getLogbook.execute({
+        logbookId: <string>lightLogbook.id,
+        startDate,
+        endDate,
+      });
     });
+
+    const logbooks: any = Promise.all(logbookPromise);
+
     return logbooks;
   }
 }

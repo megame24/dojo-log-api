@@ -26,9 +26,9 @@ export interface LogbookRepo {
     logbookId: string,
     getLogbookByIdQueryOption: GetLogbookByIdQueryOption
   ) => Promise<Logbook | null>;
-  getLogbooksByUserId: (
+  getLightLogbooksByUserId: (
     userId: string,
-    getLogbooksByUserIdQueryOption: GetLogbooksByUserIdQueryOption
+    getLightLogbooksByUserIdQueryOption: GetLogbooksByUserIdQueryOption
   ) => Promise<Logbook[]>;
   delete: (logbook: Logbook) => void;
 }
@@ -145,11 +145,13 @@ export class LogbookRepoImpl implements LogbookRepo {
     if (!logbookId) throw AppError.badRequestError("logbookId is required");
     const { startDate, endDate } = getLogbookByIdQueryOption;
 
+    // TODO: MOVE THIS TO USE CASE
     const goals = await this.goalRepo.getGoalsByLogbookIdStartAndEndDates(
       logbookId,
       startDate,
       endDate
     );
+    // TODO: MOVE THIS TO USE CASE
     const logs = await this.logRepo.getLogsByLogbookIdStartAndEndDates(
       logbookId,
       startDate,
@@ -158,28 +160,15 @@ export class LogbookRepoImpl implements LogbookRepo {
 
     const queryOption = { where: { id: logbookId } };
 
+    // TODO: RETURN PLAIN LOGBOOK AND AGGREGATE WITH LOGS AND GOALS IN USE CASE
     return this.getLogbook(queryOption, goals, logs);
   }
 
-  private async getLogbooks(queryOption: any): Promise<Logbook[]> {
+  private async getLightLogbooks(queryOption: any): Promise<Logbook[]> {
     try {
       const logbooksData: any[] = await this.LogbookModel.findAll(queryOption);
 
       const logbooks = logbooksData.map((logbookData) => {
-        const categoryData = logbookData.Category;
-        let category;
-        if (categoryData) {
-          category = Category.create(
-            {
-              id: categoryData.id,
-              name: categoryData.name,
-              color: categoryData.color,
-              iconName: categoryData.iconName,
-            },
-            this.uuidService
-          );
-        }
-
         return Logbook.create(
           {
             id: logbookData.id,
@@ -187,7 +176,6 @@ export class LogbookRepoImpl implements LogbookRepo {
             name: logbookData.name,
             description: logbookData.description,
             visibility: logbookData.visibility,
-            category,
           },
           this.uuidService,
           this.dateService
@@ -200,23 +188,22 @@ export class LogbookRepoImpl implements LogbookRepo {
     }
   }
 
-  async getLogbooksByUserId(
+  async getLightLogbooksByUserId(
     userId: string,
-    getLogbooksByUserIdQueryOption: GetLogbooksByUserIdQueryOption
+    getLightLogbooksByUserIdQueryOption: GetLogbooksByUserIdQueryOption
   ): Promise<Logbook[]> {
     if (!userId) throw AppError.badRequestError("userId is required");
 
-    const { includePrivateLogbooks } = getLogbooksByUserIdQueryOption;
+    const { includePrivateLogbooks } = getLightLogbooksByUserIdQueryOption;
 
     const queryOption: any = {
       where: { userId, visibility: Visibility.public },
-      include: { model: this.CategoryModel, required: false },
     };
     if (includePrivateLogbooks) {
       delete queryOption.where.visibility;
     }
 
-    return this.getLogbooks(queryOption);
+    return this.getLightLogbooks(queryOption);
   }
 
   async delete(logbook: Logbook) {
