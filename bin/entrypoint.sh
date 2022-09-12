@@ -13,5 +13,7 @@ if [[ $NODE_ENV == "production" ]]
 then
   node "$project_root/build/index.js"
 else
+  npx sequelize-cli db:seed:all
+
   npm run dev
 fi
