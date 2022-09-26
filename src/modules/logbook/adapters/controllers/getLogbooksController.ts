@@ -18,9 +18,9 @@ export default class GetLogbooksController extends Adapter {
       let endDate: Date;
 
       if (!startDateString || !endDateString) {
-        startDate = this.dateService.getStartOfCurrentWeek();
-        endDate = this.dateService.getEndOfCurrentWeek();
-        console.log(startDate, endDate);
+        endDate = new Date();
+        startDate = this.dateService.subtractDate(endDate, 6, "d");
+        console.log(endDate, startDate);
       } else {
         startDate = this.dateService.getTimelessDate(startDateString);
         endDate = this.dateService.getTimelessDate(endDateString);
@@ -41,11 +41,13 @@ export default class GetLogbooksController extends Adapter {
         userId: logbook.userId,
         visibility: logbook.visibility,
         description: logbook.description,
-        heatmap: logbook.heatMap,
+        heatMap: logbook.heatMap,
         ...(logbook.category && {
           category: {
             id: logbook.category.id,
             name: logbook.category.name,
+            iconName: logbook.category.iconName,
+            color: logbook.category.color,
           },
         }),
       }));
