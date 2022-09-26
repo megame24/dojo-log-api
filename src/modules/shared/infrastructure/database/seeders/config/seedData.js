@@ -109,6 +109,7 @@ const usersGoals = {
 };
 
 function generateGoals() {
+  const trueOrFalse = [true, false];
   for (let i = 0; i < logbooks.length; i++) {
     for (let j = 0; j < randomNumber(2, 14); j++) {
       const goal = {
@@ -116,7 +117,7 @@ function generateGoals() {
         logbookId: logbooks[i].id,
         userId: logbooks[i].userId,
         name: `Goal ${j}`,
-        achieved: false,
+        achieved: trueOrFalse[randomNumber(0, 2)],
         achievementCriteria: "Just do it bro!!!",
         date: randomDateIn2022(),
         createdAt: new Date(),

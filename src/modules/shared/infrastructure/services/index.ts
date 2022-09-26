@@ -1,9 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
+import dayOfYear from "dayjs/plugin/dayOfYear";
 import { DateServiceImpl } from "./dateService";
 import { EmailServiceImpl } from "./emailService";
 import { FileServiceImpl } from "./fileService";
 import { UUIDServiceImpl } from "./uuidService";
+
+dayjs.extend(dayOfYear);
 
 export const emailServiceImpl = new EmailServiceImpl();
 export const uuidServiceImpl = new UUIDServiceImpl(uuidv4);

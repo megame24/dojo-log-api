@@ -61,6 +61,45 @@ export default class Logbook extends Entity {
     return this.props.userId;
   }
 
+  private static addDurationOfWork(
+    acc: string | undefined,
+    next: string | undefined
+  ) {
+    // find a better solution!!!
+    if (!next) return acc;
+    if (!acc) return next;
+
+    const durationOfWorkTracker: any = {
+      h: 0,
+      m: 0,
+    };
+    const accSplit = acc.split(" ");
+    accSplit.forEach((duration) => {
+      const durationMetric = duration
+        .slice(duration.length - 1, duration.length)
+        .toLocaleLowerCase();
+      const durationSplit = duration.split(durationMetric);
+      durationOfWorkTracker[durationMetric] = +durationSplit[0];
+    });
+
+    const nextSplit = next.split(" ");
+    nextSplit.forEach((duration) => {
+      const durationMetric = duration
+        .slice(duration.length - 1, duration.length)
+        .toLocaleLowerCase();
+      const durationSplit = duration.split(durationMetric);
+      if (durationMetric === "m") {
+        const totalMinutes = +durationOfWorkTracker.m + +durationSplit[0];
+        durationOfWorkTracker.h += Math.floor(totalMinutes / 60);
+        durationOfWorkTracker.m = totalMinutes % 60;
+      } else {
+        durationOfWorkTracker[durationMetric] += +durationSplit[0];
+      }
+    });
+
+    return `${durationOfWorkTracker.h}h ${durationOfWorkTracker.m}m`;
+  }
+
   private static saveLogsToHeatMap(
     heatMap: any,
     props: CreateLogbookProps,
@@ -76,11 +115,17 @@ export default class Logbook extends Entity {
         heatMap[dayOfYear] = {
           logs: {
             count: 1,
+            totalDurationOfWork: log.durationOfWork,
             logIds: [log.id],
           },
         };
       } else {
+        const totalDurationOfWork = heatMap[dayOfYear].logs.totalDurationOfWork;
         heatMap[dayOfYear].logs.count += 1;
+        heatMap[dayOfYear].logs.totalDurationOfWork = this.addDurationOfWork(
+          totalDurationOfWork,
+          log.durationOfWork
+        );
         heatMap[dayOfYear].logs.logIds.push(log.id);
       }
     });

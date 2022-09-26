@@ -13,6 +13,7 @@ export interface DateService {
   getEndOfCurrentWeek: () => Date;
   getStartOfCurrentYear: () => Date;
   getEndOfCurrentYear: () => Date;
+  subtractDate: (date: Date, value: number, metric: string) => Date;
 }
 
 export class DateServiceImpl implements DateService {
@@ -20,15 +21,7 @@ export class DateServiceImpl implements DateService {
 
   getDayOfYear(date: Date | string): number {
     date = this.convertDateStringToDate(date);
-    const dateInUTC = Date.UTC(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate()
-    );
-    const startOfYearInUTC = Date.UTC(date.getFullYear(), 0, 1);
-    const diff = dateInUTC - startOfYearInUTC;
-    const dayInMilliseconds = 1000 * 60 * 60 * 24;
-    const dayOfYear = diff / dayInMilliseconds;
+    const dayOfYear = this.dayjs(date).dayOfYear();
     return dayOfYear;
   }
 
@@ -60,6 +53,10 @@ export class DateServiceImpl implements DateService {
 
   getEndOfCurrentYear(): Date {
     return this.dayjs().endOf("y").toISOString();
+  }
+
+  subtractDate(date: Date, value: number, metric: string): Date {
+    return this.dayjs(date).subtract(value, metric).toISOString();
   }
 
   private convertDateStringToDate(date: Date | string): Date {
