@@ -20,7 +20,7 @@ interface BaseLogbookProps {
 }
 
 interface LogbookProps extends BaseLogbookProps {
-  heatMap: any;
+  heatmap: any;
 }
 
 interface CreateLogbookProps extends BaseLogbookProps {
@@ -45,8 +45,8 @@ export default class Logbook extends Entity {
     return this.props.description;
   }
 
-  get heatMap(): any {
-    return this.props.heatMap;
+  get heatmap(): any {
+    return this.props.heatmap;
   }
 
   get visibility(): Visibility {
@@ -100,8 +100,8 @@ export default class Logbook extends Entity {
     return `${durationOfWorkTracker.h}h ${durationOfWorkTracker.m}m`;
   }
 
-  private static saveLogsToHeatMap(
-    heatMap: any,
+  private static saveLogsToHeatmap(
+    heatmap: any,
     props: CreateLogbookProps,
     dateService: DateService
   ) {
@@ -111,8 +111,8 @@ export default class Logbook extends Entity {
 
       const dayOfYear = dateService.getDayOfYear(log.date);
 
-      if (!heatMap[dayOfYear]) {
-        heatMap[dayOfYear] = {
+      if (!heatmap[dayOfYear]) {
+        heatmap[dayOfYear] = {
           logs: {
             count: 1,
             totalDurationOfWork: log.durationOfWork,
@@ -120,19 +120,19 @@ export default class Logbook extends Entity {
           },
         };
       } else {
-        const totalDurationOfWork = heatMap[dayOfYear].logs.totalDurationOfWork;
-        heatMap[dayOfYear].logs.count += 1;
-        heatMap[dayOfYear].logs.totalDurationOfWork = this.addDurationOfWork(
+        const totalDurationOfWork = heatmap[dayOfYear].logs.totalDurationOfWork;
+        heatmap[dayOfYear].logs.count += 1;
+        heatmap[dayOfYear].logs.totalDurationOfWork = this.addDurationOfWork(
           totalDurationOfWork,
           log.durationOfWork
         );
-        heatMap[dayOfYear].logs.logIds.push(log.id);
+        heatmap[dayOfYear].logs.logIds.push(log.id);
       }
     });
   }
 
-  private static saveGoalsToHeatMap(
-    heatMap: any,
+  private static saveGoalsToHeatmap(
+    heatmap: any,
     props: CreateLogbookProps,
     dateService: DateService
   ) {
@@ -142,41 +142,41 @@ export default class Logbook extends Entity {
 
       const dayOfYear = dateService.getDayOfYear(goal.date);
 
-      const heatMapRewards = goal.rewards?.map((reward) => ({
+      const heatmapRewards = goal.rewards?.map((reward) => ({
         id: reward.id,
         name: reward.name,
         description: reward.description,
         imageUrl: reward.imageUrl,
       }));
 
-      const heatMapGoal = {
+      const heatmapGoal = {
         id: goal.id,
         name: goal.name,
         achieved: goal.achieved,
         achievementCriteria: goal.achievementCriteria,
-        rewards: heatMapRewards,
+        rewards: heatmapRewards,
       };
 
-      if (!heatMap[dayOfYear]) {
-        heatMap[dayOfYear] = {
-          goal: heatMapGoal,
+      if (!heatmap[dayOfYear]) {
+        heatmap[dayOfYear] = {
+          goal: heatmapGoal,
         };
       } else {
-        heatMap[dayOfYear].goal = heatMapGoal;
+        heatmap[dayOfYear].goal = heatmapGoal;
       }
     });
   }
 
-  private static createHeatMap(
+  private static createHeatmap(
     props: CreateLogbookProps,
     dateService: DateService
   ) {
-    const heatMap: any = {};
+    const heatmap: any = {};
 
-    this.saveLogsToHeatMap(heatMap, props, dateService);
-    this.saveGoalsToHeatMap(heatMap, props, dateService);
+    this.saveLogsToHeatmap(heatmap, props, dateService);
+    this.saveGoalsToHeatmap(heatmap, props, dateService);
 
-    return heatMap;
+    return heatmap;
   }
 
   static create(
@@ -200,8 +200,8 @@ export default class Logbook extends Entity {
       this.validateEnum
     );
 
-    const heatMap = this.createHeatMap(props, dateService);
+    const heatmap = this.createHeatmap(props, dateService);
 
-    return new Logbook({ ...props, heatMap }, uuidService);
+    return new Logbook({ ...props, heatmap }, uuidService);
   }
 }

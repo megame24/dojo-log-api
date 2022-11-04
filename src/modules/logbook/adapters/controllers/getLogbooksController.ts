@@ -18,9 +18,8 @@ export default class GetLogbooksController extends Adapter {
       let endDate: Date;
 
       if (!startDateString || !endDateString) {
-        endDate = new Date();
-        startDate = this.dateService.subtractDate(endDate, 6, "d");
-        console.log(endDate, startDate);
+        endDate = this.dateService.addTimeToDate(new Date(), 2, "d");
+        startDate = this.dateService.subtractDate(endDate, 9, "d");
       } else {
         startDate = this.dateService.getTimelessDate(startDateString);
         endDate = this.dateService.getTimelessDate(endDateString);
@@ -41,7 +40,7 @@ export default class GetLogbooksController extends Adapter {
         userId: logbook.userId,
         visibility: logbook.visibility,
         description: logbook.description,
-        heatMap: logbook.heatMap,
+        heatmap: logbook.heatmap,
         ...(logbook.category && {
           category: {
             id: logbook.category.id,

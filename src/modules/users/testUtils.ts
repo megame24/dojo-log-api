@@ -67,5 +67,7 @@ export class MockDateService implements DateService {
   getEndOfCurrentWeek = jest.fn();
   getStartOfCurrentYear = jest.fn();
   getEndOfCurrentYear = jest.fn();
+  getStartOfCurrentMonth = jest.fn();
+  getEndOfCurrentMonth = jest.fn();
   subtractDate = jest.fn();
 }
