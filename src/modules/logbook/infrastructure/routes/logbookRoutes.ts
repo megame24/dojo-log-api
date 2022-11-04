@@ -11,6 +11,7 @@ import {
   createLogbookController,
   deleteLogbookController,
   deleteLogController,
+  getEarliestLogbookYearController,
   getLogbookController,
   getLogbooksController,
   getLogsController,
@@ -52,6 +53,12 @@ logbookRouter.get(
     // TO ENABLE US HAVE A URL LIKE: "/:username/logbooks" (alternatively, have a facade url)
   }),
   getLogbooksController.execute
+);
+
+logbookRouter.get(
+  "/earliestLogbookYear",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  getEarliestLogbookYearController.execute
 );
 
 logbookRouter.get(

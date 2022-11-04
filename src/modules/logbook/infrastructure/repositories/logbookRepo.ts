@@ -31,6 +31,7 @@ export interface LogbookRepo {
     getLightLogbooksByUserIdQueryOption: GetLogbooksByUserIdQueryOption
   ) => Promise<Logbook[]>;
   delete: (logbook: Logbook) => void;
+  getEarliestLogbookCreatedAt: () => Promise<Date | null>;
 }
 
 export class LogbookRepoImpl implements LogbookRepo {
@@ -211,6 +212,23 @@ export class LogbookRepoImpl implements LogbookRepo {
       await this.LogbookModel.destroy({ where: { id: logbook.id } });
     } catch (error: any) {
       throw AppError.internalServerError("Error deleting Logbook", error);
+    }
+  }
+
+  async getEarliestLogbookCreatedAt(): Promise<Date | null> {
+    try {
+      const result = await this.LogbookModel.findOne({
+        order: [["createdAt", "ASC"]],
+        attributes: ["createdAt"],
+      });
+
+      if (!result) return null;
+      return result.dataValues.createdAt;
+    } catch (error: any) {
+      throw AppError.internalServerError(
+        "Error retrieving earliest logbook year",
+        error
+      );
     }
   }
 }

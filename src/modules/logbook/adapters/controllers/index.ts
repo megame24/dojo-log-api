@@ -17,6 +17,7 @@ import {
   updateLogbookImpl,
   updateLogImpl,
   updateCategoryImpl,
+  getEarliestLogbookYearImpl,
 } from "../../useCases";
 import CreateCategoryController from "./createCategoryController";
 import CreateGoalController from "./createGoalController";
@@ -27,6 +28,7 @@ import DeleteLogbookController from "./deleteLogbookController";
 import DeleteLogController from "./deleteLogController";
 import DeleteRewardController from "./deleteRewardController";
 import GetCategoriesController from "./getCategoriesController";
+import GetEarliestLogbookYearController from "./getEarliestLogbookYearController";
 import GetLogbookController from "./getLogbookController";
 import GetLogbooksController from "./getLogbooksController";
 import GetLogsController from "./getLogsController";
@@ -97,3 +99,6 @@ export const getCategoriesController = new GetCategoriesController(
 export const updateCategoryController = new UpdateCategoryController(
   updateCategoryImpl
 );
+
+export const getEarliestLogbookYearController =
+  new GetEarliestLogbookYearController(getEarliestLogbookYearImpl);

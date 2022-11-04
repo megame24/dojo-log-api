@@ -21,6 +21,7 @@ import { DeleteLogbookImpl } from "./deleteLogbook";
 import { DeleteRewardImpl } from "./deleteReward";
 import { GetCategoriesImpl } from "./getCategories";
 import { GetCategoryImpl } from "./getCategory";
+import { GetEarliestLogbookYearImpl } from "./getEarliestLogbookYear";
 import { GetGoalImpl } from "./getGoal";
 import { GetLiteLogbookImpl } from "./getLiteLogbook";
 import { GetLiteRewardsImpl } from "./getLiteRewards";
@@ -128,4 +129,8 @@ export const getCategoriesImpl = new GetCategoriesImpl(categoryRepoImpl);
 export const updateCategoryImpl = new UpdateCategoryImpl(
   categoryRepoImpl,
   uuidServiceImpl
+);
+
+export const getEarliestLogbookYearImpl = new GetEarliestLogbookYearImpl(
+  logbookRepoImpl
 );

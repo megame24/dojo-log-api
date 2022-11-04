@@ -36,7 +36,7 @@ export class CreateLogImpl implements CreateLog {
       userId: createLogDTO.userId,
       logbookId: <string>createLogDTO.logbook.id,
       visibility: createLogDTO.logbook.visibility,
-      date: new Date(),
+      date: new Date(), // reexamine this!!!!
       message: createLogDTO.message,
       durationOfWork: createLogDTO.durationOfWork,
       proofOfWorkImageUrl: proofOfWorkImageUrl,

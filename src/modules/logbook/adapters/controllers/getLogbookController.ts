@@ -39,11 +39,13 @@ export default class GetLogbookController extends Adapter {
         userId: logbook.userId,
         description: logbook.description,
         visibility: logbook.visibility,
-        heatmap: logbook.heatMap,
+        heatmap: logbook.heatmap,
         ...(logbook.category && {
           category: {
             id: logbook.category.id,
             name: logbook.category.name,
+            iconName: logbook.category.iconName,
+            color: logbook.category.color,
           },
         }),
       };

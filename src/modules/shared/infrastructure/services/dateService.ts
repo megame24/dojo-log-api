@@ -13,6 +13,8 @@ export interface DateService {
   getEndOfCurrentWeek: () => Date;
   getStartOfCurrentYear: () => Date;
   getEndOfCurrentYear: () => Date;
+  getStartOfCurrentMonth: () => Date;
+  getEndOfCurrentMonth: () => Date;
   subtractDate: (date: Date, value: number, metric: string) => Date;
 }
 
@@ -30,29 +32,38 @@ export class DateServiceImpl implements DateService {
     return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
+  // this function is buggy
   getTimelessDate(date: Date | string): Date {
     date = this.convertDateStringToDate(date);
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
   addTimeToDate(date: Date, timeValue: number, timeMetric: TimeMetric): Date {
-    return this.dayjs(date).add(timeValue, timeMetric);
+    return this.dayjs(date).add(timeValue, timeMetric).toISOString();
   }
 
   getStartOfCurrentWeek(): Date {
-    return this.dayjs().startOf("w").toISOString();
+    return this.dayjs().startOf("week").toISOString();
   }
 
   getEndOfCurrentWeek(): Date {
-    return this.dayjs().endOf("w").toISOString();
+    return this.dayjs().endOf("week").toISOString();
   }
 
   getStartOfCurrentYear(): Date {
-    return this.dayjs().startOf("y").toISOString();
+    return this.dayjs().startOf("year").toISOString();
   }
 
   getEndOfCurrentYear(): Date {
-    return this.dayjs().endOf("y").toISOString();
+    return this.dayjs().endOf("year").toISOString();
+  }
+
+  getStartOfCurrentMonth(): Date {
+    return this.dayjs().startOf("month").toISOString();
+  }
+
+  getEndOfCurrentMonth(): Date {
+    return this.dayjs().endOf("month").toISOString();
   }
 
   subtractDate(date: Date, value: number, metric: string): Date {
