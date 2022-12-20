@@ -121,7 +121,10 @@ export const getCategoryImpl = new GetCategoryImpl(categoryRepoImpl);
 
 export const deleteLogbookImpl = new DeleteLogbookImpl(logbookRepoImpl);
 
-export const deleteRewardImpl = new DeleteRewardImpl(rewardRepoImpl);
+export const deleteRewardImpl = new DeleteRewardImpl(
+  rewardRepoImpl,
+  fileServiceImpl
+);
 
 export const getRewardImpl = new GetRewardImpl(rewardRepoImpl);
 
