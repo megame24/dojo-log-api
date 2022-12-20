@@ -58,7 +58,8 @@ export const createLogImpl = new CreateLogImpl(
 
 export const createRewardImpl = new CreateRewardImpl(
   uuidServiceImpl,
-  fileServiceImpl
+  fileServiceImpl,
+  rewardRepoImpl
 );
 
 export const createGoalImpl = new CreateGoalImpl(
