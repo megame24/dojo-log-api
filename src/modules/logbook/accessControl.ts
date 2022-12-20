@@ -38,6 +38,10 @@ class LogbookAccessControl extends AccessControl {
         ],
         rewards: [
           {
+            operation: Operation.CREATE,
+            condition: this.pass,
+          },
+          {
             operation: Operation.GET_MANY,
             condition: this.pass,
           },
