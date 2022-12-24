@@ -2,6 +2,7 @@ import AppError from "../../shared/AppError";
 import { DateService } from "../../shared/infrastructure/services/dateService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
+import { User } from "../../users/api";
 import Goal from "../entities/goal";
 import Logbook from "../entities/logbook";
 import Reward from "../entities/reward";
@@ -18,6 +19,7 @@ interface CreateGoalDTO {
   date: Date;
   rewards: Reward[];
   rewardsProps: Partial<CreateRewardDTO>[];
+  user: User;
 }
 
 export interface CreateGoal extends UseCase<CreateGoalDTO, Promise<Goal>> {
@@ -34,7 +36,7 @@ export class CreateGoalImpl implements CreateGoal {
   ) {}
 
   async execute(createGoalDTO: CreateGoalDTO): Promise<Goal> {
-    const { rewardsProps, userId, logbook, date } = createGoalDTO;
+    const { rewardsProps, userId, logbook, date, user } = createGoalDTO;
     let { rewards } = createGoalDTO;
 
     const existingGoal = await this.goalRepo.getGoalByLogbookIdAndDate(
@@ -58,13 +60,14 @@ export class CreateGoalImpl implements CreateGoal {
         ...rewardProps,
         name: <string>rewardProps.name,
         userId,
+        user,
       };
       return this.createReward.execute(createRewardDTO);
     });
     const createdRewards = await Promise.all(createdRewardsPromise);
     rewards = [...rewards, ...createdRewards];
 
-    if (rewards.length) await this.rewardRepo.bulkUpsert(rewards);
+    if (rewards.length) await this.rewardRepo.bulkUpsert(rewards, user);
 
     const createGoalProps = {
       logbookId: <string>logbook.id,
@@ -84,7 +87,7 @@ export class CreateGoalImpl implements CreateGoal {
       this.dateService
     );
 
-    await this.goalRepo.create(goal);
+    await this.goalRepo.create(goal, user);
     return goal;
   }
 }

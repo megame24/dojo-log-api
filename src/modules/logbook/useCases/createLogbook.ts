@@ -1,6 +1,7 @@
 import { DateService } from "../../shared/infrastructure/services/dateService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
+import { User } from "../../users/api";
 import Logbook, { Visibility } from "../entities/logbook";
 import { CategoryRepo } from "../infrastructure/repositories/categoryRepo";
 import { LogbookRepo } from "../infrastructure/repositories/logbookRepo";
@@ -11,6 +12,7 @@ interface CreateLogbookDTO {
   description?: string;
   visibility: Visibility;
   categoryId?: string;
+  user: User;
 }
 
 export interface CreateLogbook
@@ -27,7 +29,7 @@ export class CreateLogbookImpl implements CreateLogbook {
   ) {}
 
   async execute(createLogbookDTO: CreateLogbookDTO): Promise<Logbook> {
-    const { userId, name, description, visibility, categoryId } =
+    const { userId, name, description, visibility, categoryId, user } =
       createLogbookDTO;
 
     let category;
@@ -48,7 +50,7 @@ export class CreateLogbookImpl implements CreateLogbook {
       this.dateService
     );
 
-    await this.logbookRepo.create(logbook);
+    await this.logbookRepo.create(logbook, user);
     return logbook;
   }
 }

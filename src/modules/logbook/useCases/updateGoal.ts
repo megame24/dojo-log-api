@@ -46,13 +46,14 @@ export class UpdateGoalImpl implements UpdateGoal {
         ...rewardProps,
         name: <string>rewardProps.name,
         userId: outdatedGoal.userId,
+        user,
       };
       return this.createReward.execute(createRewardDTO);
     });
     const createdRewards = await Promise.all(createdRewardsPromise);
     rewards = [...rewards, ...createdRewards];
 
-    if (rewards.length) await this.rewardRepo.bulkUpsert(rewards);
+    if (rewards.length) await this.rewardRepo.bulkUpsert(rewards, user);
 
     const updateGoalProps = {
       id: outdatedGoal.id,

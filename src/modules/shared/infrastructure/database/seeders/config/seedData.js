@@ -87,13 +87,15 @@ const logbooks = [];
 
 function generateLogbooks() {
   for (let i = 0; i < 16; i++) {
+    const userId = users[randomNumber(1, 2)].id;
     logbooks.push({
       id: uuidv4(),
       name: `Logbook ${i}`,
       description: "This is just an ordinary logbook, nothing to see here!",
       visibility: "public",
       categoryId: categories[randomNumber(0, 4)].id,
-      userId: users[randomNumber(1, 2)].id,
+      userId,
+      createdBy: userId,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -112,10 +114,12 @@ function generateGoals() {
   const trueOrFalse = [true, false];
   for (let i = 0; i < logbooks.length; i++) {
     for (let j = 0; j < randomNumber(2, 14); j++) {
+      const userId = logbooks[i].userId;
       const goal = {
         id: uuidv4(),
         logbookId: logbooks[i].id,
-        userId: logbooks[i].userId,
+        userId,
+        createdBy: userId,
         name: `Goal ${j}`,
         achieved: trueOrFalse[randomNumber(0, 2)],
         achievementCriteria: "Just do it bro!!!",
@@ -141,9 +145,11 @@ const usersRewards = {
 function generateRewards() {
   for (let i = 1; i < users.length; i++) {
     for (let j = 0; j < randomNumber(2, 4); j++) {
+      const userId = users[i].id;
       const reward = {
         id: uuidv4(),
-        userId: users[i].id,
+        userId,
+        createdBy: userId,
         name: `Reward ${j}`,
         description: "Something light",
         createdAt: new Date(),
@@ -182,10 +188,12 @@ const logs = [];
 function generateLogs() {
   for (let i = 0; i < logbooks.length; i++) {
     for (let j = 0; j < randomNumber(200, 300); j++) {
+      const userId = logbooks[i].userId;
       logs.push({
         id: uuidv4(),
         logbookId: logbooks[i].id,
-        userId: logbooks[i].userId,
+        userId,
+        createdBy: userId,
         message: `Did work ${j}`,
         durationOfWork: `${randomNumber(1, 19)}h`,
         date: randomDateIn2022(),

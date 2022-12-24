@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "cascade",
       });
       Goal.belongsTo(models.User, { foreignKey: "userId" });
+      Goal.belongsTo(models.User, { foreignKey: "createdBy" });
       Goal.belongsTo(models.User, { foreignKey: "updatedBy" });
       Goal.belongsToMany(models.Reward, {
         through: "GoalRewards",
@@ -30,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       userId: {
         allowNull: false,
+        type: DataTypes.UUID,
+      },
+      createdBy: {
+        allowNull: true,
         type: DataTypes.UUID,
       },
       updatedBy: {

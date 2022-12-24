@@ -19,7 +19,7 @@ interface GetLogbooksByUserIdQueryOption {
 }
 
 export interface LogbookRepo {
-  create: (logbook: Logbook) => void;
+  create: (logbook: Logbook, createdBy: User) => void;
   update: (logbook: Logbook, updatedBy: User) => void;
   getLiteLogbookById: (logbookId: string) => Promise<Logbook | null>;
   getLogbookById: (
@@ -44,7 +44,7 @@ export class LogbookRepoImpl implements LogbookRepo {
     private logRepo: LogRepo
   ) {}
 
-  async create(logbook: Logbook) {
+  async create(logbook: Logbook, createdBy: User) {
     try {
       const logbookProps = {
         id: logbook.id,
@@ -53,6 +53,7 @@ export class LogbookRepoImpl implements LogbookRepo {
         description: logbook.description,
         visibility: logbook.visibility,
         categoryId: logbook.category?.id,
+        createdBy: createdBy.id,
       };
       await this.LogbookModel.create(logbookProps);
     } catch (error: any) {

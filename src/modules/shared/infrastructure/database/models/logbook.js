@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class Logbook extends Model {
     static associate(models) {
       Logbook.belongsTo(models.User, { foreignKey: "userId" });
+      Logbook.belongsTo(models.User, { foreignKey: "createdBy" });
       Logbook.belongsTo(models.User, { foreignKey: "updatedBy" });
       Logbook.belongsTo(models.Category, { foreignKey: "categoryId" });
       Logbook.hasMany(models.Log, {
@@ -27,6 +28,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       userId: {
         allowNull: false,
+        type: DataTypes.UUID,
+      },
+      createdBy: {
+        allowNull: true,
         type: DataTypes.UUID,
       },
       updatedBy: {
