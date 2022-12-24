@@ -35,6 +35,7 @@ import { UpdateCategoryImpl } from "./updateCategory";
 import { UpdateGoalImpl } from "./updateGoal";
 import { UpdateLogImpl } from "./updateLog";
 import { UpdateLogbookImpl } from "./updateLogbook";
+import { UpdateRewardImpl } from "./updateReward";
 
 export const createCategoryImpl = new CreateCategoryImpl(
   categoryRepoImpl,
@@ -137,4 +138,10 @@ export const updateCategoryImpl = new UpdateCategoryImpl(
 
 export const getEarliestLogbookYearImpl = new GetEarliestLogbookYearImpl(
   logbookRepoImpl
+);
+
+export const updateRewardImpl = new UpdateRewardImpl(
+  uuidServiceImpl,
+  fileServiceImpl,
+  rewardRepoImpl
 );

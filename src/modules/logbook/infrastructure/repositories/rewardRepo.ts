@@ -8,6 +8,7 @@ export interface RewardRepo {
   bulkUpsert: (rewards: Reward[]) => void;
   delete: (reward: Reward) => void;
   getRewardById: (rewardId: string) => Promise<Reward | null>;
+  update: (reward: Reward) => void;
 }
 
 export class RewardRepoImpl implements RewardRepo {
@@ -116,5 +117,22 @@ export class RewardRepoImpl implements RewardRepo {
     };
 
     return this.getReward(queryOption);
+  }
+
+  async update(reward: Reward) {
+    try {
+      const updateRewardProps = {
+        id: reward.id,
+        userId: reward.userId,
+        name: reward.name,
+        description: reward.description,
+        imageUrl: reward.imageUrl,
+      };
+      await this.RewardModel.update(updateRewardProps, {
+        where: { id: reward.id },
+      });
+    } catch (error: any) {
+      throw AppError.internalServerError("Error updating Reward", error);
+    }
   }
 }

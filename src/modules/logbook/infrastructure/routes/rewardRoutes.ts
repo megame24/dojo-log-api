@@ -10,6 +10,7 @@ import {
   createRewardController,
   deleteRewardController,
   getRewardsController,
+  updateRewardController,
 } from "../../adapters/controllers";
 import { getRewardImpl } from "../../useCases";
 import endpointPolicy from "./endpointPolicy.json";
@@ -27,6 +28,19 @@ rewardRouter.post(
     resourcesForAccessCheck: [],
   }),
   createRewardController.execute
+);
+
+rewardRouter.put(
+  "/:rewardId",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  multer().any(),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.UPDATE,
+    resourceType: "rewards",
+    resourcesForAccessCheck: [{ name: "reward", getResource: getRewardImpl }],
+  }),
+  updateRewardController.execute
 );
 
 rewardRouter.get(
