@@ -1,6 +1,7 @@
 import { FileService } from "../../shared/infrastructure/services/fileService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
+import { User } from "../../users/api";
 import Reward from "../entities/reward";
 import { RewardRepo } from "../infrastructure/repositories/rewardRepo";
 
@@ -10,6 +11,7 @@ export interface CreateRewardDTO {
   description?: string;
   file?: any;
   save?: true;
+  user: User;
 }
 
 export interface CreateReward
@@ -39,7 +41,7 @@ export class CreateRewardImpl implements CreateReward {
 
     const reward = Reward.create(createRewardProps, this.uuidService);
     if (createRewardDTO.save) {
-      await this.rewardRepo.bulkUpsert([reward]);
+      await this.rewardRepo.bulkUpsert([reward], createRewardDTO.user);
     }
     return reward;
   }

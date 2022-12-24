@@ -14,7 +14,8 @@ export default class CreateLogbookController extends Adapter {
       description,
       visibility,
       categoryId,
-      userId: req.user.id,
+      userId: req.user.id, // this might be gotten from a diff param in the future
+      user: req.user,
     };
 
     try {

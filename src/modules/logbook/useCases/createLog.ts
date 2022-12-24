@@ -4,6 +4,7 @@ import Log from "../entities/log";
 import { LogRepo } from "../infrastructure/repositories/logRepo";
 import Logbook from "../entities/logbook";
 import { FileService } from "../../shared/infrastructure/services/fileService";
+import { User } from "../../users/api";
 
 interface CreateLogDTO {
   userId: string;
@@ -11,6 +12,7 @@ interface CreateLogDTO {
   message: string;
   durationOfWork?: string;
   file?: any;
+  user: User;
 }
 
 export interface CreateLog extends UseCase<CreateLogDTO, Promise<Log>> {
@@ -43,7 +45,7 @@ export class CreateLogImpl implements CreateLog {
     };
     const log = Log.create(createLogProps, this.uuidService);
 
-    await this.logRepo.create(log);
+    await this.logRepo.create(log, createLogDTO.user);
     return log;
   }
 }

@@ -1,11 +1,12 @@
 import AppError from "../../../shared/AppError";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
+import { User } from "../../../users/api";
 import Reward from "../../entities/reward";
 
 export interface RewardRepo {
   getRewardsByIds: (rewardIds: string[]) => Promise<Reward[]>;
   getRewardsByUserId: (userId: string) => Promise<Reward[]>;
-  bulkUpsert: (rewards: Reward[]) => void;
+  bulkUpsert: (rewards: Reward[], createdBy: User) => void;
   delete: (reward: Reward) => void;
   getRewardById: (rewardId: string) => Promise<Reward | null>;
   update: (reward: Reward) => void;
@@ -59,11 +60,12 @@ export class RewardRepoImpl implements RewardRepo {
     return this.getRewards(queryOption);
   }
 
-  async bulkUpsert(rewards: Reward[]) {
+  async bulkUpsert(rewards: Reward[], createdBy: User) {
     try {
       const rewardsProps = rewards.map((reward: Reward) => ({
         id: reward.id,
         userId: reward.userId,
+        createdBy: createdBy.id,
         name: reward.name,
         description: reward.description,
         imageUrl: reward.imageUrl,

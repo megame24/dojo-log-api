@@ -8,10 +8,11 @@ export default class CreateLogController extends Adapter {
 
   async execute(req: any, res: any, next: any) {
     const createLogDTO = {
-      userId: req.user.id,
+      userId: req.logbook.userId, // use the userId from the logbook, incase of logbook sharing
       logbook: req.logbook,
       message: req.body.message,
       durationOfWork: req.body.durationOfWork,
+      user: req.user,
       ...(req.files && { file: req.files[0] }),
     };
 

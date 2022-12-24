@@ -12,6 +12,7 @@ export default class UpdateRewardController extends Adapter {
       name: req.body.name,
       description: req.body.description,
       file: null,
+      user: req.user,
     };
 
     if (req.files) updateRewardDTO.file = req.files[0];

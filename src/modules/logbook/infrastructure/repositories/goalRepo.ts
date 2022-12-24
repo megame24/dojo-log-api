@@ -6,7 +6,7 @@ import Goal from "../../entities/goal";
 import Reward from "../../entities/reward";
 
 export interface GoalRepo {
-  create: (goal: Goal) => void;
+  create: (goal: Goal, createdBy: User) => void;
   getGoalByLogbookIdAndDate: (
     logbookId: string,
     date: Date
@@ -30,7 +30,7 @@ export class GoalRepoImpl implements GoalRepo {
     private dateService: DateService
   ) {}
 
-  async create(goal: Goal) {
+  async create(goal: Goal, createdBy: User) {
     try {
       const goalProps = {
         id: goal.id,
@@ -41,6 +41,7 @@ export class GoalRepoImpl implements GoalRepo {
         achieved: goal.achieved,
         achievementCriteria: goal.achievementCriteria,
         date: goal.date,
+        createdBy: createdBy.id,
       };
 
       const createdGoal = await this.GoalModel.create(goalProps);

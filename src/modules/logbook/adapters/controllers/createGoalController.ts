@@ -24,7 +24,7 @@ export default class CreateGoalController extends Adapter {
       });
 
       const createGoalDTO = {
-        userId: user.id,
+        userId: logbook.userId,
         logbook,
         name: body.name,
         description: body.description,
@@ -32,6 +32,7 @@ export default class CreateGoalController extends Adapter {
         date,
         rewards,
         rewardsProps,
+        user,
       };
 
       const goal = await this.createGoal.execute(createGoalDTO);

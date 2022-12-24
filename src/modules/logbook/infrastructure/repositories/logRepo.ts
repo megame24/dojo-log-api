@@ -4,7 +4,7 @@ import { User } from "../../../users/api";
 import Log from "../../entities/log";
 
 export interface LogRepo {
-  create: (log: Log) => void;
+  create: (log: Log, createdBy: User) => void;
   getLogsByLogbookIdStartAndEndDates: (
     logbookId: string,
     startDate: Date,
@@ -23,7 +23,7 @@ export class LogRepoImpl implements LogRepo {
     private Op: any
   ) {}
 
-  async create(log: Log) {
+  async create(log: Log, createdBy: User) {
     try {
       const createLogProps = {
         id: log.id,
@@ -33,6 +33,7 @@ export class LogRepoImpl implements LogRepo {
         message: log.message,
         durationOfWork: log.durationOfWork,
         proofOfWorkImageUrl: log.proofOfWorkImageUrl,
+        createdBy: createdBy.id,
       };
       await this.LogModel.create(createLogProps);
     } catch (error: any) {

@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "cascade",
       });
       Log.belongsTo(models.User, { foreignKey: "userId" });
+      Log.belongsTo(models.User, { foreignKey: "cratedBy" });
       Log.belongsTo(models.User, { foreignKey: "updatedBy" });
     }
   }
@@ -25,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       userId: {
         allowNull: false,
+        type: DataTypes.UUID,
+      },
+      createdBy: {
+        allowNull: true,
         type: DataTypes.UUID,
       },
       updatedBy: {

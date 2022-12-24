@@ -12,6 +12,7 @@ export default class CreateRewardController extends Adapter {
       name: req.body.name,
       description: req.body.description,
       save: true,
+      user: req.user,
       ...(req.files && { file: req.files[0] }),
     };
 

@@ -10,6 +10,8 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "cascade",
       });
       Reward.belongsTo(models.User, { foreignKey: "userId" });
+      Reward.belongsTo(models.User, { foreignKey: "createdBy" });
+      Reward.belongsTo(models.User, { foreignKey: "updatedBy" });
     }
   }
   Reward.init(
@@ -34,6 +36,14 @@ module.exports = (sequelize, DataTypes) => {
       imageUrl: {
         type: DataTypes.TEXT,
         allowNull: true,
+      },
+      createdBy: {
+        allowNull: true,
+        type: DataTypes.UUID,
+      },
+      updatedBy: {
+        allowNull: true,
+        type: DataTypes.UUID,
       },
     },
     {
