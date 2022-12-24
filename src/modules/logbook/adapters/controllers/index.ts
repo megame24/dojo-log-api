@@ -19,6 +19,7 @@ import {
   updateCategoryImpl,
   getEarliestLogbookYearImpl,
   createRewardImpl,
+  updateRewardImpl,
 } from "../../useCases";
 import CreateCategoryController from "./createCategoryController";
 import CreateGoalController from "./createGoalController";
@@ -39,6 +40,7 @@ import UpdateCategoryController from "./updateCategoryController";
 import UpdateGoalController from "./updateGoalController";
 import UpdateLogbookController from "./updateLogbookController";
 import UpdateLogController from "./updateLogController";
+import UpdateRewardController from "./updateRewardController";
 
 export const createCategoryController = new CreateCategoryController(
   createCategoryImpl
@@ -107,4 +109,8 @@ export const getEarliestLogbookYearController =
 
 export const createRewardController = new CreateRewardController(
   createRewardImpl
+);
+
+export const updateRewardController = new UpdateRewardController(
+  updateRewardImpl
 );
