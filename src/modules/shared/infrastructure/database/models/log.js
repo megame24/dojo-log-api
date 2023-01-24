@@ -44,10 +44,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      proofOfWorkImageUrl: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
       date: {
         type: DataTypes.DATE,
         allowNull: false,

@@ -5,12 +5,14 @@ import {
 } from "../../shared/infrastructure/services";
 import {
   categoryRepoImpl,
+  fileRepoImpl,
   goalRepoImpl,
   logbookRepoImpl,
   logRepoImpl,
   rewardRepoImpl,
 } from "../infrastructure/repositories";
 import { CreateCategoryImpl } from "./createCategory";
+import { CreateFileImpl } from "./createFile";
 import { CreateGoalImpl } from "./createGoal";
 import { CreateLogImpl } from "./createLog";
 import { CreateLogbookImpl } from "./createLogbook";
@@ -51,10 +53,16 @@ export const createLogbookImpl = new CreateLogbookImpl(
 
 export const getLiteLogbookImpl = new GetLiteLogbookImpl(logbookRepoImpl);
 
-export const createLogImpl = new CreateLogImpl(
-  logRepoImpl,
+export const createFileImpl = new CreateFileImpl(
+  fileRepoImpl,
   uuidServiceImpl,
   fileServiceImpl
+);
+
+export const createLogImpl = new CreateLogImpl(
+  logRepoImpl,
+  createFileImpl,
+  uuidServiceImpl
 );
 
 export const createRewardImpl = new CreateRewardImpl(

@@ -41,6 +41,7 @@ export class CreateRewardImpl implements CreateReward {
 
     const reward = Reward.create(createRewardProps, this.uuidService);
     if (createRewardDTO.save) {
+      // use single create instead of bulk upsert
       await this.rewardRepo.bulkUpsert([reward], createRewardDTO.user);
     }
     return reward;

@@ -27,7 +27,6 @@ export default class GetLogsController extends Adapter {
         date: log.date,
         message: log.message,
         durationOfWork: log.durationOfWork,
-        proofOfWorkImageUrl: log.proofOfWorkImageUrl,
       }));
 
       res.status(200).json(logsResponseDTO);

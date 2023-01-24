@@ -1,5 +1,6 @@
 import Entity, { ValidationResult } from "../../shared/entities/entity";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
+import File from "./file";
 import { Visibility } from "./logbook";
 
 interface LogProps {
@@ -11,7 +12,7 @@ interface LogProps {
   message: string;
   durationOfWork?: string;
   // make proofOfWork it's own entity in the future !!!!!!
-  proofOfWorkImageUrl?: string;
+  proofOfWork?: File;
 }
 
 export default class Log extends Entity {
@@ -50,8 +51,8 @@ export default class Log extends Entity {
     return this.props.durationOfWork;
   }
 
-  get proofOfWorkImageUrl(): string | undefined {
-    return this.props.proofOfWorkImageUrl;
+  get proofOfWork(): File | undefined {
+    return this.props.proofOfWork;
   }
 
   private static validateDurationOfWork(
