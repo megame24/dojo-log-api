@@ -46,9 +46,10 @@ export class UpdateLogImpl implements UpdateLog {
 
     let proofOfWorkImageUrl;
     if (file) {
-      if (outdatedLog.proofOfWorkImageUrl)
-        await this.fileService.deleteFile(outdatedLog.proofOfWorkImageUrl);
-      proofOfWorkImageUrl = await this.fileService.uploadFile(file);
+      // if (outdatedLog.proofOfWorkImageUrl)
+      //   await this.fileService.deleteFile(outdatedLog.proofOfWorkImageUrl);
+      // proofOfWorkImageUrl = await this.fileService.uploadFile(file);
+      // rework
     }
 
     const updateLogProps = {
@@ -59,8 +60,8 @@ export class UpdateLogImpl implements UpdateLog {
       date: outdatedLog.date,
       message: outdatedLog.message,
       durationOfWork: outdatedLog.durationOfWork,
-      proofOfWorkImageUrl: outdatedLog.proofOfWorkImageUrl,
-      ...(proofOfWorkImageUrl && { proofOfWorkImageUrl }),
+      // proofOfWorkImageUrl: outdatedLog.proofOfWorkImageUrl,
+      // ...(proofOfWorkImageUrl && { proofOfWorkImageUrl }),
       ...(message && { message }),
       ...(durationOfWork && { durationOfWork }),
     };

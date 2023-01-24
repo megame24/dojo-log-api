@@ -53,6 +53,7 @@ export class CreateGoalImpl implements CreateGoal {
       throw AppError.badRequestError("A Goal can't have more than 5 rewards");
     }
 
+    // extract the files and bulkUpsert that too.
     const createdRewardsPromise: Promise<Reward>[] = Object.values(
       rewardsProps
     ).map((rewardProps) => {

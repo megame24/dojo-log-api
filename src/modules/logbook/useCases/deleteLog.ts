@@ -29,9 +29,9 @@ export class DeleteLogImpl implements DeleteLog {
     if (todayDateInUTC !== logDateInUTC)
       throw AppError.badRequestError("Can't delete previous days' logs");
 
-    if (log.proofOfWorkImageUrl) {
-      await this.fileService.deleteFile(log.proofOfWorkImageUrl);
-    }
+    // if (log.proofOfWorkImageUrl) {
+    //   await this.fileService.deleteFile(log.proofOfWorkImageUrl);
+    // } rework
 
     await this.logRepo.delete(log);
   }

@@ -18,6 +18,7 @@ export interface LogRepo {
 export class LogRepoImpl implements LogRepo {
   constructor(
     private LogModel: any,
+    private FileModel: any,
     private LogbookModel: any,
     private uuidService: UUIDService,
     private Op: any
@@ -32,7 +33,6 @@ export class LogRepoImpl implements LogRepo {
         date: log.date,
         message: log.message,
         durationOfWork: log.durationOfWork,
-        proofOfWorkImageUrl: log.proofOfWorkImageUrl,
         createdBy: createdBy.id,
       };
       await this.LogModel.create(createLogProps);
@@ -50,7 +50,6 @@ export class LogRepoImpl implements LogRepo {
         date: log.date,
         message: log.message,
         durationOfWork: log.durationOfWork,
-        proofOfWorkImageUrl: log.proofOfWorkImageUrl,
         updatedBy: updatedBy.id,
       };
       await this.LogModel.update(updateLogProps, { where: { id: log.id } });
@@ -87,7 +86,6 @@ export class LogRepoImpl implements LogRepo {
         date: logData.date,
         message: logData.message,
         durationOfWork: logData.durationOfWork,
-        proofOfWorkImageUrl: logData.proofOfWorkImageUrl,
       };
 
       return Log.create(createLogProps, this.uuidService);
@@ -97,6 +95,7 @@ export class LogRepoImpl implements LogRepo {
   }
 
   async getLogsByLogbookIdStartAndEndDates(
+    // include a includeFiles option here
     logbookId: string,
     startDate: Date,
     endDate: Date
@@ -136,7 +135,6 @@ export class LogRepoImpl implements LogRepo {
       date: logData.date,
       message: logData.message,
       durationOfWork: logData.durationOfWork,
-      proofOfWorkImageUrl: logData.proofOfWorkImageUrl,
     };
 
     return Log.create(createLogProps, this.uuidService);

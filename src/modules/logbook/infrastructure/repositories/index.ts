@@ -4,6 +4,7 @@ import {
   uuidServiceImpl,
 } from "../../../shared/infrastructure/services";
 import { CategoryRepoImpl } from "./categoryRepo";
+import { FileRepoImpl } from "./fileRepo";
 import { GoalRepoImpl } from "./goalRepo";
 import { LogbookRepoImpl } from "./logbookRepo";
 import { LogRepoImpl } from "./logRepo";
@@ -15,12 +16,19 @@ const {
   Log,
   Reward,
   Goal,
+  File,
   Sequelize: { Op },
 } = <any>models;
 
 export const categoryRepoImpl = new CategoryRepoImpl(Category, uuidServiceImpl);
 
-export const logRepoImpl = new LogRepoImpl(Log, Logbook, uuidServiceImpl, Op);
+export const logRepoImpl = new LogRepoImpl(
+  Log,
+  File,
+  Logbook,
+  uuidServiceImpl,
+  Op
+);
 
 export const rewardRepoImpl = new RewardRepoImpl(uuidServiceImpl, Reward, Op);
 
@@ -41,3 +49,5 @@ export const logbookRepoImpl = new LogbookRepoImpl(
   goalRepoImpl,
   logRepoImpl
 );
+
+export const fileRepoImpl = new FileRepoImpl(File);
