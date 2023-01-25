@@ -1,6 +1,7 @@
 import AppError from "../../../shared/AppError";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
 import { User } from "../../../users/api";
+import File from "../../entities/file";
 import Log from "../../entities/log";
 
 export interface LogRepo {
@@ -127,6 +128,22 @@ export class LogRepoImpl implements LogRepo {
 
     if (!logData) return null;
 
+    const fileData = logData?.Files[0];
+
+    let proofOfWork;
+    if (fileData) {
+      const createFileProps = {
+        id: fileData.id,
+        userId: fileData.userId,
+        logId: fileData.logId,
+        type: fileData.type,
+        url: fileData.url,
+        name: fileData.name,
+      };
+
+      proofOfWork = File.create(createFileProps, this.uuidService);
+    }
+
     const createLogProps = {
       id: logData.id,
       userId: logData.userId,
@@ -135,6 +152,7 @@ export class LogRepoImpl implements LogRepo {
       date: logData.date,
       message: logData.message,
       durationOfWork: logData.durationOfWork,
+      proofOfWork,
     };
 
     return Log.create(createLogProps, this.uuidService);
@@ -143,7 +161,10 @@ export class LogRepoImpl implements LogRepo {
   async getLogById(logId: string): Promise<Log | null> {
     const queryOption = {
       where: { id: logId },
-      include: { model: this.LogbookModel, required: true },
+      include: [
+        { model: this.LogbookModel, required: true },
+        { model: this.FileModel, required: false },
+      ],
     };
 
     return this.getLog(queryOption);

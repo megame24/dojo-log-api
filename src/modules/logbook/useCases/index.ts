@@ -18,6 +18,7 @@ import { CreateLogImpl } from "./createLog";
 import { CreateLogbookImpl } from "./createLogbook";
 import { CreateRewardImpl } from "./createReward";
 import { DeleteCategoryImpl } from "./deleteCategory";
+import { DeleteFileImpl } from "./deleteFile";
 import { DeleteLogImpl } from "./deleteLog";
 import { DeleteLogbookImpl } from "./deleteLogbook";
 import { DeleteRewardImpl } from "./deleteReward";
@@ -102,9 +103,11 @@ export const getLiteRewardsImpl = new GetLiteRewardsImpl(rewardRepoImpl);
 
 export const getLogImpl = new GetLogImpl(logRepoImpl);
 
+export const deleteFileImpl = new DeleteFileImpl(fileRepoImpl, fileServiceImpl);
+
 export const deleteLogImpl = new DeleteLogImpl(
   logRepoImpl,
-  fileServiceImpl,
+  deleteFileImpl,
   dateServiceImpl
 );
 

@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       Log.belongsTo(models.User, { foreignKey: "userId" });
       Log.belongsTo(models.User, { foreignKey: "cratedBy" });
       Log.belongsTo(models.User, { foreignKey: "updatedBy" });
+      Log.hasMany(models.File, { foreignKey: "logId" });
     }
   }
   Log.init(
