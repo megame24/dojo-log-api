@@ -3,6 +3,7 @@ import File from "../../entities/file";
 
 export interface FileRepo {
   create: (file: File) => void;
+  delete: (file: File) => void;
 }
 
 export class FileRepoImpl implements FileRepo {
@@ -22,6 +23,14 @@ export class FileRepoImpl implements FileRepo {
       await this.FileModel.create(createFileProps);
     } catch (error: any) {
       throw AppError.internalServerError("Error creating file", error);
+    }
+  }
+
+  async delete(file: File) {
+    try {
+      await this.FileModel.destroy({ where: { id: file.id } });
+    } catch (error: any) {
+      throw AppError.internalServerError("Error deleting file", error);
     }
   }
 }

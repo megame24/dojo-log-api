@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       Reward.belongsTo(models.User, { foreignKey: "userId" });
       Reward.belongsTo(models.User, { foreignKey: "createdBy" });
       Reward.belongsTo(models.User, { foreignKey: "updatedBy" });
+      Reward.hasMany(models.File, { foreignKey: "rewardId" });
     }
   }
   Reward.init(
