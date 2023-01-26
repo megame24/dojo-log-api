@@ -1,11 +1,12 @@
 import AppError from "../../shared/AppError";
 import { DateService } from "../../shared/infrastructure/services/dateService";
-import { FileService } from "../../shared/infrastructure/services/fileService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
 import { User } from "../../users/api";
 import Log from "../entities/log";
 import { LogRepo } from "../infrastructure/repositories/logRepo";
+import { CreateFile } from "./createFile";
+import { DeleteFile } from "./deleteFile";
 
 export interface UpdateLogDTO {
   log: Log;
@@ -23,7 +24,8 @@ export class UpdateLogImpl implements UpdateLog {
   constructor(
     private logRepo: LogRepo,
     private uuidService: UUIDService,
-    private fileService: FileService,
+    private createFile: CreateFile,
+    private deleteFile: DeleteFile,
     private dateService: DateService
   ) {}
 
@@ -44,14 +46,6 @@ export class UpdateLogImpl implements UpdateLog {
     if (outdatedLogDateInUTC !== todayDateInUTC)
       throw AppError.badRequestError("Can't update previous days' logs");
 
-    let proofOfWorkImageUrl;
-    if (file) {
-      // if (outdatedLog.proofOfWorkImageUrl)
-      //   await this.fileService.deleteFile(outdatedLog.proofOfWorkImageUrl);
-      // proofOfWorkImageUrl = await this.fileService.uploadFile(file);
-      // rework
-    }
-
     const updateLogProps = {
       id: outdatedLog.id,
       userId: outdatedLog.userId,
@@ -60,11 +54,22 @@ export class UpdateLogImpl implements UpdateLog {
       date: outdatedLog.date,
       message: outdatedLog.message,
       durationOfWork: outdatedLog.durationOfWork,
-      // proofOfWorkImageUrl: outdatedLog.proofOfWorkImageUrl,
-      // ...(proofOfWorkImageUrl && { proofOfWorkImageUrl }),
+      proofOfWork: outdatedLog.proofOfWork,
       ...(message && { message }),
       ...(durationOfWork && { durationOfWork }),
     };
+
+    let newProofOfWork;
+    if (file) {
+      if (outdatedLog.proofOfWork)
+        await this.deleteFile.execute({ file: outdatedLog.proofOfWork });
+      newProofOfWork = await this.createFile.execute({
+        userId: outdatedLog.userId,
+        logId: outdatedLog.id,
+        rawFile: file,
+      });
+      updateLogProps.proofOfWork = newProofOfWork;
+    }
 
     const log = Log.create(updateLogProps, this.uuidService);
 

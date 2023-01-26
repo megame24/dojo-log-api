@@ -90,10 +90,13 @@ export const updateGoalImpl = new UpdateGoalImpl(
   dateServiceImpl
 );
 
+export const deleteFileImpl = new DeleteFileImpl(fileRepoImpl, fileServiceImpl);
+
 export const updateLogImpl = new UpdateLogImpl(
   logRepoImpl,
   uuidServiceImpl,
-  fileServiceImpl,
+  createFileImpl,
+  deleteFileImpl,
   dateServiceImpl
 );
 
@@ -102,8 +105,6 @@ export const getGoalImpl = new GetGoalImpl(goalRepoImpl);
 export const getLiteRewardsImpl = new GetLiteRewardsImpl(rewardRepoImpl);
 
 export const getLogImpl = new GetLogImpl(logRepoImpl);
-
-export const deleteFileImpl = new DeleteFileImpl(fileRepoImpl, fileServiceImpl);
 
 export const deleteLogImpl = new DeleteLogImpl(
   logRepoImpl,
