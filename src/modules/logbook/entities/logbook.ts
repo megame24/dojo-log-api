@@ -146,7 +146,7 @@ export default class Logbook extends Entity {
         id: reward.id,
         name: reward.name,
         description: reward.description,
-        imageUrl: reward.imageUrl,
+        image: reward.image,
       }));
 
       const heatmapGoal = {

@@ -30,7 +30,12 @@ export const logRepoImpl = new LogRepoImpl(
   Op
 );
 
-export const rewardRepoImpl = new RewardRepoImpl(uuidServiceImpl, Reward, Op);
+export const rewardRepoImpl = new RewardRepoImpl(
+  uuidServiceImpl,
+  Reward,
+  File,
+  Op
+);
 
 export const goalRepoImpl = new GoalRepoImpl(
   uuidServiceImpl,
