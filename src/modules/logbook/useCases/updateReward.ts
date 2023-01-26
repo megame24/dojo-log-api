@@ -1,8 +1,9 @@
-import { FileService } from "../../shared/infrastructure/services/fileService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
 import Reward from "../entities/reward";
 import { RewardRepo } from "../infrastructure/repositories/rewardRepo";
+import { CreateFile } from "./createFile";
+import { DeleteFile } from "./deleteFile";
 
 export interface UpdateRewardDTO {
   reward: Reward;
@@ -18,30 +19,35 @@ export interface UpdateReward extends UseCase<UpdateRewardDTO, void> {
 export class UpdateRewardImpl implements UpdateReward {
   constructor(
     private uuidService: UUIDService,
-    private fileService: FileService,
+    private deleteFile: DeleteFile,
+    private createFile: CreateFile,
     private rewardRepo: RewardRepo
   ) {}
 
   async execute(updateRewardDTO: UpdateRewardDTO) {
     const { reward: outdatedReward, file, name, description } = updateRewardDTO;
 
-    let imageUrl;
-    if (file) {
-      if (outdatedReward.imageUrl)
-        await this.fileService.deleteFile(outdatedReward.imageUrl);
-      imageUrl = await this.fileService.uploadFile(file);
-    }
-
     const updateRewardProps = {
       id: outdatedReward.id,
       userId: outdatedReward.userId,
       name: outdatedReward.name,
       description: outdatedReward.description,
-      imageUrl: outdatedReward.imageUrl,
-      ...(imageUrl && { imageUrl }),
+      image: outdatedReward.image,
       ...(name && { name }),
       ...(description && { description }),
     };
+
+    let image;
+    if (file) {
+      if (outdatedReward.image)
+        await this.deleteFile.execute({ file: outdatedReward.image });
+      image = await this.createFile.execute({
+        userId: outdatedReward.userId,
+        rewardId: outdatedReward.id,
+        rawFile: file,
+      });
+      updateRewardProps.image = image;
+    }
 
     const reward = Reward.create(updateRewardProps, this.uuidService);
 

@@ -1,6 +1,7 @@
 import AppError from "../../../shared/AppError";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
 import { User } from "../../../users/api";
+import File from "../../entities/file";
 import Reward from "../../entities/reward";
 
 export interface RewardRepo {
@@ -16,6 +17,7 @@ export class RewardRepoImpl implements RewardRepo {
   constructor(
     private uuidService: UUIDService,
     private RewardModel: any,
+    private FileModel: any,
     private Op: any
   ) {}
 
@@ -23,18 +25,34 @@ export class RewardRepoImpl implements RewardRepo {
     try {
       const rewardsData: any[] = await this.RewardModel.findAll(queryOption);
 
-      const rewards = rewardsData.map((rewardData) =>
-        Reward.create(
+      const rewards = rewardsData.map((rewardData) => {
+        const fileData = rewardData?.Files[0];
+
+        let image;
+        if (fileData) {
+          const createFileProps = {
+            id: fileData.id,
+            userId: fileData.userId,
+            rewardId: fileData.rewardId,
+            type: fileData.type,
+            url: fileData.url,
+            name: fileData.name,
+          };
+
+          image = File.create(createFileProps, this.uuidService);
+        }
+
+        return Reward.create(
           {
             id: rewardData.id,
             userId: rewardData.userId,
             name: rewardData.name,
             description: rewardData.description,
-            imageUrl: rewardData.imageUrl,
+            image,
           },
           this.uuidService
-        )
-      );
+        );
+      });
 
       return rewards;
     } catch (error: any) {
@@ -55,6 +73,7 @@ export class RewardRepoImpl implements RewardRepo {
 
     const queryOption = {
       where: { userId },
+      include: { model: this.FileModel, required: false },
     };
 
     return this.getRewards(queryOption);
@@ -68,7 +87,6 @@ export class RewardRepoImpl implements RewardRepo {
         createdBy: createdBy.id,
         name: reward.name,
         description: reward.description,
-        imageUrl: reward.imageUrl,
       }));
 
       await this.RewardModel.bulkCreate(rewardsProps, {
@@ -97,13 +115,29 @@ export class RewardRepoImpl implements RewardRepo {
 
     if (!rewardData) return null;
 
+    const fileData = rewardData?.Files[0];
+
+    let image;
+    if (fileData) {
+      const createFileProps = {
+        id: fileData.id,
+        userId: fileData.userId,
+        rewardId: fileData.rewardId,
+        type: fileData.type,
+        url: fileData.url,
+        name: fileData.name,
+      };
+
+      image = File.create(createFileProps, this.uuidService);
+    }
+
     const reward = Reward.create(
       {
         id: rewardData.id,
         userId: rewardData.userId,
         name: rewardData.name,
         description: rewardData.description,
-        imageUrl: rewardData.imageUrl,
+        image,
       },
       this.uuidService
     );
@@ -116,6 +150,7 @@ export class RewardRepoImpl implements RewardRepo {
 
     const queryOption = {
       where: { id: rewardId },
+      include: { model: this.FileModel, required: false },
     };
 
     return this.getReward(queryOption);
@@ -128,7 +163,6 @@ export class RewardRepoImpl implements RewardRepo {
         userId: reward.userId,
         name: reward.name,
         description: reward.description,
-        imageUrl: reward.imageUrl,
       };
       await this.RewardModel.update(updateRewardProps, {
         where: { id: reward.id },

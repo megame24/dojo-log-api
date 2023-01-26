@@ -18,7 +18,15 @@ export default class GetRewardsController extends Adapter {
         id: reward.id,
         name: reward.name,
         description: reward.description,
-        imageUrl: reward.imageUrl,
+        ...(reward.image && {
+          image: {
+            id: reward?.image?.id,
+            name: reward?.image?.name,
+            rewardId: reward?.image?.rewardId,
+            type: reward?.image?.type,
+            url: reward?.image?.url,
+          },
+        }),
         userId: reward.userId,
       }));
 

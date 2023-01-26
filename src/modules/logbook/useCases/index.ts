@@ -68,7 +68,7 @@ export const createLogImpl = new CreateLogImpl(
 
 export const createRewardImpl = new CreateRewardImpl(
   uuidServiceImpl,
-  fileServiceImpl,
+  createFileImpl,
   rewardRepoImpl
 );
 
@@ -136,7 +136,7 @@ export const deleteLogbookImpl = new DeleteLogbookImpl(logbookRepoImpl);
 
 export const deleteRewardImpl = new DeleteRewardImpl(
   rewardRepoImpl,
-  fileServiceImpl
+  deleteFileImpl
 );
 
 export const getRewardImpl = new GetRewardImpl(rewardRepoImpl);
@@ -154,6 +154,7 @@ export const getEarliestLogbookYearImpl = new GetEarliestLogbookYearImpl(
 
 export const updateRewardImpl = new UpdateRewardImpl(
   uuidServiceImpl,
-  fileServiceImpl,
+  deleteFileImpl,
+  createFileImpl,
   rewardRepoImpl
 );

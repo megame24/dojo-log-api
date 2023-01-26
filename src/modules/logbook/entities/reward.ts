@@ -1,12 +1,13 @@
 import Entity from "../../shared/entities/entity";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
+import File from "./file";
 
 interface RewardProps {
   id?: string;
   userId: string;
   name: string;
   description?: string;
-  imageUrl?: string;
+  image?: File;
 }
 
 export default class Reward extends Entity {
@@ -30,8 +31,8 @@ export default class Reward extends Entity {
     return this.props.description;
   }
 
-  get imageUrl(): string | undefined {
-    return this.props.imageUrl;
+  get image(): File | undefined {
+    return this.props.image;
   }
 
   static create(props: RewardProps, uuidService: UUIDService): Reward {
