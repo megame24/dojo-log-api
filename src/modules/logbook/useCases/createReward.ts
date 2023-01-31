@@ -10,7 +10,7 @@ export interface CreateRewardDTO {
   name: string;
   description?: string;
   file?: any;
-  save?: true;
+  save?: boolean;
   user: User;
 }
 

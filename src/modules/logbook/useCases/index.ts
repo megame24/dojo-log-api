@@ -76,7 +76,6 @@ export const createGoalImpl = new CreateGoalImpl(
   uuidServiceImpl,
   createRewardImpl,
   goalRepoImpl,
-  rewardRepoImpl,
   dateServiceImpl
 );
 

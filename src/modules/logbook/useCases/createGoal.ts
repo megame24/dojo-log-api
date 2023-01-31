@@ -7,7 +7,6 @@ import Goal from "../entities/goal";
 import Logbook from "../entities/logbook";
 import Reward from "../entities/reward";
 import { GoalRepo } from "../infrastructure/repositories/goalRepo";
-import { RewardRepo } from "../infrastructure/repositories/rewardRepo";
 import { CreateReward, CreateRewardDTO } from "./createReward";
 
 interface CreateGoalDTO {
@@ -31,7 +30,6 @@ export class CreateGoalImpl implements CreateGoal {
     private uuidService: UUIDService,
     private createReward: CreateReward,
     private goalRepo: GoalRepo,
-    private rewardRepo: RewardRepo,
     private dateService: DateService
   ) {}
 
@@ -53,7 +51,6 @@ export class CreateGoalImpl implements CreateGoal {
       throw AppError.badRequestError("A Goal can't have more than 5 rewards");
     }
 
-    // extract the files and bulkUpsert that too.
     const createdRewardsPromise: Promise<Reward>[] = Object.values(
       rewardsProps
     ).map((rewardProps) => {
@@ -62,13 +59,12 @@ export class CreateGoalImpl implements CreateGoal {
         name: <string>rewardProps.name,
         userId,
         user,
+        save: true,
       };
       return this.createReward.execute(createRewardDTO);
     });
     const createdRewards = await Promise.all(createdRewardsPromise);
     rewards = [...rewards, ...createdRewards];
-
-    if (rewards.length) await this.rewardRepo.bulkUpsert(rewards, user);
 
     const createGoalProps = {
       logbookId: <string>logbook.id,
