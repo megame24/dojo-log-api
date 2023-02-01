@@ -18,8 +18,8 @@ import {
   updateGoalController,
   updateLogbookController,
   updateLogController,
+  createLogController,
 } from "../../adapters/controllers";
-import { createLogController } from "../../adapters/controllers";
 import {
   getGoalImpl,
   getLiteLogbookImpl,

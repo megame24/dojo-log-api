@@ -36,6 +36,12 @@ class LogbookAccessControl extends AccessControl {
             condition: this.pass,
           },
         ],
+        files: [
+          {
+            operation: Operation.DELETE,
+            condition: this.privateAccess,
+          },
+        ],
         rewards: [
           {
             operation: Operation.CREATE,
