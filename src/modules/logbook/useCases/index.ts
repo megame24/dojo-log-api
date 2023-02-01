@@ -25,6 +25,7 @@ import { DeleteRewardImpl } from "./deleteReward";
 import { GetCategoriesImpl } from "./getCategories";
 import { GetCategoryImpl } from "./getCategory";
 import { GetEarliestLogbookYearImpl } from "./getEarliestLogbookYear";
+import { GetFileImpl } from "./getFile";
 import { GetGoalImpl } from "./getGoal";
 import { GetLiteLogbookImpl } from "./getLiteLogbook";
 import { GetLiteRewardsImpl } from "./getLiteRewards";
@@ -157,3 +158,5 @@ export const updateRewardImpl = new UpdateRewardImpl(
   createFileImpl,
   rewardRepoImpl
 );
+
+export const getFileImpl = new GetFileImpl(fileRepoImpl);

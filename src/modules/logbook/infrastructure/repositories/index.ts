@@ -55,4 +55,4 @@ export const logbookRepoImpl = new LogbookRepoImpl(
   logRepoImpl
 );
 
-export const fileRepoImpl = new FileRepoImpl(File);
+export const fileRepoImpl = new FileRepoImpl(File, uuidServiceImpl);
