@@ -10,9 +10,8 @@ export interface GoalProps {
   userId: string;
   visibility: Visibility;
   name: string;
-  description?: string; // TODO: remove
   achieved: boolean;
-  achievementCriteria: string; // TODO: make optional
+  achievementCriteria?: string;
   date: Date;
   rewards?: Reward[];
 }
@@ -42,15 +41,11 @@ export default class Goal extends Entity {
     return this.props.logbookId;
   }
 
-  get description(): string | undefined {
-    return this.props.description;
-  }
-
   get achieved(): boolean {
     return this.props.achieved;
   }
 
-  get achievementCriteria(): string {
+  get achievementCriteria(): string | undefined {
     return this.props.achievementCriteria;
   }
 
@@ -114,11 +109,6 @@ export default class Goal extends Entity {
     this.validateProp(
       { date: props.date, id: props.id, dateService },
       this.validateDate
-    );
-
-    this.validateProp(
-      { key: "achievementCriteria", value: props.achievementCriteria },
-      this.isRequiredValidation
     );
 
     if (!props.achieved) props.achieved = false;
