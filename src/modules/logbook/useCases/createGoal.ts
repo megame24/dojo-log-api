@@ -13,8 +13,7 @@ interface CreateGoalDTO {
   userId: string;
   logbook: Logbook;
   name: string;
-  description?: string;
-  achievementCriteria: string;
+  achievementCriteria?: string;
   date: Date;
   rewards: Reward[];
   rewardsProps: Partial<CreateRewardDTO>[];
@@ -71,7 +70,6 @@ export class CreateGoalImpl implements CreateGoal {
       visibility: logbook.visibility,
       userId,
       name: createGoalDTO.name,
-      description: createGoalDTO.description,
       achieved: false,
       achievementCriteria: createGoalDTO.achievementCriteria,
       date,

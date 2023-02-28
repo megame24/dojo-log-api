@@ -45,10 +45,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      description: {
-        type: DataTypes.TEXT,
-        allowNull: true,
-      },
       achieved: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
@@ -56,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       achievementCriteria: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
       },
       date: {
         type: DataTypes.DATE,

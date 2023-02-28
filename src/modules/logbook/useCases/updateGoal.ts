@@ -61,7 +61,6 @@ export class UpdateGoalImpl implements UpdateGoal {
       userId: outdatedGoal.userId,
       visibility: outdatedGoal.visibility,
       name: outdatedGoal.name,
-      description: outdatedGoal.description,
       achievementCriteria: outdatedGoal.achievementCriteria,
       date: outdatedGoal.date,
       achieved: outdatedGoal.achieved,

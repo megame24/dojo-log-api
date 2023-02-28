@@ -12,11 +12,12 @@ export default class CreateGoalController extends Adapter {
 
   async execute(req: any, res: any, next: any) {
     try {
-      const { body, files, user, logbook, rewards } = req;
+      const { body, files, user, logbook } = req;
       const rewardsProps = body.rewardsProps
         ? JSON.parse(body.rewardsProps)
         : {};
-      const date = this.dateService.getTimelessDate(body.date);
+      const rewards = body.rewards ? JSON.parse(body.rewards) : [];
+      const date = this.dateService.getTimelessDate(body.dueDate);
 
       files?.forEach((file: any) => {
         if (rewardsProps[file.fieldname])
@@ -27,7 +28,6 @@ export default class CreateGoalController extends Adapter {
         userId: logbook.userId,
         logbook,
         name: body.name,
-        description: body.description,
         achievementCriteria: body.achievementCriteria,
         date,
         rewards,
