@@ -32,7 +32,7 @@ export class DateServiceImpl implements DateService {
     return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
-  // this function is buggy
+  // this function might be buggy
   getTimelessDate(date: Date | string): Date {
     date = this.convertDateStringToDate(date);
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());

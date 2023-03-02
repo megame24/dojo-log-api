@@ -115,6 +115,7 @@ export default class Logbook extends Entity {
         heatmap[dayOfYear] = {
           logs: {
             count: 1,
+            date: dateService.getTimelessDate(log.date),
             totalDurationOfWork: log.durationOfWork,
             logIds: [log.id],
           },

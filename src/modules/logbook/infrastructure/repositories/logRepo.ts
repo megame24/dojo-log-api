@@ -79,6 +79,22 @@ export class LogRepoImpl implements LogRepo {
     if (!logsData.length) return [];
 
     const logs: Log[] = logsData.map((logData: any) => {
+      const fileData = logData?.Files[0];
+
+      let proofOfWork;
+      if (fileData) {
+        const createFileProps = {
+          id: fileData.id,
+          userId: fileData.userId,
+          rewardId: fileData.rewardId,
+          type: fileData.type,
+          url: fileData.url,
+          name: fileData.name,
+        };
+
+        proofOfWork = File.create(createFileProps, this.uuidService);
+      }
+
       const createLogProps = {
         id: logData.id,
         userId: logData.userId,
@@ -87,6 +103,7 @@ export class LogRepoImpl implements LogRepo {
         date: logData.date,
         message: logData.message,
         durationOfWork: logData.durationOfWork,
+        proofOfWork,
       };
 
       return Log.create(createLogProps, this.uuidService);
@@ -109,6 +126,7 @@ export class LogRepoImpl implements LogRepo {
           [this.Op.lte]: endDate,
         },
       },
+      include: { model: this.FileModel, required: false },
     };
 
     const logbookData = await this.LogbookModel.findByPk(logbookId);
