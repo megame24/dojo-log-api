@@ -11,7 +11,7 @@ import { DeleteFile } from "./deleteFile";
 export interface UpdateLogDTO {
   log: Log;
   message?: string;
-  durationOfWork?: string;
+  durationOfWorkInMinutes?: number;
   file?: any;
   user: User;
 }
@@ -34,7 +34,7 @@ export class UpdateLogImpl implements UpdateLog {
       log: outdatedLog,
       file,
       message,
-      durationOfWork,
+      durationOfWorkInMinutes,
       user,
     } = updateLogDTO;
 
@@ -53,10 +53,10 @@ export class UpdateLogImpl implements UpdateLog {
       visibility: outdatedLog.visibility,
       date: outdatedLog.date,
       message: outdatedLog.message,
-      durationOfWork: outdatedLog.durationOfWork,
+      durationOfWorkInMinutes: outdatedLog.durationOfWorkInMinutes,
       proofOfWork: outdatedLog.proofOfWork,
       ...(message && { message }),
-      ...(durationOfWork && { durationOfWork }),
+      ...(durationOfWorkInMinutes && { durationOfWorkInMinutes }),
     };
 
     let newProofOfWork;

@@ -10,7 +10,8 @@ interface CreateLogDTO {
   userId: string;
   logbook: Logbook;
   message: string;
-  durationOfWork?: string;
+  durationOfWorkInMinutes: number;
+  date: Date;
   file?: any;
   user: User;
 }
@@ -33,9 +34,9 @@ export class CreateLogImpl implements CreateLog {
       userId,
       logbookId: <string>createLogDTO.logbook.id,
       visibility: createLogDTO.logbook.visibility,
-      date: new Date(), // reexamine this!!!!
+      date: createLogDTO.date, // reexamine this!!!!
       message: createLogDTO.message,
-      durationOfWork: createLogDTO.durationOfWork,
+      durationOfWorkInMinutes: createLogDTO.durationOfWorkInMinutes,
     };
     const log = Log.create(createLogProps, this.uuidService);
 

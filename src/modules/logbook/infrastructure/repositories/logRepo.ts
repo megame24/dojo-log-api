@@ -33,7 +33,7 @@ export class LogRepoImpl implements LogRepo {
         logbookId: log.logbookId,
         date: log.date,
         message: log.message,
-        durationOfWork: log.durationOfWork,
+        durationOfWorkInMinutes: log.durationOfWorkInMinutes,
         createdBy: createdBy.id,
       };
       await this.LogModel.create(createLogProps);
@@ -50,7 +50,7 @@ export class LogRepoImpl implements LogRepo {
         logbookId: log.logbookId,
         date: log.date,
         message: log.message,
-        durationOfWork: log.durationOfWork,
+        durationOfWorkInMinutes: log.durationOfWorkInMinutes,
         updatedBy: updatedBy.id,
       };
       await this.LogModel.update(updateLogProps, { where: { id: log.id } });
@@ -102,7 +102,7 @@ export class LogRepoImpl implements LogRepo {
         visibility: logbookData.visibility,
         date: logData.date,
         message: logData.message,
-        durationOfWork: logData.durationOfWork,
+        durationOfWorkInMinutes: logData.durationOfWorkInMinutes,
         proofOfWork,
       };
 
@@ -169,7 +169,7 @@ export class LogRepoImpl implements LogRepo {
       visibility: logData.Logbook.visibility,
       date: logData.date,
       message: logData.message,
-      durationOfWork: logData.durationOfWork,
+      durationOfWorkInMinutes: logData.durationOfWorkInMinutes,
       proofOfWork,
     };
 

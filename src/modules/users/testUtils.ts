@@ -59,6 +59,7 @@ export class MockEmailService implements EmailService {
 }
 
 export class MockDateService implements DateService {
+  timezone: string | undefined;
   getDayOfYear = jest.fn();
   getDateInUTC = jest.fn();
   getTimelessDate = jest.fn();
@@ -69,5 +70,8 @@ export class MockDateService implements DateService {
   getEndOfCurrentYear = jest.fn();
   getStartOfCurrentMonth = jest.fn();
   getEndOfCurrentMonth = jest.fn();
-  subtractDate = jest.fn();
+  subtractTimeFromDate = jest.fn();
+  getEndOfDay = jest.fn();
+  getTimelessDateInUTCTimeZone = jest.fn();
+  getTimelessDateInLocalTimeZone = jest.fn();
 }

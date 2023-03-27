@@ -19,7 +19,7 @@ export default class GetLogbooksController extends Adapter {
 
       if (!startDateString || !endDateString) {
         endDate = this.dateService.addTimeToDate(new Date(), 2, "d");
-        startDate = this.dateService.subtractDate(endDate, 9, "d");
+        startDate = this.dateService.subtractTimeFromDate(endDate, 9, "d");
       } else {
         startDate = this.dateService.getTimelessDate(startDateString);
         endDate = this.dateService.getTimelessDate(endDateString);

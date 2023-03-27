@@ -112,7 +112,7 @@ export const deleteLogImpl = new DeleteLogImpl(
   dateServiceImpl
 );
 
-export const getLogsImpl = new GetLogsImpl(logRepoImpl);
+export const getLogsImpl = new GetLogsImpl(logRepoImpl, dateServiceImpl);
 
 export const updateLogbookImpl = new UpdateLogbookImpl(
   logbookRepoImpl,
