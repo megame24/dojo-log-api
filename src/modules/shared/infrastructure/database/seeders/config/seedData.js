@@ -195,7 +195,7 @@ function generateLogs() {
         userId,
         createdBy: userId,
         message: `Did work ${j}`,
-        durationOfWork: `${randomNumber(1, 19)}h`,
+        durationOfWorkInMinutes: randomNumber(1, 1380),
         date: randomDateIn2022(),
         createdAt: new Date(),
         updatedAt: new Date(),

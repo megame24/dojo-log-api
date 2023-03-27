@@ -1,3 +1,4 @@
+import { DateService } from "../../shared/infrastructure/services/dateService";
 import UseCase from "../../shared/useCases/useCase";
 import Log from "../entities/log";
 import { LogRepo } from "../infrastructure/repositories/logRepo";
@@ -12,16 +13,12 @@ export interface GetLogs extends UseCase<GetLogsDTO, Promise<Log[]>> {
 }
 
 export class GetLogsImpl implements GetLogs {
-  constructor(private logRepo: LogRepo) {}
+  constructor(private logRepo: LogRepo, private dateService: DateService) {}
 
   async execute(getLogsDTO: GetLogsDTO): Promise<Log[]> {
     const { logbookId, date: startDate } = getLogsDTO;
 
-    const endDate = new Date(
-      startDate.getFullYear(),
-      startDate.getMonth(),
-      startDate.getDate() + 1
-    );
+    const endDate = this.dateService.addTimeToDate(startDate, 24, "h"); // review this!!!
 
     const logs = await this.logRepo.getLogsByLogbookIdStartAndEndDates(
       logbookId,

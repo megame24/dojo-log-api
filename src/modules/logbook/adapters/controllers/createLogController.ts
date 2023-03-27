@@ -11,7 +11,8 @@ export default class CreateLogController extends Adapter {
       userId: req.logbook.userId, // use the userId from the logbook, incase of logbook sharing
       logbook: req.logbook,
       message: req.body.message,
-      durationOfWork: req.body.durationOfWork,
+      durationOfWorkInMinutes: req.body.durationOfWorkInMinutes,
+      date: req.body.date,
       user: req.user,
       ...(req.files && { file: req.files[0] }),
     };

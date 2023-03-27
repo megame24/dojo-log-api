@@ -23,6 +23,6 @@ export default class EndpointPermission {
     if (!policy.inherits) return false;
 
     role = policy.inherits;
-    return this.hasPermission({ ...props, role });
+    return EndpointPermission.hasPermission({ ...props, role });
   }
 }

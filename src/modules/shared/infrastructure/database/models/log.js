@@ -41,9 +41,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      durationOfWork: {
-        type: DataTypes.STRING,
-        allowNull: true,
+      durationOfWorkInMinutes: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
       },
       date: {
         type: DataTypes.DATE,

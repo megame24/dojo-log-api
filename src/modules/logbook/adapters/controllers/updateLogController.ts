@@ -10,7 +10,7 @@ export default class UpdateLogController extends Adapter {
     const updateLogDTO = {
       log: req.log,
       message: req.body.message,
-      durationOfWork: req.body.durationOfWork,
+      durationOfWorkInMinutes: req.body.durationOfWorkInMinutes,
       file: null,
       user: req.user,
     };

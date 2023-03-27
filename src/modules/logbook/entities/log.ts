@@ -10,15 +10,11 @@ interface LogProps {
   visibility: Visibility;
   date: Date;
   message: string;
-  durationOfWork?: string;
-  // make proofOfWork it's own entity in the future !!!!!!
+  durationOfWorkInMinutes: number;
   proofOfWork?: File;
 }
 
 export default class Log extends Entity {
-  private static durationOfWorkRegEx =
-    /^(2[0-3][h]|[0-1]?[0-9][h])$|^((([0]?|[1-5]{1})[0-9])[m])$|^((2[0-3][h]|[0-1]?[0-9][h])\s((([0]?|[1-5]{1})[0-9])[m]))$/;
-
   private constructor(private props: LogProps, uuidService: UUIDService) {
     super(props, uuidService);
   }
@@ -47,8 +43,8 @@ export default class Log extends Entity {
     return this.props.message;
   }
 
-  get durationOfWork(): string | undefined {
-    return this.props.durationOfWork;
+  get durationOfWorkInMinutes(): number {
+    return this.props.durationOfWorkInMinutes;
   }
 
   get proofOfWork(): File | undefined {
@@ -56,10 +52,10 @@ export default class Log extends Entity {
   }
 
   private static validateDurationOfWork(
-    durationOfWork: string
+    durationOfWorkInMinutes: number
   ): ValidationResult {
-    if (!Log.durationOfWorkRegEx.test(durationOfWork)) {
-      return { isValid: false, message: "Invalid duration of work format" };
+    if (isNaN(durationOfWorkInMinutes)) {
+      return { isValid: false, message: "Duration of work must be a number" };
     }
     return Log.validValidationResult;
   }
@@ -90,9 +86,10 @@ export default class Log extends Entity {
       this.isRequiredValidation
     );
 
-    if (props.durationOfWork) {
-      this.validateProp(props.durationOfWork, this.validateDurationOfWork);
-    }
+    this.validateProp(
+      props.durationOfWorkInMinutes,
+      this.validateDurationOfWork
+    );
 
     return new Log(props, uuidService);
   }
