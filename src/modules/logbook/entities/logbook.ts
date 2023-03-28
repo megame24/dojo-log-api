@@ -76,7 +76,8 @@ export default class Logbook extends Entity {
         heatmap[dayOfYear] = {
           logs: {
             count: 1,
-            date: dateService.getTimelessDateInLocalTimeZone(log.date), // REWORK this to start and end dates!!!!!!!! Use day of year to do date check on the api???
+            startDate: log.date,
+            endDate: log.date,
             totalDurationOfWorkInMinutes: log.durationOfWorkInMinutes,
             logIds: [log.id],
           },
@@ -86,6 +87,14 @@ export default class Logbook extends Entity {
         heatmap[dayOfYear].logs.totalDurationOfWorkInMinutes +=
           log.durationOfWorkInMinutes;
         heatmap[dayOfYear].logs.logIds.push(log.id);
+        heatmap[dayOfYear].logs.startDate =
+          log.date < heatmap[dayOfYear].logs.startDate
+            ? log.date
+            : heatmap[dayOfYear].logs.startDate;
+        heatmap[dayOfYear].logs.endDate =
+          log.date > heatmap[dayOfYear].logs.endDate
+            ? log.date
+            : heatmap[dayOfYear].logs.endDate;
       }
     });
   }
