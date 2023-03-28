@@ -10,12 +10,11 @@ export default class GetLogsController extends Adapter {
   async execute(req: any, res: any, next: any) {
     try {
       const { query, logbook } = req;
-      console.log(query.date, "NNNNNNNNNNNNNN");
-      // const date = this.dateService.getTimelessDateInUTCTimeZone(query.date);
 
       const getLogsDTO = {
         logbookId: logbook.id,
-        date: query.date,
+        startDate: query.startDate,
+        endDate: query.endDate,
       };
 
       const logs = await this.getLogs.execute(getLogsDTO);
