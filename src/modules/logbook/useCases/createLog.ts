@@ -34,7 +34,7 @@ export class CreateLogImpl implements CreateLog {
       userId,
       logbookId: <string>createLogDTO.logbook.id,
       visibility: createLogDTO.logbook.visibility,
-      date: createLogDTO.date, // reexamine this!!!!
+      date: createLogDTO.date,
       message: createLogDTO.message,
       durationOfWorkInMinutes: createLogDTO.durationOfWorkInMinutes,
     };

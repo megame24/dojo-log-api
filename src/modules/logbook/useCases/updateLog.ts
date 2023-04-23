@@ -38,10 +38,15 @@ export class UpdateLogImpl implements UpdateLog {
       user,
     } = updateLogDTO;
 
-    const outdatedLogDateInUTC = this.dateService.getDateInUTC(
-      outdatedLog.date
+    // NOTE: we want to do time check in client's timezone when deleting log
+    const outdatedLogDateInUTC = this.dateService.getTimelessTimestamp(
+      outdatedLog.date,
+      true
     );
-    const todayDateInUTC = this.dateService.getDateInUTC(new Date());
+    const todayDateInUTC = this.dateService.getTimelessTimestamp(
+      new Date(),
+      true
+    );
 
     if (outdatedLogDateInUTC !== todayDateInUTC)
       throw AppError.badRequestError("Can't update previous days' logs");

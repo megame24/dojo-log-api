@@ -58,6 +58,7 @@ export default class Goal extends Entity {
   }
 
   private static formatDate(date: Date, dateService: DateService): Date {
+    // Rethink this!!!
     return dateService.getTimelessDate(date);
   }
 
