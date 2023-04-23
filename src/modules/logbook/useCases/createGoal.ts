@@ -33,9 +33,9 @@ export class CreateGoalImpl implements CreateGoal {
   ) {}
 
   async execute(createGoalDTO: CreateGoalDTO): Promise<Goal> {
-    const { rewardsProps, userId, logbook, date, user } = createGoalDTO;
+    const { rewardsProps, userId, logbook, date, user } = createGoalDTO; // send date in iso
     let { rewards } = createGoalDTO;
-
+    //  GET START OF TODAY AND END OF TODAY, MUST BE INBETWEEN, EDGE INCLUSIVE!!!
     const existingGoal = await this.goalRepo.getGoalByLogbookIdAndDate(
       <string>logbook.id,
       date

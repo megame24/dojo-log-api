@@ -1,12 +1,8 @@
 import Adapter from "../../../shared/adapters/adapter";
-import { DateService } from "../../../shared/infrastructure/services/dateService";
 import { GetLogbooks } from "../../useCases/getLogbooks";
 
 export default class GetLogbooksController extends Adapter {
-  constructor(
-    private getLogbooks: GetLogbooks,
-    private dateService: DateService
-  ) {
+  constructor(private getLogbooks: GetLogbooks) {
     super();
   }
 
@@ -14,16 +10,8 @@ export default class GetLogbooksController extends Adapter {
     try {
       const { userId, startDateString, endDateString } = req.query;
 
-      let startDate: Date;
-      let endDate: Date;
-
-      if (!startDateString || !endDateString) {
-        endDate = this.dateService.addTimeToDate(new Date(), 2, "d");
-        startDate = this.dateService.subtractTimeFromDate(endDate, 9, "d");
-      } else {
-        startDate = this.dateService.getTimelessDate(startDateString);
-        endDate = this.dateService.getTimelessDate(endDateString);
-      }
+      const startDate = startDateString;
+      const endDate = endDateString;
 
       const getLogbooksDTO = {
         userId,

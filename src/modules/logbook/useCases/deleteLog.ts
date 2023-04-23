@@ -23,10 +23,17 @@ export class DeleteLogImpl implements DeleteLog {
   async execute(deleteLogDTO: DeleteLogDTO) {
     const { log } = deleteLogDTO;
 
-    const logDateInUTC = this.dateService.getDateInUTC(log.date);
-    const todayDateInUTC = this.dateService.getDateInUTC(new Date());
+    // NOTE: we want to do time check in client's timezone when deleting log
+    const logDateTimestamp = this.dateService.getTimelessTimestamp(
+      log.date,
+      true
+    );
+    const todayDateInTimestamp = this.dateService.getTimelessTimestamp(
+      new Date(),
+      true
+    );
 
-    if (todayDateInUTC !== logDateInUTC)
+    if (todayDateInTimestamp !== logDateTimestamp)
       throw AppError.badRequestError("Can't delete previous days' logs");
 
     if (log.proofOfWork) {

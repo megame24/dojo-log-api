@@ -59,10 +59,7 @@ export const createGoalController = new CreateGoalController(
   dateServiceImpl
 );
 
-export const getLogbookController = new GetLogbookController(
-  getLogbookImpl,
-  dateServiceImpl
-);
+export const getLogbookController = new GetLogbookController(getLogbookImpl);
 
 export const updateGoalController = new UpdateGoalController(updateGoalImpl);
 
@@ -81,10 +78,7 @@ export const updateLogbookController = new UpdateLogbookController(
 
 export const getRewardsController = new GetRewardsController(getRewardsImpl);
 
-export const getLogbooksController = new GetLogbooksController(
-  getLogbooksImpl,
-  dateServiceImpl
-);
+export const getLogbooksController = new GetLogbooksController(getLogbooksImpl);
 
 export const deleteCategoryController = new DeleteCategoryController(
   deleteCategoryImpl

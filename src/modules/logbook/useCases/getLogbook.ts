@@ -19,6 +19,10 @@ export class GetLogbookImpl implements GetLogbook {
   async execute(getLogbookDTO: GetLogbookDTO): Promise<Logbook> {
     const { logbookId, startDate, endDate } = getLogbookDTO;
 
+    if (!startDate || !endDate) {
+      throw AppError.badRequestError("start and end dates required");
+    }
+
     const logbook = await this.logbookRepo.getLogbookById(logbookId, {
       startDate,
       endDate,
