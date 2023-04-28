@@ -71,11 +71,7 @@ export class UpdateGoalImpl implements UpdateGoal {
       updateGoalProps.achieved = achieved;
     }
 
-    const updatedGoal = Goal.create(
-      updateGoalProps,
-      this.uuidService,
-      this.dateService
-    );
+    const updatedGoal = Goal.create(updateGoalProps, this.uuidService);
 
     const outdatedRewards = outdatedGoal.rewards || [];
     await this.goalRepo.update(updatedGoal, outdatedRewards, user);

@@ -76,8 +76,7 @@ export const createRewardImpl = new CreateRewardImpl(
 export const createGoalImpl = new CreateGoalImpl(
   uuidServiceImpl,
   createRewardImpl,
-  goalRepoImpl,
-  dateServiceImpl
+  goalRepoImpl
 );
 
 export const getLogbookImpl = new GetLogbookImpl(logbookRepoImpl);
