@@ -17,8 +17,6 @@ export default class CreateGoalController extends Adapter {
         ? JSON.parse(body.rewardsProps)
         : {};
       const rewards = body.rewards ? JSON.parse(body.rewards) : [];
-      // Rethink this!!! Maybe just use what was sent from UI which should be in UTC
-      const date = this.dateService.getTimelessDate(body.dueDate);
 
       files?.forEach((file: any) => {
         if (rewardsProps[file.fieldname])
@@ -30,7 +28,7 @@ export default class CreateGoalController extends Adapter {
         logbook,
         name: body.name,
         achievementCriteria: body.achievementCriteria,
-        date,
+        date: body.dueDate,
         rewards,
         rewardsProps,
         user,

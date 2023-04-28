@@ -1,5 +1,4 @@
 import AppError from "../../shared/AppError";
-import { DateService } from "../../shared/infrastructure/services/dateService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
 import { User } from "../../users/api";
@@ -28,8 +27,7 @@ export class CreateGoalImpl implements CreateGoal {
   constructor(
     private uuidService: UUIDService,
     private createReward: CreateReward,
-    private goalRepo: GoalRepo,
-    private dateService: DateService
+    private goalRepo: GoalRepo
   ) {}
 
   async execute(createGoalDTO: CreateGoalDTO): Promise<Goal> {
@@ -76,11 +74,7 @@ export class CreateGoalImpl implements CreateGoal {
       rewards,
     };
 
-    const goal = Goal.create(
-      createGoalProps,
-      this.uuidService,
-      this.dateService
-    );
+    const goal = Goal.create(createGoalProps, this.uuidService);
 
     await this.goalRepo.create(goal, user);
     return goal;

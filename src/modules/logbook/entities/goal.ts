@@ -1,5 +1,4 @@
 import Entity, { ValidationResult } from "../../shared/entities/entity";
-import { DateService } from "../../shared/infrastructure/services/dateService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import { Visibility } from "./logbook";
 import Reward from "./reward";
@@ -57,33 +56,21 @@ export default class Goal extends Entity {
     return this.props.rewards;
   }
 
-  private static formatDate(date: Date, dateService: DateService): Date {
-    // Rethink this!!!
-    return dateService.getTimelessDate(date);
-  }
-
   private static validateDate(prop: {
     date: Date;
     id: string | undefined;
-    dateService: DateService;
   }): ValidationResult {
-    const { date, id, dateService } = prop;
+    const { date, id } = prop;
     // only check for backdating on create
     if (id) return Goal.validValidationResult;
 
-    const now = new Date();
-    const beginningOfToday = Goal.formatDate(now, dateService);
-    if (date < beginningOfToday) {
+    if (new Date(date) < new Date()) {
       return { isValid: false, message: "Can't set Goal date in the past" };
     }
     return Goal.validValidationResult;
   }
 
-  static create(
-    props: GoalProps,
-    uuidService: UUIDService,
-    dateService: DateService
-  ): Goal {
+  static create(props: GoalProps, uuidService: UUIDService): Goal {
     this.validateProp(
       { key: "logbookId", value: props.logbookId },
       this.isRequiredValidation
@@ -106,11 +93,7 @@ export default class Goal extends Entity {
       { key: "date", value: props.date },
       this.isRequiredValidation
     );
-    props.date = this.formatDate(props.date, dateService);
-    this.validateProp(
-      { date: props.date, id: props.id, dateService },
-      this.validateDate
-    );
+    this.validateProp({ date: props.date, id: props.id }, this.validateDate);
 
     if (!props.achieved) props.achieved = false;
 
