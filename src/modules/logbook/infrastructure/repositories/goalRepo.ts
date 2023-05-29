@@ -1,6 +1,7 @@
 import AppError from "../../../shared/AppError";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
 import { User } from "../../../users/api";
+import File from "../../entities/file";
 import Goal from "../../entities/goal";
 import Reward from "../../entities/reward";
 
@@ -25,6 +26,7 @@ export class GoalRepoImpl implements GoalRepo {
     private GoalModel: any,
     private RewardModel: any,
     private LogbookModel: any,
+    private FileModel: any,
     private Op: any
   ) {}
 
@@ -62,11 +64,28 @@ export class GoalRepoImpl implements GoalRepo {
     if (!goalData) return null;
 
     const rewards = goalData.Rewards?.map((rewardData: any) => {
+      const fileData = rewardData?.Files[0];
+
+      let image;
+      if (fileData) {
+        const createFileProps = {
+          id: fileData.id,
+          userId: fileData.userId,
+          rewardId: fileData.rewardId,
+          type: fileData.type,
+          url: fileData.url,
+          name: fileData.name,
+        };
+
+        image = File.create(createFileProps, this.uuidService);
+      }
+
       const createRewardProps = {
         id: rewardData.id,
         userId: rewardData.userId,
         name: rewardData.name,
         description: rewardData.description,
+        image,
       };
 
       return Reward.create(createRewardProps, this.uuidService);
@@ -111,7 +130,6 @@ export class GoalRepoImpl implements GoalRepo {
           userId: rewardData.userId,
           name: rewardData.name,
           description: rewardData.description,
-          imageUrl: rewardData.imageUrl,
         };
 
         return Reward.create(createRewardProps, this.uuidService);
@@ -152,7 +170,11 @@ export class GoalRepoImpl implements GoalRepo {
       where: { id: goalId },
       include: [
         { model: this.LogbookModel, required: true },
-        { model: this.RewardModel, required: false },
+        {
+          model: this.RewardModel,
+          required: false,
+          include: [{ model: this.FileModel, required: false }],
+        },
       ],
     };
 

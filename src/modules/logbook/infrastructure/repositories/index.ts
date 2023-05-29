@@ -1,4 +1,5 @@
 import models from "../../../shared/infrastructure/database/models";
+import file from "../../../shared/infrastructure/database/models/file";
 import {
   dateServiceImpl,
   uuidServiceImpl,
@@ -42,6 +43,7 @@ export const goalRepoImpl = new GoalRepoImpl(
   Goal,
   Reward,
   Logbook,
+  File,
   Op
 );
 

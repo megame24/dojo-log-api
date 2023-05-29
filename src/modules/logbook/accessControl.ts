@@ -5,6 +5,9 @@ import {
 } from "../shared/accessControl";
 import { Role } from "../users/api";
 
+// TODO: write a documentation for this!!!!
+// TODO: make everything private access for first release!
+
 class LogbookAccessControl extends AccessControl {
   private policy: any = {
     ADMIN: {
@@ -96,6 +99,10 @@ class LogbookAccessControl extends AccessControl {
           {
             operation: Operation.UPDATE,
             condition: this.privateAccess,
+          },
+          {
+            operation: Operation.GET_ONE,
+            condition: this.privatePublicAccess,
           },
         ],
       },
