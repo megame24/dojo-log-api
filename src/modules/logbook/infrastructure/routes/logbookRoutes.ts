@@ -19,6 +19,7 @@ import {
   updateLogbookController,
   updateLogController,
   createLogController,
+  getGoalController,
 } from "../../adapters/controllers";
 import {
   getGoalImpl,
@@ -171,6 +172,18 @@ logbookRouter.post(
     ],
   }),
   createGoalController.execute
+);
+
+logbookRouter.get(
+  "/:logbookId/goals/:goalId",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.GET_ONE,
+    resourceType: "goals",
+    resourcesForAccessCheck: [{ name: "goal", getResource: getGoalImpl }],
+  }),
+  getGoalController.execute
 );
 
 logbookRouter.put(

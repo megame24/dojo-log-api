@@ -1,9 +1,8 @@
 import Adapter from "../../../shared/adapters/adapter";
-import { DateService } from "../../../shared/infrastructure/services/dateService";
 import { GetLogs } from "../../useCases/getLogs";
 
 export default class GetLogsController extends Adapter {
-  constructor(private getLogs: GetLogs, private dateService: DateService) {
+  constructor(private getLogs: GetLogs) {
     super();
   }
 

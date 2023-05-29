@@ -34,6 +34,7 @@ import DeleteLogController from "./deleteLogController";
 import DeleteRewardController from "./deleteRewardController";
 import GetCategoriesController from "./getCategoriesController";
 import GetEarliestLogbookYearController from "./getEarliestLogbookYearController";
+import GetGoalController from "./getGoalController";
 import GetLogbookController from "./getLogbookController";
 import GetLogbooksController from "./getLogbooksController";
 import GetLogsController from "./getLogsController";
@@ -67,10 +68,7 @@ export const updateLogController = new UpdateLogController(updateLogImpl);
 
 export const deleteLogController = new DeleteLogController(deleteLogImpl);
 
-export const getLogsController = new GetLogsController(
-  getLogsImpl,
-  dateServiceImpl
-);
+export const getLogsController = new GetLogsController(getLogsImpl);
 
 export const updateLogbookController = new UpdateLogbookController(
   updateLogbookImpl
@@ -112,3 +110,5 @@ export const updateRewardController = new UpdateRewardController(
 );
 
 export const deleteFileController = new DeleteFileController(deleteFileImpl);
+
+export const getGoalController = new GetGoalController();
