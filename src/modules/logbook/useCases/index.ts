@@ -85,8 +85,7 @@ export const updateGoalImpl = new UpdateGoalImpl(
   createRewardImpl,
   goalRepoImpl,
   rewardRepoImpl,
-  uuidServiceImpl,
-  dateServiceImpl
+  uuidServiceImpl
 );
 
 export const deleteFileImpl = new DeleteFileImpl(fileRepoImpl, fileServiceImpl);

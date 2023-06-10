@@ -79,7 +79,7 @@ export class LogRepoImpl implements LogRepo {
     if (!logsData.length) return [];
 
     const logs: Log[] = logsData.map((logData: any) => {
-      const fileData = logData?.Files[0];
+      const fileData = logData?.Files ? logData?.Files[0] : undefined;
 
       let proofOfWork;
       if (fileData) {
@@ -146,7 +146,7 @@ export class LogRepoImpl implements LogRepo {
 
     if (!logData) return null;
 
-    const fileData = logData?.Files[0];
+    const fileData = logData?.Files ? logData?.Files[0] : undefined;
 
     let proofOfWork;
     if (fileData) {

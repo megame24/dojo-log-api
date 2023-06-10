@@ -7,10 +7,11 @@ import Reward from "../entities/reward";
 import Goal from "../entities/goal";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import { User } from "../../users/api";
-import { DateService } from "../../shared/infrastructure/services/dateService";
 
 interface UpdateGoalDTO {
   goal: Goal;
+  name: string;
+  achievementCriteria: string;
   achieved: boolean;
   rewards: Reward[];
   rewardsProps: Partial<CreateRewardDTO>[];
@@ -26,12 +27,18 @@ export class UpdateGoalImpl implements UpdateGoal {
     private createReward: CreateReward,
     private goalRepo: GoalRepo,
     private rewardRepo: RewardRepo,
-    private uuidService: UUIDService,
-    private dateService: DateService
+    private uuidService: UUIDService
   ) {}
 
   async execute(updateGoalDTO: UpdateGoalDTO) {
-    const { rewardsProps, achieved, goal: outdatedGoal, user } = updateGoalDTO;
+    const {
+      rewardsProps,
+      name,
+      achievementCriteria,
+      achieved,
+      goal: outdatedGoal,
+      user,
+    } = updateGoalDTO;
     let { rewards } = updateGoalDTO;
 
     const rewardsLength = Object.keys(rewardsProps).length + rewards.length;
@@ -60,8 +67,9 @@ export class UpdateGoalImpl implements UpdateGoal {
       logbookId: outdatedGoal.logbookId,
       userId: outdatedGoal.userId,
       visibility: outdatedGoal.visibility,
-      name: outdatedGoal.name,
-      achievementCriteria: outdatedGoal.achievementCriteria,
+      name: name || outdatedGoal.name,
+      achievementCriteria:
+        achievementCriteria || outdatedGoal.achievementCriteria,
       date: outdatedGoal.date,
       achieved: outdatedGoal.achieved,
       ...(rewards.length && { rewards }),

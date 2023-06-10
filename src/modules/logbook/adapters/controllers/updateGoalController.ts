@@ -21,6 +21,8 @@ export default class UpdateGoalController extends Adapter {
 
       const updateGoalDTO = {
         goal,
+        name: body.name,
+        achievementCriteria: body.achievementCriteria,
         achieved,
         rewards,
         rewardsProps,
