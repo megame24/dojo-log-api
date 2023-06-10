@@ -26,7 +26,7 @@ export class RewardRepoImpl implements RewardRepo {
       const rewardsData: any[] = await this.RewardModel.findAll(queryOption);
 
       const rewards = rewardsData.map((rewardData) => {
-        const fileData = rewardData?.Files[0];
+        const fileData = rewardData?.Files ? rewardData?.Files[0] : undefined;
 
         let image;
         if (fileData) {
@@ -115,7 +115,7 @@ export class RewardRepoImpl implements RewardRepo {
 
     if (!rewardData) return null;
 
-    const fileData = rewardData?.Files[0];
+    const fileData = rewardData?.Files ? rewardData?.Files[0] : undefined;
 
     let image;
     if (fileData) {

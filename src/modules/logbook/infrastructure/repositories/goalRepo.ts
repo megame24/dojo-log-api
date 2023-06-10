@@ -64,7 +64,7 @@ export class GoalRepoImpl implements GoalRepo {
     if (!goalData) return null;
 
     const rewards = goalData.Rewards?.map((rewardData: any) => {
-      const fileData = rewardData?.Files[0];
+      const fileData = rewardData?.Files ? rewardData?.Files[0] : undefined;
 
       let image;
       if (fileData) {
