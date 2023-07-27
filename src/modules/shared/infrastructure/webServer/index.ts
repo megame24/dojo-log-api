@@ -39,6 +39,11 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
     .json({ message: unhandledError.message });
 });
 
+app.get("/health", (req, res) => {
+  res.status(200);
+  res.send("healthy");
+});
+
 app.listen(PORT, () => {
   console.info(`Server up and running on port ${PORT}`);
 });
