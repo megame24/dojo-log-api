@@ -20,6 +20,11 @@ if (!IS_PRODUCTION) app.use(morgan("dev"));
 
 app.use(appRouter);
 
+app.get("/health", (req, res) => {
+  res.status(200);
+  res.send("healthy");
+});
+
 // handle 404 endpoints
 app.use((req: Request, res: Response, next: NextFunction) => {
   next(AppError.notFoundError());
@@ -37,11 +42,6 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   return res
     .status(unhandledError.statusCode)
     .json({ message: unhandledError.message });
-});
-
-app.get("/health", (req, res) => {
-  res.status(200);
-  res.send("healthy");
 });
 
 app.listen(PORT, () => {
