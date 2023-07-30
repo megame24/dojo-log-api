@@ -12,6 +12,17 @@ function randomNumber(min, max) {
   return Math.floor(min + Math.random() * max);
 }
 
+const defaultAdminUser = {
+  id: uuidv4(),
+  name: process.env.DEFAULT_ADMIN_NAME,
+  username: process.env.DEFAULT_ADMIN_USERNAME,
+  email: process.env.DEFAULT_ADMIN_EMAIL,
+  verified: true,
+  role: "ADMIN",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+};
+
 const users = [
   {
     id: uuidv4(),
@@ -214,4 +225,5 @@ module.exports = {
   rewards,
   goalRewards,
   logs,
+  defaultAdminUser,
 };
