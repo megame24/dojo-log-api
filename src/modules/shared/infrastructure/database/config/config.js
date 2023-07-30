@@ -8,8 +8,7 @@ module.exports = {
     host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT,
     dialect: "postgres",
-    seederStorage: "json",
-    seederStoragePath: "sequelizeData.json",
+    seederStorage: "sequelize",
   },
   production: {
     username: process.env.DATABASE_USERNAME,
@@ -18,8 +17,7 @@ module.exports = {
     host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT,
     dialect: "postgres",
-    seederStorage: "json",
-    seederStoragePath: "sequelizeData.json",
+    seederStorage: "sequelize",
   },
   stage: {
     username: process.env.DATABASE_USERNAME,
@@ -28,8 +26,7 @@ module.exports = {
     host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT,
     dialect: "postgres",
-    seederStorage: "json",
-    seederStoragePath: "sequelizeData.json",
+    seederStorage: "sequelize",
   },
   test: {},
 };
