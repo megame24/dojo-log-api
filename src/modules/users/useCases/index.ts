@@ -15,6 +15,7 @@ import {
 } from "../../shared/infrastructure/services";
 import { ForgotPasswordImpl } from "./forgotPassword";
 import { ResetPasswordImpl } from "./resetPassword";
+import { GetUserImpl } from "./getUser";
 
 export const registerUserImpl = new RegisterUserImpl(
   securityServiceImpl,
@@ -63,3 +64,5 @@ export const resetPasswordImpl = new ResetPasswordImpl(
   persistentCodeRepoImpl,
   securityServiceImpl
 );
+
+export const getUserImpl = new GetUserImpl(userRepoImpl);

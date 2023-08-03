@@ -12,6 +12,7 @@ export default class SendVerificationController extends Adapter {
     const sendVerificationDTO = {
       userId: params.userId,
       email: user.email,
+      name: user.name,
     };
 
     try {

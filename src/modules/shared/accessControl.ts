@@ -1,5 +1,5 @@
-import { Visibility } from "../logbook/api";
-import { User, Role } from "../users/api";
+import { Visibility } from "../logbook/entities/logbook";
+import User, { Role } from "../users/entities/user";
 import UseCase from "./useCases/useCase";
 
 export enum Operation {

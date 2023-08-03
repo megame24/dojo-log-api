@@ -28,7 +28,7 @@ export class AuthenticateUserImpl implements AuthenticateUser {
       const dateString = new Date().toISOString();
       const guestUserProps = {
         name: "Guest User",
-        email: `guestuser@dojolog.api`,
+        email: "guestuser@dojolog.api",
         username: dateString,
         role: Role.GUEST,
         isPasswordHashed: false,

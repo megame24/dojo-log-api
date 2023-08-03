@@ -11,6 +11,7 @@ export default class SendVerificationMiddleware extends Adapter {
     const sendVerificationDTO = {
       userId: req.user.id,
       email: req.user.email,
+      name: req.user.name,
     };
 
     try {
