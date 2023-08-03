@@ -108,3 +108,5 @@ build
 .idea
 
 .dccache
+
+.DS_Store

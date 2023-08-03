@@ -59,6 +59,12 @@ logbookRouter.get(
 logbookRouter.get(
   "/earliestLogbookYear",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.GET_ONE,
+    resourceType: "earliestLogbookYear",
+    resourcesForAccessCheck: [],
+  }),
   getEarliestLogbookYearController.execute
 );
 

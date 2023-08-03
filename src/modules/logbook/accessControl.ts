@@ -11,7 +11,7 @@ import { Role } from "../users/api";
 class LogbookAccessControl extends AccessControl {
   private policy: any = {
     ADMIN: {
-      inherits: "USER",
+      inherits: Role.USER,
       allow: {
         categories: [
           {
@@ -31,7 +31,7 @@ class LogbookAccessControl extends AccessControl {
       deny: {},
     },
     USER: {
-      inherits: "GUEST",
+      inherits: Role.GUEST,
       allow: {
         categories: [
           {
@@ -103,6 +103,12 @@ class LogbookAccessControl extends AccessControl {
           {
             operation: Operation.GET_ONE,
             condition: this.privatePublicAccess,
+          },
+        ],
+        earliestLogbookYear: [
+          {
+            operation: Operation.GET_ONE,
+            condition: this.pass,
           },
         ],
       },

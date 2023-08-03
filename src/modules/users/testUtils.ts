@@ -54,7 +54,8 @@ export const mockUserModel = {
 };
 
 export class MockEmailService implements EmailService {
-  sendVerificationMail = jest.fn();
+  sendVerificationCodeMail = jest.fn();
+  sendVerificationTokenMail = jest.fn();
   sendPasswordResetMail = jest.fn();
 }
 

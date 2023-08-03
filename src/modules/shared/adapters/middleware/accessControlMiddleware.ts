@@ -24,9 +24,9 @@ export default class AccessControlMiddleware extends Adapter {
         const resourcesPromise = resourcesForAccessCheck.map(
           (resourceDetails) => {
             return resourceDetails.getResource.execute({
+              userId: req.user.id,
               ...req.body,
               ...req.params,
-              userId: req.user.id,
             });
           }
         );

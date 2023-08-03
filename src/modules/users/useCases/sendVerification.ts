@@ -11,6 +11,7 @@ import { SecurityService } from "../infrastructure/services/securityService";
 interface SendVerificationDTO {
   userId: string;
   email: string;
+  name: string;
 }
 
 export interface SendVerification extends UseCase<SendVerificationDTO, void> {
@@ -41,7 +42,7 @@ export class SendVerificationImpl implements SendVerification {
   }
 
   private async executeViaCode(sendVerificationDTO: SendVerificationDTO) {
-    const { userId, email } = sendVerificationDTO;
+    const { userId, email, name } = sendVerificationDTO;
 
     await this.persistentCodeRepo.deleteByUserIdAndType(
       userId,
@@ -60,11 +61,15 @@ export class SendVerificationImpl implements SendVerification {
 
     await this.persistentCodeRepo.create(verificationCode);
 
-    await this.emailService.sendVerificationMail(email, verificationCode);
+    await this.emailService.sendVerificationCodeMail(
+      email,
+      verificationCode,
+      name
+    );
   }
 
   private async executeViaToken(sendVerificationDTO: SendVerificationDTO) {
-    const { userId, email } = sendVerificationDTO;
+    const { userId, email, name } = sendVerificationDTO;
 
     await this.persistentTokenRepo.deleteMany({
       userId,
@@ -82,6 +87,10 @@ export class SendVerificationImpl implements SendVerification {
     );
     await this.persistentTokenRepo.create(verificationToken);
 
-    await this.emailService.sendVerificationMail(email, verificationToken);
+    await this.emailService.sendVerificationTokenMail(
+      email,
+      verificationToken,
+      name
+    );
   }
 }
