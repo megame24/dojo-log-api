@@ -12,9 +12,15 @@ export interface EmailService {
     code: PersistentToken,
     name: string
   ) => void;
-  sendPasswordResetMail: (
+  sendPasswordResetTokenMail: (
     email: string,
-    token: PersistentToken | PersistentCode
+    token: PersistentToken,
+    name: string
+  ) => void;
+  sendPasswordResetCodeMail: (
+    email: string,
+    code: PersistentCode,
+    name: string
   ) => void;
 }
 
@@ -31,7 +37,7 @@ export class EmailServiceImpl implements EmailService {
     });
   }
 
-  verificationCodeMailTemplate(verificationCode: string, name: string) {
+  codeMailTemplate(code: string, name: string, content: string) {
     return `
       <!DOCTYPE html>
       <html lang="en">
@@ -75,12 +81,12 @@ export class EmailServiceImpl implements EmailService {
               <div class="company-name">
                   <h2>Dojologs</h2>
               </div>
-              <p>Dear ${name},</p>
-              <p>Thank you for registering with Dojologs. To complete your registration, please use the following verification code:</p>
-              <h1 class="verification-code">${verificationCode}</h1>
+              <p>Hello ${name},</p>
+              <p>${content}</p>
+              <h1 class="verification-code">${code}</h1>
               <div class="instructions">
                   <p>If you didn't request this email, you can safely ignore it.</p>
-                  <p>This verification code is valid for ${
+                  <p>This code is valid for ${
                     process.env.VERIFICATION_CODE_EXPIRES_IN
                       ? process.env.VERIFICATION_CODE_EXPIRES_IN[0]
                       : 0
@@ -100,6 +106,8 @@ export class EmailServiceImpl implements EmailService {
     code: PersistentCode,
     name: string
   ) {
+    const emailText =
+      "Thank you for registering with Dojologs. To complete your registration, please use the following verification code:";
     const sendEmailCommand = new this.SendEmailCommand({
       Source: process.env.AWS_SES_SENDER,
       Destination: {
@@ -109,11 +117,11 @@ export class EmailServiceImpl implements EmailService {
         Body: {
           Html: {
             Charset: "UTF-8",
-            Data: this.verificationCodeMailTemplate(<string>code.rawCode, name),
+            Data: this.codeMailTemplate(<string>code.rawCode, name, emailText),
           },
           Text: {
             Charset: "UTF-8",
-            Data: `Thank you for registering with Dojologs. To complete your registration, please use the following verification code: ${code.rawCode}`,
+            Data: `${emailText} ${code.rawCode}`,
           },
         },
         Subject: {
@@ -139,11 +147,49 @@ export class EmailServiceImpl implements EmailService {
     console.log(recipientEmail, token, name);
   }
 
-  async sendPasswordResetMail(
-    email: string,
-    tokenOrCode: PersistentToken | PersistentCode
+  async sendPasswordResetCodeMail(
+    recipientEmail: string,
+    code: PersistentCode,
+    name: string
+  ) {
+    const emailText =
+      "To reset your password, please use the following reset password code:";
+    const sendEmailCommand = new this.SendEmailCommand({
+      Source: process.env.AWS_SES_SENDER,
+      Destination: {
+        ToAddresses: [recipientEmail],
+      },
+      Message: {
+        Body: {
+          Html: {
+            Charset: "UTF-8",
+            Data: this.codeMailTemplate(<string>code.rawCode, name, emailText),
+          },
+          Text: {
+            Charset: "UTF-8",
+            Data: `${emailText} ${code.rawCode}`,
+          },
+        },
+        Subject: {
+          Charset: "UTF-8",
+          Data: "Reset your Dojologs account password",
+        },
+      },
+    });
+
+    try {
+      return await this.emailClient.send(sendEmailCommand);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async sendPasswordResetTokenMail(
+    recipientEmail: string,
+    token: PersistentToken,
+    name: string
   ) {
     // send <url>/token.userId/token.token
-    console.log(email, tokenOrCode);
+    console.log(recipientEmail, token, name);
   }
 }
