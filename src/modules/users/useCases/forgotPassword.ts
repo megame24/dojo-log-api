@@ -64,7 +64,11 @@ export class ForgotPasswordImpl implements ForgotPassword {
       this.uuidService
     );
     await this.persistentCodeRepo.create(verificationCode);
-    await this.emailService.sendPasswordResetMail(email, verificationCode);
+    await this.emailService.sendPasswordResetCodeMail(
+      email,
+      verificationCode,
+      user.name
+    );
 
     return <string>user.id;
   }
@@ -92,6 +96,10 @@ export class ForgotPasswordImpl implements ForgotPassword {
     );
     await this.persistentTokenRepo.create(verificationToken);
 
-    await this.emailService.sendPasswordResetMail(email, verificationToken);
+    await this.emailService.sendPasswordResetTokenMail(
+      email,
+      verificationToken,
+      user.name
+    );
   }
 }
