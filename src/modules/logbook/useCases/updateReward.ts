@@ -1,5 +1,6 @@
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
+import { Visibility } from "../entities/logbook";
 import Reward from "../entities/reward";
 import { RewardRepo } from "../infrastructure/repositories/rewardRepo";
 import { CreateFile } from "./createFile";
@@ -40,11 +41,15 @@ export class UpdateRewardImpl implements UpdateReward {
     let image;
     if (file) {
       if (outdatedReward.image)
-        await this.deleteFile.execute({ file: outdatedReward.image });
+        await this.deleteFile.execute({
+          userId: outdatedReward.userId,
+          file: outdatedReward.image,
+        });
       image = await this.createFile.execute({
         userId: outdatedReward.userId,
         rewardId: outdatedReward.id,
         rawFile: file,
+        visibility: Visibility.public,
       });
       updateRewardProps.image = image;
     }

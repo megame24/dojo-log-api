@@ -8,6 +8,7 @@ export default class DeleteFileController extends Adapter {
 
   async execute(req: any, res: any, next: any) {
     const deleteFileDTO = {
+      userId: req.user.id,
       file: req.file,
     };
 

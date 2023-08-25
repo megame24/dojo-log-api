@@ -1,5 +1,6 @@
 import Entity from "../../shared/entities/entity";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
+import { Visibility } from "./logbook";
 
 type fileType = "image" | "document";
 
@@ -9,8 +10,9 @@ interface FileProps {
   logId?: string;
   rewardId?: string;
   type: fileType;
-  url: string;
+  url?: string;
   name: string;
+  visibility: Visibility;
 }
 
 export default class File extends Entity {
@@ -38,12 +40,16 @@ export default class File extends Entity {
     return this.props.type;
   }
 
-  get url(): string {
+  get url(): string | undefined {
     return this.props.url;
   }
 
   get name(): string {
     return this.props.name;
+  }
+
+  get visibility(): Visibility {
+    return this.props.visibility;
   }
 
   static create(props: FileProps, uuidService: UUIDService): File {
@@ -58,7 +64,7 @@ export default class File extends Entity {
     );
 
     this.validateProp(
-      { key: "url", value: props.url },
+      { key: "visibility", value: props.visibility },
       this.isRequiredValidation
     );
 

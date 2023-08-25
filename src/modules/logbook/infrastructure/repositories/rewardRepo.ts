@@ -37,6 +37,7 @@ export class RewardRepoImpl implements RewardRepo {
             type: fileData.type,
             url: fileData.url,
             name: fileData.name,
+            visibility: fileData.visibility,
           };
 
           image = File.create(createFileProps, this.uuidService);
@@ -126,6 +127,7 @@ export class RewardRepoImpl implements RewardRepo {
         type: fileData.type,
         url: fileData.url,
         name: fileData.name,
+        visibility: fileData.visibility,
       };
 
       image = File.create(createFileProps, this.uuidService);

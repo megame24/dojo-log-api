@@ -1,20 +1,73 @@
+import { Visibility } from "../../../logbook/api";
+import AppError from "../../AppError";
+
 export interface FileService {
-  uploadFile: (file: any) => Promise<string>;
-  deleteFile: (fileUrl: string) => void;
+  uploadFile: (
+    file: any,
+    userId: string,
+    visibility: Visibility
+  ) => Promise<string | void>;
+  deleteFile: (
+    fileName: string,
+    userId: string,
+    visibility: Visibility
+  ) => void;
 }
 
 export class FileServiceImpl implements FileService {
-  async uploadFile(file: any): Promise<string> {
-    // TODO:
-    // - Impose a size limit
-    // upload to the cloud
-    console.log(file);
-    return "https://images.unsplash.com/photo-1620927165388-1c463be175cc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=613&q=80";
+  bucketClient: any;
+
+  constructor(
+    private BucketClient: any,
+    private UploadObjectCommand: any,
+    private DeleteObjectCommand: any
+  ) {
+    this.bucketClient = new this.BucketClient({
+      region: process.env.AWS_REGION,
+      credentials: {
+        accessKeyId: <string>process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: <string>process.env.AWS_SECRET_ACCESS_KEY,
+      },
+    });
   }
 
-  async deleteFile(fileUrl: string) {
-    // TODO:
-    // delete from cloud
-    console.log(fileUrl, "File deleted from cloud... JK :), implement me!");
+  async uploadFile(
+    file: any,
+    userId: string,
+    visibility: Visibility
+  ): Promise<string | void> {
+    if (file.size > 5000000)
+      throw AppError.badRequestError(
+        "File size limit exceeded, file must be 5mb or less"
+      );
+
+    const command = new this.UploadObjectCommand({
+      Bucket: process.env.BUCKET_NAME,
+      Key: `${visibility}/${userId}/${file.originalname}`,
+      Body: file.buffer,
+    });
+
+    try {
+      await this.bucketClient.send(command);
+      if (visibility === "public") {
+        // investigate why calling Visibility.public is causing dependency cycle
+        return `https://${process.env.BUCKET_NAME}.s3.amazonaws.com/public/${userId}/${file.originalname}`;
+      }
+    } catch (error: any) {
+      throw AppError.internalServerError("Error uploading file", error);
+    }
+  }
+
+  async deleteFile(fileName: string, userId: string, visibility: Visibility) {
+    const command = new this.DeleteObjectCommand({
+      Bucket: process.env.BUCKET_NAME,
+      Key: `${visibility}/${userId}/${fileName}`,
+    });
+
+    try {
+      await this.bucketClient.send(command);
+    } catch (error: any) {
+      throw AppError.internalServerError("Error deleting file", error);
+    }
   }
 }

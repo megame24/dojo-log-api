@@ -1,6 +1,7 @@
 import AppError from "../../shared/AppError";
 import { DateService } from "../../shared/infrastructure/services/dateService";
 import UseCase from "../../shared/useCases/useCase";
+import { Visibility } from "../entities/logbook";
 import Log from "../entities/log";
 import { LogRepo } from "../infrastructure/repositories/logRepo";
 import { DeleteFile } from "./deleteFile";
@@ -37,7 +38,10 @@ export class DeleteLogImpl implements DeleteLog {
       throw AppError.badRequestError("Can't delete previous days' logs");
 
     if (log.proofOfWork) {
-      await this.deleteFile.execute({ file: log.proofOfWork });
+      await this.deleteFile.execute({
+        userId: log.userId,
+        file: log.proofOfWork,
+      });
     }
 
     await this.logRepo.delete(log);

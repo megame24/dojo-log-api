@@ -1,5 +1,6 @@
 "use strict";
 const { Model } = require("sequelize");
+const { Visibility } = require("./json/enums.json");
 
 module.exports = (sequelize, DataTypes) => {
   class File extends Model {
@@ -39,6 +40,11 @@ module.exports = (sequelize, DataTypes) => {
       url: {
         type: DataTypes.TEXT,
         allowNull: false,
+      },
+      visibility: {
+        type: DataTypes.ENUM(Visibility),
+        allowNull: false,
+        defaultValue: "private",
       },
     },
     {

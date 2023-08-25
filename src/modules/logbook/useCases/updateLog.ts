@@ -3,6 +3,7 @@ import { DateService } from "../../shared/infrastructure/services/dateService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
 import { User } from "../../users/api";
+import { Visibility } from "../entities/logbook";
 import Log from "../entities/log";
 import { LogRepo } from "../infrastructure/repositories/logRepo";
 import { CreateFile } from "./createFile";
@@ -67,11 +68,15 @@ export class UpdateLogImpl implements UpdateLog {
     let newProofOfWork;
     if (file) {
       if (outdatedLog.proofOfWork)
-        await this.deleteFile.execute({ file: outdatedLog.proofOfWork });
+        await this.deleteFile.execute({
+          userId: outdatedLog.userId,
+          file: outdatedLog.proofOfWork,
+        });
       newProofOfWork = await this.createFile.execute({
         userId: outdatedLog.userId,
         logId: outdatedLog.id,
         rawFile: file,
+        visibility: Visibility.private,
       });
       updateLogProps.proofOfWork = newProofOfWork;
     }

@@ -2,7 +2,7 @@ import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
 import Log from "../entities/log";
 import { LogRepo } from "../infrastructure/repositories/logRepo";
-import Logbook from "../entities/logbook";
+import Logbook, { Visibility } from "../entities/logbook";
 import { User } from "../../users/api";
 import { CreateFile } from "./createFile";
 
@@ -47,6 +47,7 @@ export class CreateLogImpl implements CreateLog {
         userId,
         logId: log.id,
         rawFile: file,
+        visibility: Visibility.private, // this might not be secure, find a more secure implementation
       });
     }
     // consider some form of transaction
