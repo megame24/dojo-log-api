@@ -3,8 +3,8 @@ import UseCase from "../../shared/useCases/useCase";
 import Log from "../entities/log";
 import { LogRepo } from "../infrastructure/repositories/logRepo";
 import Logbook, { Visibility } from "../entities/logbook";
-import { User } from "../../users/api";
 import { CreateFile } from "./createFile";
+import User from "../../users/entities/user";
 
 interface CreateLogDTO {
   userId: string;

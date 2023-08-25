@@ -1,7 +1,7 @@
 import AppError from "../../shared/AppError";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
-import { User } from "../../users/api";
+import User from "../../users/entities/user";
 import Goal from "../entities/goal";
 import Logbook from "../entities/logbook";
 import Reward from "../entities/reward";

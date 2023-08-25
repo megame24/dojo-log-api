@@ -1,6 +1,6 @@
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
-import { User } from "../../users/api";
+import User from "../../users/entities/user";
 import { Visibility } from "../entities/logbook";
 import Reward from "../entities/reward";
 import { RewardRepo } from "../infrastructure/repositories/rewardRepo";

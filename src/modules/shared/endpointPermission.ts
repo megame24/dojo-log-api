@@ -1,4 +1,4 @@
-import { Role } from "../users/api";
+import { Role } from "../users/entities/user";
 
 interface PermissionProps {
   role: Role;

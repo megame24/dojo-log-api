@@ -1,7 +1,7 @@
 import AppError from "../../../shared/AppError";
 import { DateService } from "../../../shared/infrastructure/services/dateService";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
-import { User } from "../../../users/api";
+import User from "../../../users/entities/user";
 import Category from "../../entities/category";
 import Goal from "../../entities/goal";
 import Log from "../../entities/log";
