@@ -3,7 +3,7 @@ import {
   BaseAccessProps,
   Operation,
 } from "../shared/accessControl";
-import { Role } from "../users/api";
+import { Role } from "../users/entities/user";
 
 // TODO: write a documentation for this!!!!
 // TODO: make everything private access for first release!

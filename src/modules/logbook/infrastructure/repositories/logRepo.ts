@@ -1,6 +1,6 @@
 import AppError from "../../../shared/AppError";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
-import { User } from "../../../users/api";
+import User from "../../../users/entities/user";
 import File from "../../entities/file";
 import Log from "../../entities/log";
 

@@ -1,7 +1,6 @@
 import AppError from "../../shared/AppError";
 import { DateService } from "../../shared/infrastructure/services/dateService";
 import UseCase from "../../shared/useCases/useCase";
-import { Visibility } from "../entities/logbook";
 import Log from "../entities/log";
 import { LogRepo } from "../infrastructure/repositories/logRepo";
 import { DeleteFile } from "./deleteFile";

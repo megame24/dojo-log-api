@@ -1,5 +1,4 @@
 import UseCase from "../../shared/useCases/useCase";
-import { Visibility } from "../entities/logbook";
 import Reward from "../entities/reward";
 import { RewardRepo } from "../infrastructure/repositories/rewardRepo";
 import { DeleteFile } from "./deleteFile";

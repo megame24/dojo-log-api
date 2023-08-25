@@ -1,4 +1,4 @@
-import { Visibility } from "../../../logbook/api";
+import { Visibility } from "../../../logbook/entities/logbook";
 import AppError from "../../AppError";
 
 export interface FileService {
@@ -49,8 +49,7 @@ export class FileServiceImpl implements FileService {
 
     try {
       await this.bucketClient.send(command);
-      if (visibility === "public") {
-        // investigate why calling Visibility.public is causing dependency cycle
+      if (visibility === Visibility.public) {
         return `https://${process.env.BUCKET_NAME}.s3.amazonaws.com/public/${userId}/${file.originalname}`;
       }
     } catch (error: any) {

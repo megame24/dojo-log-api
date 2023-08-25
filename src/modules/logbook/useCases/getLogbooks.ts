@@ -1,5 +1,5 @@
 import UseCase from "../../shared/useCases/useCase";
-import { Role, User } from "../../users/api";
+import User, { Role } from "../../users/entities/user";
 import Logbook from "../entities/logbook";
 import { LogbookRepo } from "../infrastructure/repositories/logbookRepo";
 import { GetLogbook } from "./getLogbook";

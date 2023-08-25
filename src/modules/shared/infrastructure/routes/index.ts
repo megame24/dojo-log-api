@@ -1,9 +1,7 @@
 import express from "express";
-import {
-  userModuleRouter,
-  authenticateUserMiddleware,
-} from "../../../users/api";
-import { logbookModuleRouter } from "../../../logbook/api";
+import { authenticateUserMiddleware } from "../../../users/adapters/middleware";
+import userModuleRouter from "../../../users/infrastructure/routes";
+import logbookModuleRouter from "../../../logbook/infrastructure/routes";
 
 // TODO: Version routes!!!!
 
