@@ -90,6 +90,7 @@ export class LogRepoImpl implements LogRepo {
           type: fileData.type,
           url: fileData.url,
           name: fileData.name,
+          visibility: fileData.visibility,
         };
 
         proofOfWork = File.create(createFileProps, this.uuidService);
@@ -157,6 +158,7 @@ export class LogRepoImpl implements LogRepo {
         type: fileData.type,
         url: fileData.url,
         name: fileData.name,
+        visibility: fileData.visibility,
       };
 
       proofOfWork = File.create(createFileProps, this.uuidService);

@@ -1,5 +1,4 @@
-import { PersistentToken } from "../../../users/api";
-import PersistentCode from "../../../users/entities/persistentCode";
+import { PersistentToken, PersistentCode } from "../../../users/api";
 
 export interface EmailService {
   sendVerificationCodeMail: (

@@ -1,6 +1,7 @@
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
 import { User } from "../../users/api";
+import { Visibility } from "../entities/logbook";
 import Reward from "../entities/reward";
 import { RewardRepo } from "../infrastructure/repositories/rewardRepo";
 import { CreateFile } from "./createFile";
@@ -44,6 +45,7 @@ export class CreateRewardImpl implements CreateReward {
         userId: createRewardDTO.userId,
         rawFile: createRewardDTO.file,
         rewardId: reward.id,
+        visibility: Visibility.public,
       });
     }
     return reward;

@@ -21,6 +21,7 @@ export class FileRepoImpl implements FileRepo {
         type: file.type,
         url: file.url,
         name: file.name,
+        visibility: file.visibility,
       };
       await this.FileModel.create(createFileProps);
     } catch (error: any) {
@@ -59,6 +60,7 @@ export class FileRepoImpl implements FileRepo {
       type: fileData.type,
       url: fileData.url,
       name: fileData.name,
+      visibility: fileData.visibility,
     };
 
     return File.create(fileProps, this.uuidService);

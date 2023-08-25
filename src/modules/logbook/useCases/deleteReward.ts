@@ -1,4 +1,5 @@
 import UseCase from "../../shared/useCases/useCase";
+import { Visibility } from "../entities/logbook";
 import Reward from "../entities/reward";
 import { RewardRepo } from "../infrastructure/repositories/rewardRepo";
 import { DeleteFile } from "./deleteFile";
@@ -18,7 +19,10 @@ export class DeleteRewardImpl implements DeleteReward {
     const { reward } = deleteRewardDTO;
 
     if (reward.image) {
-      await this.deleteFile.execute({ file: reward.image });
+      await this.deleteFile.execute({
+        userId: reward.userId,
+        file: reward.image,
+      });
     }
 
     await this.rewardRepo.delete(reward);
