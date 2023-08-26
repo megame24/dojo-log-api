@@ -22,6 +22,7 @@ import { DeleteFileImpl } from "./deleteFile";
 import { DeleteLogImpl } from "./deleteLog";
 import { DeleteLogbookImpl } from "./deleteLogbook";
 import { DeleteRewardImpl } from "./deleteReward";
+import { DownloadFileImpl } from "./downloadFile";
 import { GetCategoriesImpl } from "./getCategories";
 import { GetCategoryImpl } from "./getCategory";
 import { GetEarliestLogbookYearImpl } from "./getEarliestLogbookYear";
@@ -158,3 +159,5 @@ export const updateRewardImpl = new UpdateRewardImpl(
 );
 
 export const getFileImpl = new GetFileImpl(fileRepoImpl);
+
+export const downloadFileImpl = new DownloadFileImpl(fileServiceImpl);
