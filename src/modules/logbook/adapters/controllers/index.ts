@@ -21,6 +21,7 @@ import {
   createRewardImpl,
   updateRewardImpl,
   deleteFileImpl,
+  downloadFileImpl,
 } from "../../useCases";
 import CreateCategoryController from "./createCategoryController";
 import CreateGoalController from "./createGoalController";
@@ -32,6 +33,7 @@ import DeleteFileController from "./deleteFileController";
 import DeleteLogbookController from "./deleteLogbookController";
 import DeleteLogController from "./deleteLogController";
 import DeleteRewardController from "./deleteRewardController";
+import DownloadFileController from "./downloadFileController";
 import GetCategoriesController from "./getCategoriesController";
 import GetEarliestLogbookYearController from "./getEarliestLogbookYearController";
 import GetGoalController from "./getGoalController";
@@ -112,3 +114,7 @@ export const updateRewardController = new UpdateRewardController(
 export const deleteFileController = new DeleteFileController(deleteFileImpl);
 
 export const getGoalController = new GetGoalController();
+
+export const downloadFileController = new DownloadFileController(
+  downloadFileImpl
+);

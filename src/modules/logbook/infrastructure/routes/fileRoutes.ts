@@ -5,7 +5,10 @@ import {
   endpointPermissionsMiddleware,
 } from "../../../shared/adapters/middleware";
 import { logbookAccessControl } from "../../accessControl";
-import { deleteFileController } from "../../adapters/controllers";
+import {
+  deleteFileController,
+  downloadFileController,
+} from "../../adapters/controllers";
 import { getFileImpl } from "../../useCases";
 import endpointPolicy from "./endpointPolicy.json";
 
@@ -21,6 +24,18 @@ fileRouter.delete(
     resourcesForAccessCheck: [{ name: "file", getResource: getFileImpl }],
   }),
   deleteFileController.execute
+);
+
+fileRouter.get(
+  "/:fileId/download",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.GET_ONE,
+    resourceType: "files",
+    resourcesForAccessCheck: [{ name: "file", getResource: getFileImpl }],
+  }),
+  downloadFileController.execute
 );
 
 export default fileRouter;

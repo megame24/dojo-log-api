@@ -4,7 +4,6 @@ import File from "../entities/file";
 import { FileRepo } from "../infrastructure/repositories/fileRepo";
 
 interface DeleteFileDTO {
-  userId: string;
   file: File;
 }
 
@@ -16,9 +15,9 @@ export class DeleteFileImpl implements DeleteFile {
   constructor(private fileRepo: FileRepo, private fileService: FileService) {}
 
   async execute(deleteFileDTO: DeleteFileDTO) {
-    const { file, userId } = deleteFileDTO;
+    const { file } = deleteFileDTO;
 
-    await this.fileService.deleteFile(file.name, userId, file.visibility);
+    await this.fileService.deleteFile(file);
     await this.fileRepo.delete(file);
   }
 }

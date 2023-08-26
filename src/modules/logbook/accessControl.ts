@@ -44,6 +44,10 @@ class LogbookAccessControl extends AccessControl {
             operation: Operation.DELETE,
             condition: this.privateAccess,
           },
+          {
+            operation: Operation.GET_ONE,
+            condition: this.privateAccess,
+          },
         ],
         rewards: [
           {

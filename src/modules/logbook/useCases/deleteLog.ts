@@ -38,7 +38,6 @@ export class DeleteLogImpl implements DeleteLog {
 
     if (log.proofOfWork) {
       await this.deleteFile.execute({
-        userId: log.userId,
         file: log.proofOfWork,
       });
     }

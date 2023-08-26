@@ -42,7 +42,6 @@ export class UpdateRewardImpl implements UpdateReward {
     if (file) {
       if (outdatedReward.image)
         await this.deleteFile.execute({
-          userId: outdatedReward.userId,
           file: outdatedReward.image,
         });
       image = await this.createFile.execute({

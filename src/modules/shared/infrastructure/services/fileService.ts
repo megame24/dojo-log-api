@@ -1,3 +1,4 @@
+import File from "../../../logbook/entities/file";
 import { Visibility } from "../../../logbook/entities/logbook";
 import AppError from "../../AppError";
 
@@ -7,11 +8,8 @@ export interface FileService {
     userId: string,
     visibility: Visibility
   ) => Promise<string | void>;
-  deleteFile: (
-    fileName: string,
-    userId: string,
-    visibility: Visibility
-  ) => void;
+  deleteFile: (file: File) => void;
+  downloadFile: (file: File) => Promise<any>;
 }
 
 export class FileServiceImpl implements FileService {
@@ -20,7 +18,8 @@ export class FileServiceImpl implements FileService {
   constructor(
     private BucketClient: any,
     private UploadObjectCommand: any,
-    private DeleteObjectCommand: any
+    private DeleteObjectCommand: any,
+    private GetObjectCommand: any
   ) {
     this.bucketClient = new this.BucketClient({
       region: process.env.AWS_REGION,
@@ -57,16 +56,31 @@ export class FileServiceImpl implements FileService {
     }
   }
 
-  async deleteFile(fileName: string, userId: string, visibility: Visibility) {
+  async deleteFile({ visibility, userId, name }: File) {
     const command = new this.DeleteObjectCommand({
       Bucket: process.env.BUCKET_NAME,
-      Key: `${visibility}/${userId}/${fileName}`,
+      Key: `${visibility}/${userId}/${name}`,
     });
 
     try {
       await this.bucketClient.send(command);
     } catch (error: any) {
       throw AppError.internalServerError("Error deleting file", error);
+    }
+  }
+
+  async downloadFile({ visibility, userId, name }: File): Promise<any> {
+    const command = new this.GetObjectCommand({
+      Bucket: process.env.BUCKET_NAME,
+      Key: `${visibility}/${userId}/${name}`,
+    });
+
+    try {
+      const response = await this.bucketClient.send(command);
+      const readableStream = response.Body.transformToWebStream();
+      return readableStream;
+    } catch (error: any) {
+      throw AppError.internalServerError("Error getting file", error);
     }
   }
 }

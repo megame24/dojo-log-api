@@ -19,7 +19,6 @@ export class DeleteRewardImpl implements DeleteReward {
 
     if (reward.image) {
       await this.deleteFile.execute({
-        userId: reward.userId,
         file: reward.image,
       });
     }

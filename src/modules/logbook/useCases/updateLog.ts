@@ -69,7 +69,6 @@ export class UpdateLogImpl implements UpdateLog {
     if (file) {
       if (outdatedLog.proofOfWork)
         await this.deleteFile.execute({
-          userId: outdatedLog.userId,
           file: outdatedLog.proofOfWork,
         });
       newProofOfWork = await this.createFile.execute({

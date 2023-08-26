@@ -8,6 +8,7 @@ import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import {
   PutObjectCommand,
   DeleteObjectCommand,
+  GetObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
 import { DateServiceImpl } from "./dateService";
@@ -28,6 +29,7 @@ export const uuidServiceImpl = new UUIDServiceImpl(uuidv4);
 export const fileServiceImpl = new FileServiceImpl(
   S3Client,
   PutObjectCommand,
-  DeleteObjectCommand
+  DeleteObjectCommand,
+  GetObjectCommand
 );
 export const dateServiceImpl = new DateServiceImpl(dayjs);
