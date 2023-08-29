@@ -6,14 +6,15 @@ interface DownloadFileDTO {
   file: File;
 }
 
-export interface DownloadFile extends UseCase<DownloadFileDTO, Promise<any>> {
-  execute: (downloadFileDTO: DownloadFileDTO) => Promise<any>;
+export interface DownloadFile
+  extends UseCase<DownloadFileDTO, Promise<string>> {
+  execute: (downloadFileDTO: DownloadFileDTO) => Promise<string>;
 }
 
 export class DownloadFileImpl implements DownloadFile {
   constructor(private fileService: FileService) {}
 
-  async execute(downloadFileDTO: DownloadFileDTO): Promise<any> {
+  async execute(downloadFileDTO: DownloadFileDTO): Promise<string> {
     const { file } = downloadFileDTO;
 
     return this.fileService.downloadFile(file);
