@@ -9,7 +9,7 @@ export interface FileService {
     visibility: Visibility
   ) => Promise<string | void>;
   deleteFile: (file: File) => void;
-  downloadFile: (file: File) => Promise<any>;
+  downloadFile: (file: File) => Promise<string>;
 }
 
 export class FileServiceImpl implements FileService {
@@ -19,7 +19,9 @@ export class FileServiceImpl implements FileService {
     private BucketClient: any,
     private UploadObjectCommand: any,
     private DeleteObjectCommand: any,
-    private GetObjectCommand: any
+    private GetObjectCommand: any,
+    private getSignedUrl: any,
+    private NodeHttpHandler: any
   ) {
     this.bucketClient = new this.BucketClient({
       region: process.env.AWS_REGION,
@@ -40,13 +42,13 @@ export class FileServiceImpl implements FileService {
         "File size limit exceeded, file must be 5mb or less"
       );
 
-    const command = new this.UploadObjectCommand({
-      Bucket: process.env.BUCKET_NAME,
-      Key: `${visibility}/${userId}/${file.originalname}`,
-      Body: file.buffer,
-    });
-
     try {
+      const command = new this.UploadObjectCommand({
+        Bucket: process.env.BUCKET_NAME,
+        Key: `${visibility}/${userId}/${file.originalname}`,
+        Body: file.buffer,
+      });
+
       await this.bucketClient.send(command);
       if (visibility === Visibility.public) {
         return `https://${process.env.BUCKET_NAME}.s3.amazonaws.com/public/${userId}/${file.originalname}`;
@@ -57,28 +59,31 @@ export class FileServiceImpl implements FileService {
   }
 
   async deleteFile({ visibility, userId, name }: File) {
-    const command = new this.DeleteObjectCommand({
-      Bucket: process.env.BUCKET_NAME,
-      Key: `${visibility}/${userId}/${name}`,
-    });
-
     try {
+      const command = new this.DeleteObjectCommand({
+        Bucket: process.env.BUCKET_NAME,
+        Key: `${visibility}/${userId}/${name}`,
+      });
+
       await this.bucketClient.send(command);
     } catch (error: any) {
       throw AppError.internalServerError("Error deleting file", error);
     }
   }
 
-  async downloadFile({ visibility, userId, name }: File): Promise<any> {
-    const command = new this.GetObjectCommand({
-      Bucket: process.env.BUCKET_NAME,
-      Key: `${visibility}/${userId}/${name}`,
-    });
-
+  async downloadFile({ visibility, userId, name }: File): Promise<string> {
     try {
-      const response = await this.bucketClient.send(command);
-      const readableStream = response.Body.transformToWebStream();
-      return readableStream;
+      const command = new this.GetObjectCommand({
+        Bucket: process.env.BUCKET_NAME,
+        Key: `${visibility}/${userId}/${name}`,
+      });
+
+      const presignedUrl = await this.getSignedUrl(this.bucketClient, command, {
+        expiresIn: 3600,
+        requestHandler: new this.NodeHttpHandler(),
+      });
+
+      return presignedUrl;
     } catch (error: any) {
       throw AppError.internalServerError("Error getting file", error);
     }
