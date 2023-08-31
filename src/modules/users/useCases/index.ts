@@ -16,6 +16,7 @@ import {
 import { ForgotPasswordImpl } from "./forgotPassword";
 import { ResetPasswordImpl } from "./resetPassword";
 import { GetUserImpl } from "./getUser";
+import { UpdateUserImpl } from "./updateUser";
 
 export const registerUserImpl = new RegisterUserImpl(
   securityServiceImpl,
@@ -66,3 +67,8 @@ export const resetPasswordImpl = new ResetPasswordImpl(
 );
 
 export const getUserImpl = new GetUserImpl(userRepoImpl);
+
+export const updateUserImpl = new UpdateUserImpl(
+  userRepoImpl,
+  securityServiceImpl
+);

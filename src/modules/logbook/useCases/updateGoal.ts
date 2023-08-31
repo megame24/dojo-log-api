@@ -10,9 +10,9 @@ import User from "../../users/entities/user";
 
 interface UpdateGoalDTO {
   goal: Goal;
-  name: string;
-  achievementCriteria: string;
-  achieved: boolean;
+  name?: string;
+  achievementCriteria?: string;
+  achieved?: boolean;
   rewards: Reward[];
   rewardsProps: Partial<CreateRewardDTO>[];
   user: User;

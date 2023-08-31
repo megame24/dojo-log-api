@@ -79,6 +79,7 @@ export class VerifyUserImpl implements VerifyUser {
       verified: user.verified,
       role: user.role,
       name: user.name,
+      email: user.email,
     });
     return authToken;
   }
