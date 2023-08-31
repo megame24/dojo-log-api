@@ -18,7 +18,7 @@ export interface UserRepo {
     config?: GetUserConfig
   ) => Promise<User | null>;
   getUserById: (id: string, config?: GetUserConfig) => Promise<User | null>;
-  update: (user: User, payload: Partial<CreateUserProps>) => void;
+  update: (user: User, payload: Partial<CreateUserProps>) => Promise<User>;
 }
 
 export class UserRepoImpl implements UserRepo {
@@ -45,7 +45,7 @@ export class UserRepoImpl implements UserRepo {
     }
   }
 
-  async update(user: User, payload: Partial<CreateUserProps>) {
+  async update(user: User, payload: Partial<CreateUserProps>): Promise<User> {
     delete payload.id; // can't update ID
 
     const updateUserProps = {
@@ -82,6 +82,7 @@ export class UserRepoImpl implements UserRepo {
         },
         { where: { id: updatedUser.id } }
       );
+      return updatedUser;
     } catch (error: any) {
       throw AppError.internalServerError("Error updating user", error);
     }

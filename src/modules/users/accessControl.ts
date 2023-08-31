@@ -23,6 +23,10 @@ class UserAccessControl extends AccessControl {
             operation: Operation.GET_ONE,
             condition: this.privateAccess,
           },
+          {
+            operation: Operation.UPDATE,
+            condition: this.privateAccess,
+          },
         ],
       },
       deny: {
