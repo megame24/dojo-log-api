@@ -10,6 +10,7 @@ import {
   sendVerificationController,
   forgotPasswordController,
   resetPasswordController,
+  getUserProfileController,
 } from "../../adapters/controllers";
 import { sendVerificationMiddleware } from "../../adapters/middleware";
 import endpointPolicy from "./endpointPolicy.json";
@@ -42,6 +43,18 @@ userRouter.post(
     resourcesForAccessCheck: [],
   }),
   loginUserController.execute
+);
+
+userRouter.get(
+  "/:userId/profile",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: userAccessControl,
+    operation: Operation.GET_ONE,
+    resourceType: "profile",
+    resourcesForAccessCheck: [{ name: "user", getResource: getUserImpl }],
+  }),
+  getUserProfileController.execute
 );
 
 userRouter.put(

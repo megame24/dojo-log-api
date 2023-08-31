@@ -67,11 +67,11 @@ export abstract class AccessControl {
         for (let j = 0; j < resource.length; j++) {
           const childResource = resource[j];
 
-          isOwner = user.id === childResource.userId;
+          isOwner = [childResource.userId, childResource.id].includes(user.id);
           if (!isOwner) return false;
         }
       } else {
-        isOwner = user.id === resource.userId;
+        isOwner = [resource.userId, resource.id].includes(user.id);
         if (!isOwner) return false;
       }
     }

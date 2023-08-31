@@ -17,7 +17,14 @@ class UserAccessControl extends AccessControl {
     },
     USER: {
       inherits: Role.GUEST,
-      allow: {},
+      allow: {
+        profile: [
+          {
+            operation: Operation.GET_ONE,
+            condition: this.privateAccess,
+          },
+        ],
+      },
       deny: {
         sendVerification: [
           {
