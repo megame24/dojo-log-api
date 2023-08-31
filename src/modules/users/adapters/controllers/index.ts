@@ -1,5 +1,6 @@
 import {
   forgotPasswordImpl,
+  getUserImpl,
   loginUserImpl,
   registerUserImpl,
   resetPasswordImpl,
@@ -12,6 +13,7 @@ import VerifyUserController from "./verifyUserController";
 import SendVerificationController from "./sendVerificationController";
 import ForgotPasswordController from "./forgotPasswordController";
 import ResetPasswordController from "./resetPasswordController";
+import GetUserProfileController from "./getUserProfileController";
 
 export const registerUserController = new RegisterUserController(
   registerUserImpl
@@ -32,3 +34,5 @@ export const forgotPasswordController = new ForgotPasswordController(
 export const resetPasswordController = new ResetPasswordController(
   resetPasswordImpl
 );
+
+export const getUserProfileController = new GetUserProfileController();

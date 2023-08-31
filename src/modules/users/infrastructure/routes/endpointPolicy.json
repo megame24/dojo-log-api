@@ -6,7 +6,9 @@
   },
   "USER": {
     "inherits": "GUEST",
-    "allow": {},
+    "allow": {
+      "/users/:userId/profile": ["GET"]
+    },
     "deny": {
       "/users/:userId/send-verification": ["GET"],
       "/users/:userId/verify": ["PUT"],
