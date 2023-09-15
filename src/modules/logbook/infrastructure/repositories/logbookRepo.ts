@@ -120,6 +120,7 @@ export class LogbookRepoImpl implements LogbookRepo {
       name: logbookData.name,
       description: logbookData.description,
       visibility: logbookData.visibility,
+      updatedAt: logbookData.updatedAt,
       category,
       logs,
       goals,

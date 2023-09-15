@@ -48,7 +48,13 @@ export class GetLogbooksImpl implements GetLogbooks {
       });
     });
 
-    const logbooks: any = Promise.all(logbookPromise);
+    let logbooks: Logbook[] = await Promise.all(logbookPromise);
+    logbooks = logbooks.sort((a: Logbook, b: Logbook) => {
+      return (
+        Number(new Date(<Date>b.updatedAt)) -
+        Number(new Date(<Date>a.updatedAt))
+      );
+    });
 
     return logbooks;
   }

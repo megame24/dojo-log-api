@@ -17,6 +17,7 @@ interface BaseLogbookProps {
   description?: string;
   visibility: Visibility;
   category?: Category | null | undefined;
+  updatedAt?: Date;
 }
 
 interface LogbookProps extends BaseLogbookProps {
@@ -59,6 +60,10 @@ export default class Logbook extends Entity {
 
   get userId(): string {
     return this.props.userId;
+  }
+
+  get updatedAt(): Date | undefined {
+    return this.props.updatedAt;
   }
 
   private static saveLogsToHeatmap(
