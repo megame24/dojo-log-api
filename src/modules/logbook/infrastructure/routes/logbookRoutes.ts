@@ -164,7 +164,8 @@ logbookRouter.delete(
     resourceType: "logs",
     resourcesForAccessCheck: [{ name: "log", getResource: getLogImpl }],
   }),
-  deleteLogController.execute
+  deleteLogController.execute,
+  updateLogbookMiddleware.execute
 );
 
 logbookRouter.post(
