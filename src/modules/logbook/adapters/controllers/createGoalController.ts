@@ -1,12 +1,8 @@
 import Adapter from "../../../shared/adapters/adapter";
-import { DateService } from "../../../shared/infrastructure/services/dateService";
 import { CreateGoal } from "../../useCases/createGoal";
 
 export default class CreateGoalController extends Adapter {
-  constructor(
-    private createGoal: CreateGoal,
-    private dateService: DateService
-  ) {
+  constructor(private createGoal: CreateGoal) {
     super();
   }
 
@@ -36,6 +32,7 @@ export default class CreateGoalController extends Adapter {
 
       const goal = await this.createGoal.execute(createGoalDTO);
       res.status(201).json({ goalId: goal.id });
+      next();
     } catch (error) {
       next(error);
     }
