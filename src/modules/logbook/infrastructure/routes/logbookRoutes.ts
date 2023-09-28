@@ -210,7 +210,8 @@ logbookRouter.put(
       { name: "rewards", getResource: getLiteRewardsImpl },
     ],
   }),
-  updateGoalController.execute
+  updateGoalController.execute,
+  updateLogbookMiddleware.execute
 );
 
 export default logbookRouter;

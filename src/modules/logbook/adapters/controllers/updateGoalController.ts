@@ -1,8 +1,12 @@
 import Adapter from "../../../shared/adapters/adapter";
+import { GetLiteLogbook } from "../../useCases/getLiteLogbook";
 import { UpdateGoal } from "../../useCases/updateGoal";
 
 export default class UpdateGoalController extends Adapter {
-  constructor(private updateGoal: UpdateGoal) {
+  constructor(
+    private updateGoal: UpdateGoal,
+    private getLiteLogbook: GetLiteLogbook
+  ) {
     super();
   }
 
@@ -31,6 +35,11 @@ export default class UpdateGoalController extends Adapter {
 
       await this.updateGoal.execute(updateGoalDTO);
       res.status(200).json({ message: "Goal updated successfully" });
+      const logbook = await this.getLiteLogbook.execute({
+        logbookId: req.params.logbookId,
+      });
+      req.logbook = logbook;
+      next();
     } catch (error) {
       next(error);
     }
