@@ -22,6 +22,7 @@ import {
   updateRewardImpl,
   deleteFileImpl,
   downloadFileImpl,
+  getLiteLogbookImpl,
 } from "../../useCases";
 import CreateCategoryController from "./createCategoryController";
 import CreateGoalController from "./createGoalController";
@@ -66,7 +67,10 @@ export const getLogbookController = new GetLogbookController(getLogbookImpl);
 
 export const updateGoalController = new UpdateGoalController(updateGoalImpl);
 
-export const updateLogController = new UpdateLogController(updateLogImpl);
+export const updateLogController = new UpdateLogController(
+  updateLogImpl,
+  getLiteLogbookImpl
+);
 
 export const deleteLogController = new DeleteLogController(deleteLogImpl);
 

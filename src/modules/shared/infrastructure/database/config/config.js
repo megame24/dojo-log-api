@@ -9,6 +9,7 @@ module.exports = {
     port: process.env.DATABASE_PORT,
     dialect: "postgres",
     seederStorage: "sequelize",
+    logging: false,
   },
   production: {
     username: process.env.DATABASE_USERNAME,
