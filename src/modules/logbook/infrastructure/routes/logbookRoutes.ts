@@ -181,7 +181,8 @@ logbookRouter.post(
       { name: "rewards", getResource: getLiteRewardsImpl },
     ],
   }),
-  createGoalController.execute
+  createGoalController.execute,
+  updateLogbookMiddleware.execute
 );
 
 logbookRouter.get(

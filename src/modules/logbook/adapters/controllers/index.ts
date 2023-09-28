@@ -58,10 +58,7 @@ export const createLogbookController = new CreateLogbookController(
 
 export const createLogController = new CreateLogController(createLogImpl);
 
-export const createGoalController = new CreateGoalController(
-  createGoalImpl,
-  dateServiceImpl
-);
+export const createGoalController = new CreateGoalController(createGoalImpl);
 
 export const getLogbookController = new GetLogbookController(getLogbookImpl);
 
