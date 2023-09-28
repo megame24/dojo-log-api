@@ -28,6 +28,7 @@ import {
   getLogImpl,
 } from "../../useCases";
 import endpointPolicy from "./endpointPolicy.json";
+import { updateLogbookMiddleware } from "../../adapters/middleware";
 
 const logbookRouter = express.Router();
 
@@ -122,7 +123,8 @@ logbookRouter.post(
       { name: "logbook", getResource: getLiteLogbookImpl },
     ],
   }),
-  createLogController.execute
+  createLogController.execute,
+  updateLogbookMiddleware.execute
 );
 
 logbookRouter.get(
@@ -149,7 +151,8 @@ logbookRouter.put(
     resourceType: "logs",
     resourcesForAccessCheck: [{ name: "log", getResource: getLogImpl }],
   }),
-  updateLogController.execute
+  updateLogController.execute,
+  updateLogbookMiddleware.execute
 );
 
 logbookRouter.delete(
