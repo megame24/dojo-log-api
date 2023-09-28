@@ -72,7 +72,10 @@ export const updateLogController = new UpdateLogController(
   getLiteLogbookImpl
 );
 
-export const deleteLogController = new DeleteLogController(deleteLogImpl);
+export const deleteLogController = new DeleteLogController(
+  deleteLogImpl,
+  getLiteLogbookImpl
+);
 
 export const getLogsController = new GetLogsController(getLogsImpl);
 
