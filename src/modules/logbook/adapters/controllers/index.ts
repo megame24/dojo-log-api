@@ -62,7 +62,10 @@ export const createGoalController = new CreateGoalController(createGoalImpl);
 
 export const getLogbookController = new GetLogbookController(getLogbookImpl);
 
-export const updateGoalController = new UpdateGoalController(updateGoalImpl);
+export const updateGoalController = new UpdateGoalController(
+  updateGoalImpl,
+  getLiteLogbookImpl
+);
 
 export const updateLogController = new UpdateLogController(
   updateLogImpl,
