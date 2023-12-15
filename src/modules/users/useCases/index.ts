@@ -1,3 +1,4 @@
+import { OAuth2Client } from "google-auth-library";
 import { securityServiceImpl } from "../infrastructure/services";
 import {
   persistentCodeRepoImpl,
@@ -17,6 +18,9 @@ import { ForgotPasswordImpl } from "./forgotPassword";
 import { ResetPasswordImpl } from "./resetPassword";
 import { GetUserImpl } from "./getUser";
 import { UpdateUserImpl } from "./updateUser";
+import { GoogleSignInVerifyImpl } from "./googleSignInVerify";
+
+const client = new OAuth2Client();
 
 export const registerUserImpl = new RegisterUserImpl(
   securityServiceImpl,
@@ -71,4 +75,11 @@ export const getUserImpl = new GetUserImpl(userRepoImpl);
 export const updateUserImpl = new UpdateUserImpl(
   userRepoImpl,
   securityServiceImpl
+);
+
+export const googleSignInVerifyImpl = new GoogleSignInVerifyImpl(
+  securityServiceImpl,
+  uuidServiceImpl,
+  userRepoImpl,
+  client
 );

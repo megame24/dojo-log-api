@@ -12,6 +12,7 @@ import {
   resetPasswordController,
   getUserProfileController,
   updateUserProfileController,
+  googleSignInVerifyController,
 } from "../../adapters/controllers";
 import { sendVerificationMiddleware } from "../../adapters/middleware";
 import endpointPolicy from "./endpointPolicy.json";
@@ -44,6 +45,18 @@ userRouter.post(
     resourcesForAccessCheck: [],
   }),
   loginUserController.execute
+);
+
+userRouter.post(
+  "/google-sign-in-verify",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: userAccessControl,
+    operation: Operation.CREATE,
+    resourceType: "googleSignInVerify",
+    resourcesForAccessCheck: [],
+  }),
+  googleSignInVerifyController.execute
 );
 
 userRouter.get(
