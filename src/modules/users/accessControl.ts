@@ -28,6 +28,12 @@ class UserAccessControl extends AccessControl {
             condition: this.privateAccess,
           },
         ],
+        changePassword: [
+          {
+            operation: Operation.UPDATE,
+            condition: this.privateAccess,
+          },
+        ],
       },
       deny: {
         sendVerification: [
