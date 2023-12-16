@@ -1,4 +1,5 @@
 import {
+  changePasswordImpl,
   forgotPasswordImpl,
   googleSignInVerifyImpl,
   loginUserImpl,
@@ -17,6 +18,7 @@ import ResetPasswordController from "./resetPasswordController";
 import GetUserProfileController from "./getUserProfileController";
 import UpdateUserProfileController from "./updateUserProfileController";
 import GoogleSignInVerifyController from "./googleSignInVerifyController";
+import ChangePasswordController from "./changePasswordController";
 
 export const registerUserController = new RegisterUserController(
   registerUserImpl
@@ -46,4 +48,8 @@ export const updateUserProfileController = new UpdateUserProfileController(
 
 export const googleSignInVerifyController = new GoogleSignInVerifyController(
   googleSignInVerifyImpl
+);
+
+export const changePasswordController = new ChangePasswordController(
+  changePasswordImpl
 );

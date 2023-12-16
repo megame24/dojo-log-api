@@ -19,6 +19,7 @@ import { ResetPasswordImpl } from "./resetPassword";
 import { GetUserImpl } from "./getUser";
 import { UpdateUserImpl } from "./updateUser";
 import { GoogleSignInVerifyImpl } from "./googleSignInVerify";
+import { ChangePasswordImpl } from "./changePassword";
 
 const client = new OAuth2Client();
 
@@ -82,4 +83,9 @@ export const googleSignInVerifyImpl = new GoogleSignInVerifyImpl(
   uuidServiceImpl,
   userRepoImpl,
   client
+);
+
+export const changePasswordImpl = new ChangePasswordImpl(
+  securityServiceImpl,
+  userRepoImpl
 );

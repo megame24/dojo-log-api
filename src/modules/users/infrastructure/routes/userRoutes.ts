@@ -13,6 +13,7 @@ import {
   getUserProfileController,
   updateUserProfileController,
   googleSignInVerifyController,
+  changePasswordController,
 } from "../../adapters/controllers";
 import { sendVerificationMiddleware } from "../../adapters/middleware";
 import endpointPolicy from "./endpointPolicy.json";
@@ -129,6 +130,18 @@ userRouter.put(
     resourcesForAccessCheck: [],
   }),
   resetPasswordController.execute
+);
+
+userRouter.put(
+  "/:userId/change-password",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: userAccessControl,
+    operation: Operation.UPDATE,
+    resourceType: "changePassword",
+    resourcesForAccessCheck: [{ name: "user", getResource: getUserImpl }],
+  }),
+  changePasswordController.execute
 );
 
 export default userRouter;
