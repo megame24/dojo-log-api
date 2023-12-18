@@ -10,6 +10,7 @@ export interface FileService {
   ) => Promise<string | void>;
   deleteFile: (file: File) => void;
   downloadFile: (file: File) => Promise<string>;
+  deleteAllUserFiles: (userId: string, visibility: Visibility) => void;
 }
 
 export class FileServiceImpl implements FileService {
@@ -19,6 +20,8 @@ export class FileServiceImpl implements FileService {
     private BucketClient: any,
     private UploadObjectCommand: any,
     private DeleteObjectCommand: any,
+    private DeleteObjectsCommand: any,
+    private ListObjectsV2Command: any,
     private GetObjectCommand: any,
     private getSignedUrl: any,
     private NodeHttpHandler: any
@@ -69,6 +72,48 @@ export class FileServiceImpl implements FileService {
     } catch (error: any) {
       throw AppError.internalServerError("Error deleting file", error);
     }
+  }
+
+  async deleteAllUserFiles(userId: string, visibility: Visibility) {
+    const folderPath = `${visibility}/${userId}/`;
+
+    const deleteFolder = async (folder: string) => {
+      // List all objects with the folder prefix
+      const listParams = {
+        Bucket: process.env.BUCKET_NAME,
+        Prefix: folder,
+      };
+
+      try {
+        const listedObjects = await this.bucketClient.send(
+          new this.ListObjectsV2Command(listParams)
+        );
+
+        if (!(listedObjects.Contents && listedObjects.Contents.length !== 0))
+          return;
+
+        // Delete objects
+        const deleteParams = {
+          Bucket: process.env.BUCKET_NAME,
+          Delete: {
+            Objects: listedObjects.Contents.map(({ Key }: any) => ({ Key })),
+          },
+        };
+        await this.bucketClient.send(
+          new this.DeleteObjectsCommand(deleteParams)
+        );
+
+        // Check if there are more objects to delete (pagination)
+        if (listedObjects.IsTruncated) await deleteFolder(folder);
+      } catch (error: any) {
+        throw AppError.internalServerError(
+          "Error deleting all user files",
+          error
+        );
+      }
+    };
+
+    await deleteFolder(folderPath);
   }
 
   async downloadFile({ visibility, userId, name }: File): Promise<string> {

@@ -19,6 +19,7 @@ export interface UserRepo {
   ) => Promise<User | null>;
   getUserById: (id: string, config?: GetUserConfig) => Promise<User | null>;
   update: (user: User, payload: Partial<CreateUserProps>) => Promise<User>;
+  delete: (user: User) => void;
 }
 
 export class UserRepoImpl implements UserRepo {
@@ -144,5 +145,9 @@ export class UserRepoImpl implements UserRepo {
     const queryOption = { where: { id } };
 
     return this.getUser(queryOption, config);
+  }
+
+  async delete(user: User) {
+    await this.UserModel.destroy({ where: { id: user.id } });
   }
 }

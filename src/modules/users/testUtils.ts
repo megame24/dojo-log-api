@@ -12,6 +12,7 @@ export class MockUserRepo implements UserRepo {
   getUserByUsername = jest.fn();
   update = jest.fn();
   getUserById = jest.fn();
+  delete = jest.fn();
 }
 
 export class MockPersistentTokenRepo implements PersistentTokenRepo {

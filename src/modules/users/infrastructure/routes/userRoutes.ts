@@ -14,6 +14,7 @@ import {
   updateUserProfileController,
   googleSignInVerifyController,
   changePasswordController,
+  deleteAccountController,
 } from "../../adapters/controllers";
 import { sendVerificationMiddleware } from "../../adapters/middleware";
 import endpointPolicy from "./endpointPolicy.json";
@@ -142,6 +143,18 @@ userRouter.put(
     resourcesForAccessCheck: [{ name: "user", getResource: getUserImpl }],
   }),
   changePasswordController.execute
+);
+
+userRouter.delete(
+  "/:userId/account",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: userAccessControl,
+    operation: Operation.DELETE,
+    resourceType: "deleteAccount",
+    resourcesForAccessCheck: [{ name: "user", getResource: getUserImpl }],
+  }),
+  deleteAccountController.execute
 );
 
 export default userRouter;

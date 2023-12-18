@@ -8,7 +8,8 @@
     "inherits": "GUEST",
     "allow": {
       "/users/:userId/profile": ["GET", "PUT"],
-      "/users/:userId/change-password": ["PUT"]
+      "/users/:userId/change-password": ["PUT"],
+      "/users/:userId/account": ["DELETE"]
     },
     "deny": {
       "/users/:userId/send-verification": ["GET"],

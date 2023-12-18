@@ -8,6 +8,8 @@ import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import {
   PutObjectCommand,
   DeleteObjectCommand,
+  DeleteObjectsCommand,
+  ListObjectsV2Command,
   GetObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
@@ -32,6 +34,8 @@ export const fileServiceImpl = new FileServiceImpl(
   S3Client,
   PutObjectCommand,
   DeleteObjectCommand,
+  DeleteObjectsCommand,
+  ListObjectsV2Command,
   GetObjectCommand,
   getSignedUrl,
   NodeHttpHandler
