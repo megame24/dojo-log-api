@@ -5,7 +5,10 @@ const { Visibility } = require("./json/enums.json");
 module.exports = (sequelize, DataTypes) => {
   class File extends Model {
     static associate(models) {
-      File.belongsTo(models.User, { foreignKey: "userId" });
+      File.belongsTo(models.User, {
+        foreignKey: "userId",
+        onDelete: "cascade",
+      });
       File.belongsTo(models.Log, { foreignKey: "logId" });
       File.belongsTo(models.Reward, { foreignKey: "rewardId" });
     }

@@ -9,9 +9,18 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "rewardId",
         onDelete: "cascade",
       });
-      Reward.belongsTo(models.User, { foreignKey: "userId" });
-      Reward.belongsTo(models.User, { foreignKey: "createdBy" });
-      Reward.belongsTo(models.User, { foreignKey: "updatedBy" });
+      Reward.belongsTo(models.User, {
+        foreignKey: "userId",
+        onDelete: "cascade",
+      });
+      Reward.belongsTo(models.User, {
+        foreignKey: "createdBy",
+        onDelete: "SET NULL",
+      });
+      Reward.belongsTo(models.User, {
+        foreignKey: "updatedBy",
+        onDelete: "SET NULL",
+      });
       Reward.hasMany(models.File, { foreignKey: "rewardId" });
     }
   }

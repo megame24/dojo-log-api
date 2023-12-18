@@ -12,6 +12,7 @@ import { AuthenticateUserImpl } from "./authenticateUser";
 import { SendVerificationImpl } from "./sendVerification";
 import {
   emailServiceImpl,
+  fileServiceImpl,
   uuidServiceImpl,
 } from "../../shared/infrastructure/services";
 import { ForgotPasswordImpl } from "./forgotPassword";
@@ -20,6 +21,7 @@ import { GetUserImpl } from "./getUser";
 import { UpdateUserImpl } from "./updateUser";
 import { GoogleSignInVerifyImpl } from "./googleSignInVerify";
 import { ChangePasswordImpl } from "./changePassword";
+import { DeleteAccountImpl } from "./deleteAccount";
 
 const client = new OAuth2Client();
 
@@ -88,4 +90,9 @@ export const googleSignInVerifyImpl = new GoogleSignInVerifyImpl(
 export const changePasswordImpl = new ChangePasswordImpl(
   securityServiceImpl,
   userRepoImpl
+);
+
+export const deleteAccountImpl = new DeleteAccountImpl(
+  userRepoImpl,
+  fileServiceImpl
 );

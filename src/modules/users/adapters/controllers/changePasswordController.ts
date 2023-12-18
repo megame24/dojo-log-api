@@ -16,7 +16,7 @@ export default class ChangePasswordController extends Adapter {
     try {
       await this.changePassword.execute(changePasswordDTO);
 
-      res.status(200).json({ message: "Password changed successfully " });
+      res.status(200).json({ message: "Password changed successfully" });
     } catch (error) {
       next(error);
     }

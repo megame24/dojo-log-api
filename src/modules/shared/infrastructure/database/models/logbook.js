@@ -5,9 +5,18 @@ const { Visibility } = require("./json/enums.json");
 module.exports = (sequelize, DataTypes) => {
   class Logbook extends Model {
     static associate(models) {
-      Logbook.belongsTo(models.User, { foreignKey: "userId" });
-      Logbook.belongsTo(models.User, { foreignKey: "createdBy" });
-      Logbook.belongsTo(models.User, { foreignKey: "updatedBy" });
+      Logbook.belongsTo(models.User, {
+        foreignKey: "userId",
+        onDelete: "cascade",
+      });
+      Logbook.belongsTo(models.User, {
+        foreignKey: "createdBy",
+        onDelete: "SET NULL",
+      });
+      Logbook.belongsTo(models.User, {
+        foreignKey: "updatedBy",
+        onDelete: "SET NULL",
+      });
       Logbook.belongsTo(models.Category, { foreignKey: "categoryId" });
       Logbook.hasMany(models.Log, {
         foreignKey: "logbookId",

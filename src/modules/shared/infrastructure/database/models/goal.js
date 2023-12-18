@@ -8,9 +8,18 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "logbookId",
         onDelete: "cascade",
       });
-      Goal.belongsTo(models.User, { foreignKey: "userId" });
-      Goal.belongsTo(models.User, { foreignKey: "createdBy" });
-      Goal.belongsTo(models.User, { foreignKey: "updatedBy" });
+      Goal.belongsTo(models.User, {
+        foreignKey: "userId",
+        onDelete: "cascade",
+      });
+      Goal.belongsTo(models.User, {
+        foreignKey: "createdBy",
+        onDelete: "SET NULL",
+      });
+      Goal.belongsTo(models.User, {
+        foreignKey: "updatedBy",
+        onDelete: "SET NULL",
+      });
       Goal.belongsToMany(models.Reward, {
         through: "GoalRewards",
         foreignKey: "goalId",

@@ -34,6 +34,12 @@ class UserAccessControl extends AccessControl {
             condition: this.privateAccess,
           },
         ],
+        deleteAccount: [
+          {
+            operation: Operation.DELETE,
+            condition: this.privateAccess,
+          },
+        ],
       },
       deny: {
         sendVerification: [

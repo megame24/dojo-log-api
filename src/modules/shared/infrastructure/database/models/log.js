@@ -8,9 +8,15 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "logbookId",
         onDelete: "cascade",
       });
-      Log.belongsTo(models.User, { foreignKey: "userId" });
-      Log.belongsTo(models.User, { foreignKey: "cratedBy" });
-      Log.belongsTo(models.User, { foreignKey: "updatedBy" });
+      Log.belongsTo(models.User, { foreignKey: "userId", onDelete: "cascade" });
+      Log.belongsTo(models.User, {
+        foreignKey: "cratedBy",
+        onDelete: "SET NULL",
+      });
+      Log.belongsTo(models.User, {
+        foreignKey: "updatedBy",
+        onDelete: "SET NULL",
+      });
       Log.hasMany(models.File, { foreignKey: "logId" });
     }
   }
