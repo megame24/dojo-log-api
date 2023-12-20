@@ -7,7 +7,7 @@ export default class GetLogbookController extends Adapter {
   }
 
   async execute(req: any, res: any, next: any) {
-    const { startDateString, endDateString } = req.query;
+    const { startDateString, endDateString, year } = req.query;
 
     const startDate = startDateString;
     const endDate = endDateString;
@@ -16,6 +16,7 @@ export default class GetLogbookController extends Adapter {
       logbookId: req.params.logbookId,
       startDate,
       endDate,
+      year,
     };
 
     try {
@@ -28,6 +29,7 @@ export default class GetLogbookController extends Adapter {
         description: logbook.description,
         visibility: logbook.visibility,
         heatmap: logbook.heatmap,
+        yearHeatmapDisplay: logbook.yearHeatmapDisplay,
         ...(logbook.category && {
           category: {
             id: logbook.category.id,

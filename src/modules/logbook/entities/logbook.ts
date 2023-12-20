@@ -22,14 +22,24 @@ interface BaseLogbookProps {
 
 interface LogbookProps extends BaseLogbookProps {
   heatmap: any;
+  yearHeatmapDisplay: any;
 }
 
 interface CreateLogbookProps extends BaseLogbookProps {
   goals?: Goal[];
   logs?: Log[];
+  year?: string;
 }
 
 export default class Logbook extends Entity {
+  private static colors: any = {
+    primary: "#2980B9",
+    borderGray: "rgba(0,0,0,0.1)",
+    primary25Per: "rgba(41, 128, 185, 0.25)",
+    primary50Per: "rgba(41, 128, 185, 0.5)",
+    primary75Per: "rgba(41, 128, 185, 0.75)",
+  };
+
   private constructor(private props: LogbookProps, uuidService: UUIDService) {
     super(props, uuidService);
   }
@@ -48,6 +58,10 @@ export default class Logbook extends Entity {
 
   get heatmap(): any {
     return this.props.heatmap;
+  }
+
+  get yearHeatmapDisplay(): any {
+    return this.props.yearHeatmapDisplay;
   }
 
   get visibility(): Visibility {
@@ -140,6 +154,91 @@ export default class Logbook extends Entity {
     });
   }
 
+  private static getHeatmapCellColorFromDuration(durationInMinutes: number) {
+    if (!durationInMinutes) return this.colors.borderGray;
+    const totalHours = durationInMinutes / 60;
+    let color = this.colors.primary25Per;
+    if (totalHours >= 2) color = this.colors.primary50Per;
+    if (totalHours >= 6) color = this.colors.primary75Per;
+    if (totalHours >= 12) color = this.colors.primary;
+    return color;
+  }
+
+  private static createYearHeatmapDisplay(
+    heatmap: any,
+    props: CreateLogbookProps,
+    dateService: DateService
+  ) {
+    const { year } = props;
+    if (!year) return [];
+    const startOfYear = dateService.getStartOfYear(year);
+    const startOfYearDayValue = dateService.getDay(startOfYear, true);
+    const startOfYearDayOfYear = dateService.getDayOfYear(startOfYear);
+    const startOfCalendarYearDayOfYear =
+      startOfYearDayOfYear - startOfYearDayValue;
+
+    const endOfYear = dateService.getEndOfYear(year);
+    const endOfYearDayOfYear = dateService.getDayOfYear(endOfYear);
+
+    const today = dateService.convertDateStringToDate(new Date(), true);
+    const todayDayOfYear = dateService.getDayOfYear(today);
+
+    let weekTracker = 0;
+    let monthTracker = 2;
+    let monthTrackingDone = false;
+    const yearHeatmap: any[] = [];
+    for (let i = startOfCalendarYearDayOfYear; i <= endOfYearDayOfYear; i++) {
+      const dayOfYearDate = dateService.convertDateStringToDate(
+        dateService.getDateFromDayOfYear(year, i),
+        true
+      );
+      const yearHeatmapElement: any = {
+        index: i + "",
+      };
+      const day = dateService.days[dateService.getDay(dayOfYearDate, false)];
+      if (day === dateService.days[0]) {
+        const monthValue = dateService.getMonth(dayOfYearDate, false);
+        if (monthTracker % 2 === 0)
+          yearHeatmapElement.month = dateService.months[monthValue];
+        if (monthTracker === 4 && !monthTrackingDone) {
+          if (i >= startOfYearDayOfYear && monthValue === 11)
+            monthTrackingDone = true;
+          yearHeatmapElement.monthVisible = true;
+          monthTracker = 0;
+        }
+        monthTracker++;
+      }
+      if (weekTracker < 14) {
+        yearHeatmapElement.day = " ";
+        yearHeatmapElement.inactiveDay = true;
+        if (weekTracker % 2 === 0) {
+          yearHeatmapElement.day = day;
+          yearHeatmapElement.inactiveDay = false;
+        }
+      }
+      if (i === todayDayOfYear) yearHeatmapElement.isToday = true;
+      if (i < startOfYearDayOfYear) yearHeatmapElement.inactive = true;
+      weekTracker++;
+
+      const heatmapElement = heatmap[i];
+      if (heatmapElement) {
+        if (heatmapElement.goal) {
+          yearHeatmapElement.goalId = heatmapElement.goal.id;
+          yearHeatmapElement.hasGoal = true;
+          yearHeatmapElement.goalAchieved = heatmapElement.goal.achieved;
+        }
+        if (heatmapElement.logs) {
+          yearHeatmapElement.color = this.getHeatmapCellColorFromDuration(
+            heatmapElement.logs.totalDurationOfWorkInMinutes
+          );
+        }
+      }
+      yearHeatmap.push(yearHeatmapElement);
+    }
+
+    return yearHeatmap;
+  }
+
   private static createHeatmap(
     props: CreateLogbookProps,
     dateService: DateService
@@ -175,6 +274,12 @@ export default class Logbook extends Entity {
 
     const heatmap = this.createHeatmap(props, dateService);
 
-    return new Logbook({ ...props, heatmap }, uuidService);
+    const yearHeatmapDisplay = this.createYearHeatmapDisplay(
+      heatmap,
+      props,
+      dateService
+    );
+
+    return new Logbook({ ...props, heatmap, yearHeatmapDisplay }, uuidService);
   }
 }

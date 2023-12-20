@@ -80,7 +80,13 @@ export const createGoalImpl = new CreateGoalImpl(
   goalRepoImpl
 );
 
-export const getLogbookImpl = new GetLogbookImpl(logbookRepoImpl);
+export const getLogbookImpl = new GetLogbookImpl(
+  logbookRepoImpl,
+  goalRepoImpl,
+  logRepoImpl,
+  uuidServiceImpl,
+  dateServiceImpl
+);
 
 export const updateGoalImpl = new UpdateGoalImpl(
   createRewardImpl,
