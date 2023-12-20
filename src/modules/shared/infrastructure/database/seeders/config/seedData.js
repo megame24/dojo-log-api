@@ -1,8 +1,8 @@
 const uuidv4 = require("uuid").v4;
 
 const randomDateIn2022 = () => {
-  const start = new Date(2022, 0, 1);
-  const end = new Date(2022, 11, 31);
+  const start = new Date(2023, 0, 1);
+  const end = new Date(2023, 11, 31);
   return new Date(
     start.getTime() + Math.random() * (end.getTime() - start.getTime())
   );

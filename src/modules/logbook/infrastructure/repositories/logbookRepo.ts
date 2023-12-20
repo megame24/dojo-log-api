@@ -9,11 +9,6 @@ import Logbook, { Visibility } from "../../entities/logbook";
 import { GoalRepo } from "./goalRepo";
 import { LogRepo } from "./logRepo";
 
-interface GetLogbookByIdQueryOption {
-  startDate: Date;
-  endDate: Date;
-}
-
 interface GetLogbooksByUserIdQueryOption {
   includePrivateLogbooks: boolean;
 }
@@ -22,10 +17,6 @@ export interface LogbookRepo {
   create: (logbook: Logbook, createdBy: User) => void;
   update: (logbook: Logbook, updatedBy: User) => void;
   getLiteLogbookById: (logbookId: string) => Promise<Logbook | null>;
-  getLogbookById: (
-    logbookId: string,
-    getLogbookByIdQueryOption: GetLogbookByIdQueryOption
-  ) => Promise<Logbook | null>;
   getLightLogbooksByUserId: (
     userId: string,
     getLightLogbooksByUserIdQueryOption: GetLogbooksByUserIdQueryOption
@@ -139,32 +130,6 @@ export class LogbookRepoImpl implements LogbookRepo {
     const queryOption = { where: { id: logbookId } };
 
     return this.getLogbook(queryOption);
-  }
-
-  async getLogbookById(
-    logbookId: string,
-    getLogbookByIdQueryOption: GetLogbookByIdQueryOption
-  ): Promise<Logbook | null> {
-    if (!logbookId) throw AppError.badRequestError("logbookId is required");
-    const { startDate, endDate } = getLogbookByIdQueryOption;
-
-    // TODO: MOVE THIS TO USE CASE
-    const goals = await this.goalRepo.getGoalsByLogbookIdStartAndEndDates(
-      logbookId,
-      startDate,
-      endDate
-    );
-    // TODO: MOVE THIS TO USE CASE
-    const logs = await this.logRepo.getLogsByLogbookIdStartAndEndDates(
-      logbookId,
-      startDate,
-      endDate
-    );
-
-    const queryOption = { where: { id: logbookId } };
-
-    // TODO: RETURN PLAIN LOGBOOK AND AGGREGATE WITH LOGS AND GOALS IN USE CASE
-    return this.getLogbook(queryOption, goals, logs);
   }
 
   private async getLightLogbooks(queryOption: any): Promise<Logbook[]> {
