@@ -6,8 +6,6 @@ import Category from "../../entities/category";
 import Goal from "../../entities/goal";
 import Log from "../../entities/log";
 import Logbook, { Visibility } from "../../entities/logbook";
-import { GoalRepo } from "./goalRepo";
-import { LogRepo } from "./logRepo";
 
 interface GetLogbooksByUserIdQueryOption {
   includePrivateLogbooks: boolean;
@@ -30,9 +28,7 @@ export class LogbookRepoImpl implements LogbookRepo {
     private LogbookModel: any,
     private CategoryModel: any,
     private uuidService: UUIDService,
-    private dateService: DateService,
-    private goalRepo: GoalRepo,
-    private logRepo: LogRepo
+    private dateService: DateService
   ) {}
 
   async create(logbook: Logbook, createdBy: User) {
