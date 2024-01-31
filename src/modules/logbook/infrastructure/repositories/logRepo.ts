@@ -9,7 +9,8 @@ export interface LogRepo {
   getLogsByLogbookIdStartAndEndDates: (
     logbookId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
+    includeProofOfWork?: boolean
   ) => Promise<Log[]>;
   update: (log: Log, updatedBy: User) => void;
   getLogById: (logId: string) => Promise<Log | null>;
@@ -114,12 +115,12 @@ export class LogRepoImpl implements LogRepo {
   }
 
   async getLogsByLogbookIdStartAndEndDates(
-    // include a includeFiles option here
     logbookId: string,
     startDate: Date,
-    endDate: Date
+    endDate: Date,
+    includeProofOfWork = false
   ): Promise<Log[]> {
-    const queryOption = {
+    const queryOption: any = {
       where: {
         logbookId,
         date: {
@@ -127,8 +128,11 @@ export class LogRepoImpl implements LogRepo {
           [this.Op.lte]: endDate,
         },
       },
-      include: { model: this.FileModel, required: false },
     };
+
+    if (includeProofOfWork) {
+      queryOption.include = { model: this.FileModel, required: false };
+    }
 
     const logbookData = await this.LogbookModel.findByPk(logbookId);
     if (!logbookData) throw AppError.notFoundError("Logbook not found");

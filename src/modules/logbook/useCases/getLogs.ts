@@ -21,7 +21,8 @@ export class GetLogsImpl implements GetLogs {
     const logs = await this.logRepo.getLogsByLogbookIdStartAndEndDates(
       logbookId,
       startDate,
-      endDate
+      endDate,
+      true
     );
 
     return logs;
