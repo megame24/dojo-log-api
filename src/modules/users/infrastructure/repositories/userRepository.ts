@@ -1,4 +1,5 @@
 import AppError from "../../../shared/AppError";
+import Entity from "../../../shared/entities/entity";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
 import User, { CreateUserProps } from "../../entities/user";
 import { SecurityService } from "../services/securityService";
@@ -124,8 +125,9 @@ export class UserRepoImpl implements UserRepo {
     email = "",
     config?: GetUserConfig
   ): Promise<User | null> {
-    email = email.toLowerCase();
-    const queryOption = { where: { email } };
+    const formattedEmail = Entity.formatEmail(email);
+
+    const queryOption = { where: { email: formattedEmail } };
 
     return this.getUser(queryOption, config);
   }

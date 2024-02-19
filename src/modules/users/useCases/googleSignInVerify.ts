@@ -8,9 +8,19 @@ interface GoogleSignInVerifyDTO {
   idToken: string;
 }
 
+interface GoogleSignInVerifyReturnType {
+  authToken: string;
+  user: User;
+}
+
 export interface GoogleSignInVerify
-  extends UseCase<GoogleSignInVerifyDTO, Promise<string>> {
-  execute: (googleSignInVerifyDTO: GoogleSignInVerifyDTO) => Promise<string>;
+  extends UseCase<
+    GoogleSignInVerifyDTO,
+    Promise<GoogleSignInVerifyReturnType>
+  > {
+  execute: (
+    googleSignInVerifyDTO: GoogleSignInVerifyDTO
+  ) => Promise<GoogleSignInVerifyReturnType>;
 }
 
 export class GoogleSignInVerifyImpl implements GoogleSignInVerify {
@@ -21,7 +31,9 @@ export class GoogleSignInVerifyImpl implements GoogleSignInVerify {
     private verifyClient: any
   ) {}
 
-  async execute(googleSignInVerifyDTO: GoogleSignInVerifyDTO): Promise<string> {
+  async execute(
+    googleSignInVerifyDTO: GoogleSignInVerifyDTO
+  ): Promise<GoogleSignInVerifyReturnType> {
     const { idToken } = googleSignInVerifyDTO;
     const ticket = await this.verifyClient.verifyIdToken({
       idToken,
@@ -61,6 +73,6 @@ export class GoogleSignInVerifyImpl implements GoogleSignInVerify {
       name: user.name,
       email: user.email,
     });
-    return authToken;
+    return { authToken, user };
   }
 }

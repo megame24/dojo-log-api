@@ -1,4 +1,4 @@
-import { EmailService } from "../../shared/infrastructure/services/emailService";
+import { EmailService } from "../../shared/infrastructure/services/emailService/emailService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase, { UseCaseConfig } from "../../shared/useCases/useCase";
 import constants from "../config/constants";

@@ -11,10 +11,12 @@ export default class GoogleSignInVerifyController extends Adapter {
     const googleSignInVerifyDTO = { idToken };
 
     try {
-      const authToken = await this.googleSignInVerify.execute(
+      const { authToken, user } = await this.googleSignInVerify.execute(
         googleSignInVerifyDTO
       );
       res.status(200).json({ authToken });
+      req.user = user;
+      next();
     } catch (error) {
       next(error);
     }
