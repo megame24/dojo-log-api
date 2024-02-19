@@ -1,5 +1,5 @@
 import { DateService } from "../shared/infrastructure/services/dateService";
-import { EmailService } from "../shared/infrastructure/services/emailService";
+import { EmailService } from "../shared/infrastructure/services/emailService/emailService";
 import { UUIDService } from "../shared/infrastructure/services/uuidService";
 import { PersistentTokenRepo } from "./infrastructure/repositories/persistentTokenRepo";
 import { UserRepo } from "./infrastructure/repositories/userRepository";

@@ -16,7 +16,7 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { NodeHttpHandler } from "@aws-sdk/node-http-handler";
 import { DateServiceImpl } from "./dateService";
-import { EmailServiceImpl } from "./emailService";
+import { EmailServiceImpl } from "./emailService/emailService";
 import { FileServiceImpl } from "./fileService";
 import { UUIDServiceImpl } from "./uuidService";
 

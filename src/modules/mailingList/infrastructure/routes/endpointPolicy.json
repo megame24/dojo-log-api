@@ -1,0 +1,19 @@
+{
+  "ADMIN": {
+    "inherits": "USER",
+    "allow": {},
+    "deny": {}
+  },
+  "USER": {
+    "inherits": "GUEST",
+    "allow": {},
+    "deny": {}
+  },
+  "GUEST": {
+    "inherits": "",
+    "allow": {
+      "/mailing-list": ["POST", "PUT"]
+    },
+    "deny": {}
+  }
+}

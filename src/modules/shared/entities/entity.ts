@@ -11,11 +11,29 @@ export default abstract class Entity {
     isValid: true,
     message: "",
   };
+  protected static passwordRegEx =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!”#$%&'()*+,\-./:;<=>?@[\]^_`{|}~]).{8,}$/;
+  protected static emailRegEx =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   constructor(props: any, private uuidService: UUIDService) {
     if (!props.id) {
       props.id = this.uuidService.generate();
     }
+  }
+
+  protected static validateEmail(email: string): ValidationResult {
+    if (!email) {
+      return { isValid: false, message: "Email is required" };
+    }
+    if (!Entity.emailRegEx.test(email)) {
+      return { isValid: false, message: "Invalid email" };
+    }
+    return Entity.validValidationResult;
+  }
+
+  static formatEmail(email: string): string {
+    return email.trim().toLowerCase();
   }
 
   protected static validateString(prop: {

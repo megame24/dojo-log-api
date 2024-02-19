@@ -21,6 +21,7 @@ import endpointPolicy from "./endpointPolicy.json";
 import { userAccessControl } from "../../accessControl";
 import { Operation } from "../../../shared/accessControl";
 import { getUserImpl } from "../../useCases";
+import { addMailToMailingListMiddleware } from "../../../mailingList/adapters/middleware";
 
 const userRouter = express.Router();
 
@@ -34,7 +35,8 @@ userRouter.post(
     resourcesForAccessCheck: [],
   }),
   registerUserController.execute,
-  sendVerificationMiddleware.execute
+  sendVerificationMiddleware.execute,
+  addMailToMailingListMiddleware.execute
 );
 
 userRouter.post(
@@ -58,7 +60,8 @@ userRouter.post(
     resourceType: "googleSignInVerify",
     resourcesForAccessCheck: [],
   }),
-  googleSignInVerifyController.execute
+  googleSignInVerifyController.execute,
+  addMailToMailingListMiddleware.execute
 );
 
 userRouter.get(

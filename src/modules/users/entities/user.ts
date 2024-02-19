@@ -24,11 +24,6 @@ export interface CreateUserProps extends UserProps {
 }
 
 export default class User extends Entity {
-  private static passwordRegEx =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!”#$%&'()*+,\-./:;<=>?@[\]^_`{|}~]).{8,}$/;
-  private static emailRegEx =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
   private constructor(private props: UserProps, uuidService: UUIDService) {
     super(props, uuidService);
   }
@@ -59,20 +54,6 @@ export default class User extends Entity {
 
   get verified(): boolean | undefined {
     return this.props.verified;
-  }
-
-  private static validateEmail(email: string): ValidationResult {
-    if (!email) {
-      return { isValid: false, message: "Email is required" };
-    }
-    if (!User.emailRegEx.test(email)) {
-      return { isValid: false, message: "Invalid email" };
-    }
-    return User.validValidationResult;
-  }
-
-  private static formatEmail(email: string): string {
-    return email.trim().toLowerCase();
   }
 
   private static validatePassword(
