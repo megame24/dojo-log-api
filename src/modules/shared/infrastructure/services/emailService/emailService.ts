@@ -1,6 +1,6 @@
 import PersistentCode from "../../../../users/entities/persistentCode";
 import PersistentToken from "../../../../users/entities/persistentToken";
-import emailTemplates from "./emailTemplates";
+import emailTemplates, { ImplicitEmailTemplateIds } from "./emailTemplates";
 
 const { codeMailTemplate } = emailTemplates;
 
@@ -25,6 +25,10 @@ export interface EmailService {
     code: PersistentCode,
     name: string
   ) => void;
+  sendMailToMailingList: (
+    emails: string[],
+    templateId: ImplicitEmailTemplateIds
+  ) => void;
 }
 
 export class EmailServiceImpl implements EmailService {
@@ -40,37 +44,31 @@ export class EmailServiceImpl implements EmailService {
     });
   }
 
-  async sendVerificationCodeMail(
-    recipientEmail: string,
-    code: PersistentCode,
-    name: string
+  async sendEmail(
+    recipientEmails: string[],
+    htmlContent: string,
+    rawContent: string,
+    subject: string
   ) {
-    const emailText =
-      "Thank you for registering with Dojologs. To complete your registration, please use the following verification code:";
     const sendEmailCommand = new this.SendEmailCommand({
       Source: process.env.AWS_SES_SENDER,
       Destination: {
-        ToAddresses: [recipientEmail],
+        ToAddresses: recipientEmails,
       },
       Message: {
         Body: {
           Html: {
             Charset: "UTF-8",
-            Data: codeMailTemplate(
-              <string>code.rawCode,
-              name,
-              emailText,
-              "Email Verification"
-            ),
+            Data: htmlContent,
           },
           Text: {
             Charset: "UTF-8",
-            Data: `${emailText} ${code.rawCode}`,
+            Data: rawContent,
           },
         },
         Subject: {
           Charset: "UTF-8",
-          Data: "Verify your Dojologs account",
+          Data: subject,
         },
       },
     });
@@ -80,6 +78,24 @@ export class EmailServiceImpl implements EmailService {
     } catch (err) {
       console.log(err);
     }
+  }
+
+  async sendVerificationCodeMail(
+    recipientEmail: string,
+    code: PersistentCode,
+    name: string
+  ) {
+    const emailText =
+      "Thank you for registering with Dojologs. To complete your registration, please use the following verification code:";
+    const subject = "Verify your Dojologs account";
+    const title = "Email Verification";
+
+    await this.sendEmail(
+      [recipientEmail],
+      codeMailTemplate(<string>code.rawCode, name, emailText, title),
+      `${emailText} ${code.rawCode}`,
+      subject
+    );
   }
 
   async sendVerificationTokenMail(
@@ -98,39 +114,15 @@ export class EmailServiceImpl implements EmailService {
   ) {
     const emailText =
       "To reset your password, please use the following reset password code:";
-    const sendEmailCommand = new this.SendEmailCommand({
-      Source: process.env.AWS_SES_SENDER,
-      Destination: {
-        ToAddresses: [recipientEmail],
-      },
-      Message: {
-        Body: {
-          Html: {
-            Charset: "UTF-8",
-            Data: codeMailTemplate(
-              <string>code.rawCode,
-              name,
-              emailText,
-              "Reset Password"
-            ),
-          },
-          Text: {
-            Charset: "UTF-8",
-            Data: `${emailText} ${code.rawCode}`,
-          },
-        },
-        Subject: {
-          Charset: "UTF-8",
-          Data: "Reset your Dojologs account password",
-        },
-      },
-    });
+    const subject = "Reset your Dojologs account password";
+    const title = "Reset Password";
 
-    try {
-      return await this.emailClient.send(sendEmailCommand);
-    } catch (err) {
-      console.log(err);
-    }
+    await this.sendEmail(
+      [recipientEmail],
+      codeMailTemplate(<string>code.rawCode, name, emailText, title),
+      `${emailText} ${code.rawCode}`,
+      subject
+    );
   }
 
   async sendPasswordResetTokenMail(
@@ -140,5 +132,14 @@ export class EmailServiceImpl implements EmailService {
   ) {
     // send <url>/token.userId/token.token
     console.log(recipientEmail, token, name);
+  }
+
+  async sendMailToMailingList(
+    recipientEmails: string[],
+    emailTemplateId: ImplicitEmailTemplateIds
+  ) {
+    const { html, text, subject } = emailTemplates[emailTemplateId]();
+
+    await this.sendEmail(recipientEmails, html, text, subject);
   }
 }

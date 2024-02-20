@@ -3,9 +3,16 @@ import Entity from "../../../shared/entities/entity";
 import { UUIDService } from "../../../shared/infrastructure/services/uuidService";
 import Mail, { MailProps } from "../../entities/mail";
 
+interface GetByEmailQueryOption {
+  subscribed?: boolean;
+}
+
 export interface MailingListRepo {
   add: (mail: Mail) => void;
-  getByEmail: (email: string) => Promise<Mail | null>;
+  getByEmail: (
+    email: string,
+    getByEmailQueryOption?: GetByEmailQueryOption
+  ) => Promise<Mail | null>;
   unsubscribeFromMailingList: (mail: Mail) => void;
 }
 
@@ -31,12 +38,19 @@ export class MailingListRepoImpl implements MailingListRepo {
     }
   }
 
-  async getByEmail(email = ""): Promise<Mail | null> {
+  async getByEmail(
+    email = "",
+    getByEmailQueryOption?: GetByEmailQueryOption
+  ): Promise<Mail | null> {
     try {
       const formattedEmail = Entity.formatEmail(email);
+      const whereClause: any = { email: formattedEmail };
+      if (getByEmailQueryOption) {
+        whereClause.subscribed = getByEmailQueryOption.subscribed;
+      }
 
       const mailData = await this.MailingListModel.findOne({
-        where: { email: formattedEmail },
+        where: whereClause,
       });
 
       if (!mailData) return null;

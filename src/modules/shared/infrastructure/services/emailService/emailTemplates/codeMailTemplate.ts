@@ -6,7 +6,7 @@ const codeMailTemplate = (
   name: string,
   content: string,
   title: string
-) => {
+): string => {
   return `
     ${headerTemplate(title, name)}
       <p>${content}</p>
