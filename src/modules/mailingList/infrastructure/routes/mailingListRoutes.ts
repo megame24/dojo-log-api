@@ -10,6 +10,7 @@ import {
 import endpointPolicy from "./endpointPolicy.json";
 import { mailingListAccessControl } from "../../accessControl";
 import { Operation } from "../../../shared/accessControl";
+import { sendSubscribedToMailingListEmailMiddleware } from "../../adapters/middleware";
 
 const userRouter = express.Router();
 
@@ -22,7 +23,8 @@ userRouter.post(
     resourceType: "mailingList",
     resourcesForAccessCheck: [],
   }),
-  addMailToMailingListController.execute
+  addMailToMailingListController.execute,
+  sendSubscribedToMailingListEmailMiddleware.execute
 );
 
 userRouter.put(
