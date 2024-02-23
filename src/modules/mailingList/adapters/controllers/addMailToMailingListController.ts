@@ -17,10 +17,6 @@ export default class AddMailToMailingListController extends Adapter {
         .json({ message: "Mail added to mailing list successfully" });
 
       next();
-
-      // attach a middleware that sends a default mail after user subscribes to mailing list
-      // the template ID should come from the UI
-      // option to send default mail should come from UI
     } catch (error) {
       next(error);
     }

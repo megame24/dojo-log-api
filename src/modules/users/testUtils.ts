@@ -59,6 +59,7 @@ export class MockEmailService implements EmailService {
   sendVerificationTokenMail = jest.fn();
   sendPasswordResetTokenMail = jest.fn();
   sendPasswordResetCodeMail = jest.fn();
+  sendMailToMailingList = jest.fn();
 }
 
 export class MockDateService implements DateService {

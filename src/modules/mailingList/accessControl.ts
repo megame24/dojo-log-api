@@ -33,6 +33,12 @@ class MailingListAccessControl extends AccessControl {
             condition: this.pass,
           },
         ],
+        subscribers: [
+          {
+            operation: Operation.CREATE,
+            condition: this.pass,
+          },
+        ],
       },
       deny: {},
     },

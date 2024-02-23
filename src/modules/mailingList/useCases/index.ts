@@ -4,6 +4,7 @@ import {
 } from "../../shared/infrastructure/services";
 import { mailingListRepoImpl } from "../infrastructure/repositories";
 import { AddMailToMailingListImpl } from "./addMailToMailingList";
+import { SendMailToAllSubscribersImpl } from "./sendMailToAllSubscribers";
 import { SendSingleMailImpl } from "./sendSingleMail";
 import { UnsubscribeFromMailingListImpl } from "./unsubscribeFromMailingList";
 
@@ -16,6 +17,11 @@ export const unsubscribeFromMailingListImpl =
   new UnsubscribeFromMailingListImpl(uuidServiceImpl, mailingListRepoImpl);
 
 export const sendSingleMailImpl = new SendSingleMailImpl(
+  mailingListRepoImpl,
+  emailServiceImpl
+);
+
+export const sendMailToAllSubscribersImpl = new SendMailToAllSubscribersImpl(
   mailingListRepoImpl,
   emailServiceImpl
 );
