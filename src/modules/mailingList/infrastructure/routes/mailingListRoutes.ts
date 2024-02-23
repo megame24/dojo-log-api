@@ -5,6 +5,7 @@ import {
 } from "../../../shared/adapters/middleware";
 import {
   addMailToMailingListController,
+  sendMailToAllSubscribersController,
   unsubscribeFromMailingListController,
 } from "../../adapters/controllers";
 import endpointPolicy from "./endpointPolicy.json";
@@ -37,6 +38,18 @@ userRouter.put(
     resourcesForAccessCheck: [],
   }),
   unsubscribeFromMailingListController.execute
+);
+
+userRouter.post(
+  "/subscribers",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: mailingListAccessControl,
+    operation: Operation.CREATE,
+    resourceType: "subscribers",
+    resourcesForAccessCheck: [],
+  }),
+  sendMailToAllSubscribersController.execute
 );
 
 export default userRouter;

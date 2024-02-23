@@ -12,7 +12,8 @@
   "GUEST": {
     "inherits": "",
     "allow": {
-      "/mailing-list": ["POST", "PUT"]
+      "/mailing-list": ["POST", "PUT"],
+      "/mailing-list/subscribers": ["POST"]
     },
     "deny": {}
   }

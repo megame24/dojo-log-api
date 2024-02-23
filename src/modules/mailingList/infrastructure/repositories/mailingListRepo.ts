@@ -14,6 +14,7 @@ export interface MailingListRepo {
     getByEmailQueryOption?: GetByEmailQueryOption
   ) => Promise<Mail | null>;
   unsubscribeFromMailingList: (mail: Mail) => void;
+  getRawEmailsOfSubscribers: () => Promise<string[]>;
 }
 
 export class MailingListRepoImpl implements MailingListRepo {
@@ -76,6 +77,21 @@ export class MailingListRepoImpl implements MailingListRepo {
     } catch (error: any) {
       throw AppError.internalServerError(
         "Error unsubscribing mail from mailing list",
+        error
+      );
+    }
+  }
+
+  async getRawEmailsOfSubscribers(): Promise<string[]> {
+    try {
+      const MailsData = await this.MailingListModel.findAll({
+        where: { subscribed: true },
+      });
+      const emails = MailsData.map((mailData: any) => mailData.email);
+      return emails;
+    } catch (error: any) {
+      throw AppError.internalServerError(
+        "Error getting subscribers emails",
         error
       );
     }
