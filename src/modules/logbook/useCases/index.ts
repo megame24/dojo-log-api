@@ -6,11 +6,13 @@ import {
 import {
   categoryRepoImpl,
   fileRepoImpl,
+  goalNotificationRepoImpl,
   goalRepoImpl,
   logbookRepoImpl,
   logRepoImpl,
   rewardRepoImpl,
 } from "../infrastructure/repositories";
+import { goalNotificationServiceImpl } from "../infrastructure/services";
 import { CreateCategoryImpl } from "./createCategory";
 import { CreateFileImpl } from "./createFile";
 import { CreateGoalImpl } from "./createGoal";
@@ -77,7 +79,9 @@ export const createRewardImpl = new CreateRewardImpl(
 export const createGoalImpl = new CreateGoalImpl(
   uuidServiceImpl,
   createRewardImpl,
-  goalRepoImpl
+  goalRepoImpl,
+  goalNotificationServiceImpl,
+  goalNotificationRepoImpl
 );
 
 export const getLogbookImpl = new GetLogbookImpl(

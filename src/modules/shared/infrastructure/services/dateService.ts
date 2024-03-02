@@ -21,6 +21,7 @@ export interface DateService {
   getDateFromDayOfYear: (year: string, dayOfYear: number) => Date;
   getDay: (date: Date | string, convertToLocalTime: boolean) => number;
   getMonth: (date: Date | string, convertToLocalTime: boolean) => number;
+  getEndOfDay: (date: Date) => Date;
 }
 
 export class DateServiceImpl implements DateService {
@@ -127,5 +128,9 @@ export class DateServiceImpl implements DateService {
   ): Date {
     if (convertToLocalTime) return this.dayjs(date).tz(this.timezone);
     return this.dayjs(date);
+  }
+
+  getEndOfDay(date: Date): Date {
+    return this.dayjs(date).endOf("day").toISOString();
   }
 }
