@@ -76,4 +76,5 @@ export class MockDateService implements DateService {
   getDateFromDayOfYear = jest.fn();
   getDay = jest.fn();
   getMonth = jest.fn();
+  getEndOfDay = jest.fn();
 }

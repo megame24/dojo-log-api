@@ -5,6 +5,7 @@ import {
 } from "../../../shared/infrastructure/services";
 import { CategoryRepoImpl } from "./categoryRepo";
 import { FileRepoImpl } from "./fileRepo";
+import { GoalNotificationRepoImpl } from "./goalNotificationRepo";
 import { GoalRepoImpl } from "./goalRepo";
 import { LogbookRepoImpl } from "./logbookRepo";
 import { LogRepoImpl } from "./logRepo";
@@ -17,6 +18,7 @@ const {
   Reward,
   Goal,
   File,
+  GoalNotification,
   Sequelize: { Op },
 } = <any>models;
 
@@ -54,3 +56,8 @@ export const logbookRepoImpl = new LogbookRepoImpl(
 );
 
 export const fileRepoImpl = new FileRepoImpl(File, uuidServiceImpl);
+
+export const goalNotificationRepoImpl = new GoalNotificationRepoImpl(
+  GoalNotification,
+  uuidServiceImpl
+);

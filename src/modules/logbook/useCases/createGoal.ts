@@ -3,9 +3,12 @@ import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
 import User from "../../users/entities/user";
 import Goal from "../entities/goal";
+import GoalNotification from "../entities/goalNotification";
 import Logbook from "../entities/logbook";
 import Reward from "../entities/reward";
+import { GoalNotificationRepo } from "../infrastructure/repositories/goalNotificationRepo";
 import { GoalRepo } from "../infrastructure/repositories/goalRepo";
+import { GoalNotificationService } from "../infrastructure/services/goalNotificationService";
 import { CreateReward, CreateRewardDTO } from "./createReward";
 
 interface CreateGoalDTO {
@@ -27,7 +30,9 @@ export class CreateGoalImpl implements CreateGoal {
   constructor(
     private uuidService: UUIDService,
     private createReward: CreateReward,
-    private goalRepo: GoalRepo
+    private goalRepo: GoalRepo,
+    private goalNotificationService: GoalNotificationService,
+    private goalNotificationRepo: GoalNotificationRepo
   ) {}
 
   async execute(createGoalDTO: CreateGoalDTO): Promise<Goal> {
@@ -77,6 +82,26 @@ export class CreateGoalImpl implements CreateGoal {
     const goal = Goal.create(createGoalProps, this.uuidService);
 
     await this.goalRepo.create(goal, user);
+
+    await this.createGoalNotification(goal);
+
     return goal;
+  }
+
+  async createGoalNotification(goal: Goal) {
+    const notificationDate =
+      this.goalNotificationService.getGoalNotificationDate(goal);
+
+    const goalNotificationProps = {
+      goalId: <string>goal.id,
+      notificationDate,
+    };
+
+    const goalNotification = GoalNotification.create(
+      goalNotificationProps,
+      this.uuidService
+    );
+
+    await this.goalNotificationRepo.create(goalNotification);
   }
 }
