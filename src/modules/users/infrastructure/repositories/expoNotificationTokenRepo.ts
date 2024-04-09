@@ -4,7 +4,10 @@ import ExpoNotificationToken from "../../entities/expoNotificationToken";
 
 export interface ExpoNotificationTokenRepo {
   create: (expoNotificationToken: ExpoNotificationToken) => void;
-  getByToken: (token: string) => Promise<ExpoNotificationToken | null>;
+  getByTokenAndUserId: (
+    token: string,
+    userId: string
+  ) => Promise<ExpoNotificationToken | null>;
 }
 
 export class ExpoNotificationTokenRepoImpl
@@ -31,10 +34,14 @@ export class ExpoNotificationTokenRepoImpl
     }
   }
 
-  async getByToken(token: string): Promise<ExpoNotificationToken | null> {
-    if (!token) throw AppError.badRequestError("token is required");
+  async getByTokenAndUserId(
+    token: string,
+    userId: string
+  ): Promise<ExpoNotificationToken | null> {
+    if (!token || !userId)
+      throw AppError.badRequestError("token and userId is required");
 
-    const queryOption = { where: { token } };
+    const queryOption = { where: { token, userId } };
     let expoNotificationTokenData: any;
 
     try {
