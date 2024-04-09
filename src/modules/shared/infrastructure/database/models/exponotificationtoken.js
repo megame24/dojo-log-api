@@ -19,7 +19,6 @@ module.exports = (sequelize, DataTypes) => {
       token: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
       userId: {
         allowNull: false,
@@ -29,6 +28,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "ExpoNotificationToken",
+      indexes: [
+        {
+          name: "token_index",
+          fields: ["token"],
+        },
+      ],
     }
   );
   return ExpoNotificationToken;

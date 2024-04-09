@@ -84,7 +84,7 @@ const headerTemplate = (title: string, name = "") => {
                 <h2>Dojologs</h2>
             </div>
             <div class="content">
-              <p class="hello">Hello${" " + name},</p>
+              <p class="hello">Hello${name ? " " + name : ""},</p>
   `;
 };
 

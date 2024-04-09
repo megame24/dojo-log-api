@@ -30,7 +30,7 @@ export class CreateExpoNotificationTokenImpl
     const { userId, token } = createExpoNotificationTokenDTO;
 
     const existingExpoNotificationToken =
-      await this.expoNotificationRepo.getByToken(token);
+      await this.expoNotificationRepo.getByTokenAndUserId(token, userId);
     if (existingExpoNotificationToken) {
       throw AppError.badRequestError("ExpoNotificationToken already exists");
     }
