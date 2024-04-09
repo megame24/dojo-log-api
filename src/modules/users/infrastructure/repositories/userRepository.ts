@@ -26,6 +26,7 @@ export interface UserRepo {
 export class UserRepoImpl implements UserRepo {
   constructor(
     private UserModel: any,
+    private ExpoNotificationTokenModel: any,
     private securityService: SecurityService,
     private uuidService: UUIDService
   ) {}
@@ -57,6 +58,7 @@ export class UserRepoImpl implements UserRepo {
       username: user.username,
       role: user.role,
       verified: user.verified,
+      expoNotificationTokens: user.expoNotificationTokens,
       isPasswordHashed: false,
       isPasswordRequired: false,
       ...payload,
@@ -97,12 +99,24 @@ export class UserRepoImpl implements UserRepo {
     let userData: any;
 
     try {
-      userData = await this.UserModel.findOne(queryOption);
+      userData = await this.UserModel.findOne({
+        ...queryOption,
+        include: [
+          { model: this.ExpoNotificationTokenModel, required: false },
+          ...(queryOption?.include ? queryOption.include : []),
+        ],
+      });
     } catch (error: any) {
       throw AppError.internalServerError("Error retrieving user", error);
     }
 
     if (!userData) return null;
+
+    const expoNotificationTokens = userData.ExpoNotificationTokens?.map(
+      (token: any) => {
+        return token.token;
+      }
+    );
 
     const createUserProps: CreateUserProps = {
       id: userData.id,
@@ -113,6 +127,7 @@ export class UserRepoImpl implements UserRepo {
       verified: userData.verified,
       isPasswordHashed: true,
       isPasswordRequired: false,
+      expoNotificationTokens,
     };
     if (config.includePassword) {
       createUserProps.password = userData.password;

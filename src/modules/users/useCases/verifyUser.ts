@@ -80,6 +80,7 @@ export class VerifyUserImpl implements VerifyUser {
       role: user.role,
       name: user.name,
       email: user.email,
+      expoNotificationTokens: user.expoNotificationTokens,
     });
     return authToken;
   }

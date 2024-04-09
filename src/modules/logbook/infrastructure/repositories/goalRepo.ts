@@ -112,11 +112,11 @@ export class GoalRepoImpl implements GoalRepo {
 
     try {
       goalsData = await this.GoalModel.findAll({
+        ...queryOption,
         include: [
           { model: this.RewardModel, required: false },
           ...(queryOption?.include ? queryOption.include : []),
         ],
-        ...queryOption,
       });
     } catch (error: any) {
       throw AppError.internalServerError("Error retrieving Goals", error);

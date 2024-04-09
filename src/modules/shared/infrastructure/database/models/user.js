@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "SET NULL",
       });
       User.hasMany(models.File, { foreignKey: "userId", onDelete: "cascade" });
+      User.hasMany(models.ExpoNotificationToken, {
+        foreignKey: "userId",
+        onDelete: "cascade",
+      });
     }
   }
   User.init(

@@ -40,6 +40,12 @@ class UserAccessControl extends AccessControl {
             condition: this.privateAccess,
           },
         ],
+        expoNotificationToken: [
+          {
+            operation: Operation.CREATE,
+            condition: this.privateAccess,
+          },
+        ],
       },
       deny: {
         sendVerification: [

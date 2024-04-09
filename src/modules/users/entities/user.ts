@@ -2,6 +2,8 @@ import Entity, { ValidationResult } from "../../shared/entities/entity";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import { SecurityService } from "../infrastructure/services/securityService";
 
+// USER WILL HAVE AN ARRAY OF EXPO PUSH NOTIFICATION TOKENS
+
 export enum Role {
   ADMIN = "ADMIN",
   USER = "USER",
@@ -16,6 +18,7 @@ interface UserProps {
   password?: string;
   role?: Role;
   verified?: boolean;
+  expoNotificationTokens?: string[];
 }
 
 export interface CreateUserProps extends UserProps {
@@ -54,6 +57,10 @@ export default class User extends Entity {
 
   get verified(): boolean | undefined {
     return this.props.verified;
+  }
+
+  get expoNotificationTokens(): string[] | undefined {
+    return this.props.expoNotificationTokens;
   }
 
   private static validatePassword(
@@ -110,6 +117,10 @@ export default class User extends Entity {
 
     if (!props.verified) {
       props.verified = false;
+    }
+
+    if (!props.expoNotificationTokens) {
+      props.expoNotificationTokens = [];
     }
 
     return new User(props, uuidService);

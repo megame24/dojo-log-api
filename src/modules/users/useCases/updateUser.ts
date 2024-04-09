@@ -59,6 +59,7 @@ export class UpdateUserImpl implements UpdateUser {
       role: updatedUser.role,
       name: updatedUser.name,
       email: updatedUser.email,
+      expoNotificationTokens: updatedUser.expoNotificationTokens,
     });
     return authToken;
   }

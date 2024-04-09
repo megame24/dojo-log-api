@@ -38,6 +38,7 @@ export class LoginUserImpl implements LoginUser {
       role: user.role,
       name: user.name,
       email: user.email,
+      expoNotificationTokens: user.expoNotificationTokens,
     });
     return authToken;
   }
