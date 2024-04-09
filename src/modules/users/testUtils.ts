@@ -54,6 +54,11 @@ export const mockUserModel = {
   create: jest.fn(),
 };
 
+export const mockExpoNotificationTokenModel = {
+  findOne: jest.fn(),
+  create: jest.fn(),
+};
+
 export class MockEmailService implements EmailService {
   sendVerificationCodeMail = jest.fn();
   sendVerificationTokenMail = jest.fn();

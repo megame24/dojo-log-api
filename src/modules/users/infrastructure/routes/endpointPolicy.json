@@ -9,7 +9,8 @@
     "allow": {
       "/users/:userId/profile": ["GET", "PUT"],
       "/users/:userId/change-password": ["PUT"],
-      "/users/:userId/account": ["DELETE"]
+      "/users/:userId/account": ["DELETE"],
+      "/users/:userId/expo-notification-token": ["POST"]
     },
     "deny": {
       "/users/:userId/send-verification": ["GET"],

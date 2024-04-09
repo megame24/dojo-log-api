@@ -1,5 +1,6 @@
 import {
   changePasswordImpl,
+  createExpoNotificationTokenImpl,
   deleteAccountImpl,
   forgotPasswordImpl,
   googleSignInVerifyImpl,
@@ -21,6 +22,7 @@ import UpdateUserProfileController from "./updateUserProfileController";
 import GoogleSignInVerifyController from "./googleSignInVerifyController";
 import ChangePasswordController from "./changePasswordController";
 import DeleteAccountController from "./deleteAccountController";
+import CreateExpoNotificationTokenController from "./createExpoNotificationTokenController";
 
 export const registerUserController = new RegisterUserController(
   registerUserImpl
@@ -59,3 +61,6 @@ export const changePasswordController = new ChangePasswordController(
 export const deleteAccountController = new DeleteAccountController(
   deleteAccountImpl
 );
+
+export const createExpoNotificationTokenController =
+  new CreateExpoNotificationTokenController(createExpoNotificationTokenImpl);

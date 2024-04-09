@@ -1,5 +1,6 @@
 import { UserRepoImpl } from "./userRepository";
 import {
+  mockExpoNotificationTokenModel,
   MockSecurityService,
   mockUserModel,
   MockUUIDService,
@@ -7,6 +8,7 @@ import {
 
 const userRepo = new UserRepoImpl(
   mockUserModel,
+  mockExpoNotificationTokenModel,
   new MockSecurityService(),
   new MockUUIDService()
 );

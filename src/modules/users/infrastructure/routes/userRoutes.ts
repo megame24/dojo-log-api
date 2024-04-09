@@ -15,6 +15,7 @@ import {
   googleSignInVerifyController,
   changePasswordController,
   deleteAccountController,
+  createExpoNotificationTokenController,
 } from "../../adapters/controllers";
 import { sendVerificationMiddleware } from "../../adapters/middleware";
 import endpointPolicy from "./endpointPolicy.json";
@@ -158,6 +159,18 @@ userRouter.delete(
     resourcesForAccessCheck: [{ name: "user", getResource: getUserImpl }],
   }),
   deleteAccountController.execute
+);
+
+userRouter.post(
+  "/:userId/expo-notification-token",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: userAccessControl,
+    operation: Operation.CREATE,
+    resourceType: "expoNotificationToken",
+    resourcesForAccessCheck: [{ name: "user", getResource: getUserImpl }],
+  }),
+  createExpoNotificationTokenController.execute
 );
 
 export default userRouter;
