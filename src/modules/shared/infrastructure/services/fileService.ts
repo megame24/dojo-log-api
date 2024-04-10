@@ -28,10 +28,6 @@ export class FileServiceImpl implements FileService {
   ) {
     this.bucketClient = new this.BucketClient({
       region: process.env.AWS_REGION,
-      credentials: {
-        accessKeyId: <string>process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: <string>process.env.AWS_SECRET_ACCESS_KEY,
-      },
     });
   }
 

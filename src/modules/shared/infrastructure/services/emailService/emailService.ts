@@ -37,10 +37,6 @@ export class EmailServiceImpl implements EmailService {
   constructor(private EmailClient: any, private SendEmailCommand: any) {
     this.emailClient = new this.EmailClient({
       region: process.env.AWS_REGION,
-      credentials: {
-        accessKeyId: <string>process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: <string>process.env.AWS_SECRET_ACCESS_KEY,
-      },
     });
   }
 
