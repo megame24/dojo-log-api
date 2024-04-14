@@ -36,7 +36,7 @@ class MailingListAccessControl extends AccessControl {
         subscribers: [
           {
             operation: Operation.CREATE,
-            condition: this.pass,
+            condition: this.pass, // This is WRONG!!! should be an admin only feature
           },
         ],
       },
