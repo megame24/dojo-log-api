@@ -15,6 +15,8 @@ import { sendSubscribedToMailingListEmailMiddleware } from "../../adapters/middl
 
 const userRouter = express.Router();
 
+// apply cors to these endpoints
+
 userRouter.post(
   "",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),

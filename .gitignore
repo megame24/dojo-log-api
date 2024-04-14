@@ -110,3 +110,5 @@ build
 .dccache
 
 .DS_Store
+
+privateScripts/

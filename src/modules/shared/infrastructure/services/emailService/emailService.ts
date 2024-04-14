@@ -1,5 +1,6 @@
 import PersistentCode from "../../../../users/entities/persistentCode";
 import PersistentToken from "../../../../users/entities/persistentToken";
+import { LambdaFunctionsService } from "../lambdaFunctionsService";
 import emailTemplates, { ImplicitEmailTemplateIds } from "./emailTemplates";
 
 const { codeMailTemplate } = emailTemplates;
@@ -34,11 +35,7 @@ export interface EmailService {
 export class EmailServiceImpl implements EmailService {
   emailClient: any;
 
-  constructor(private EmailClient: any, private SendEmailCommand: any) {
-    this.emailClient = new this.EmailClient({
-      region: process.env.AWS_REGION,
-    });
-  }
+  constructor(private lambdaFunctionsService: LambdaFunctionsService) {}
 
   async sendEmail(
     recipientEmails: string[],
@@ -46,31 +43,21 @@ export class EmailServiceImpl implements EmailService {
     rawContent: string,
     subject: string
   ) {
-    const sendEmailCommand = new this.SendEmailCommand({
-      Source: process.env.AWS_SES_SENDER,
-      Destination: {
-        ToAddresses: recipientEmails,
+    const payload = [
+      {
+        recipientEmails,
+        htmlContent,
+        rawContent,
+        subject,
       },
-      Message: {
-        Body: {
-          Html: {
-            Charset: "UTF-8",
-            Data: htmlContent,
-          },
-          Text: {
-            Charset: "UTF-8",
-            Data: rawContent,
-          },
-        },
-        Subject: {
-          Charset: "UTF-8",
-          Data: subject,
-        },
-      },
-    });
+    ];
 
     try {
-      return await this.emailClient.send(sendEmailCommand);
+      const lambdaFunctionName = "sendEmailFunction";
+      return await this.lambdaFunctionsService.invokeLambda(
+        lambdaFunctionName,
+        payload
+      );
     } catch (err) {
       console.log(err);
     }
