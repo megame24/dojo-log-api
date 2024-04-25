@@ -22,7 +22,11 @@ import {
   deleteFileImpl,
   downloadFileImpl,
   getLiteLogbookImpl,
+  batchDeleteGoalNotificationsImpl,
+  batchUpdateGoalNotificationsImpl,
 } from "../../useCases";
+import BatchDeleteGoalNotificationsController from "./batchDeleteGoalNotificationsController";
+import BatchUpdateGoalNotificationsController from "./batchUpdateGoalNotificationsController";
 import CreateCategoryController from "./createCategoryController";
 import CreateGoalController from "./createGoalController";
 import CreateLogbookController from "./createLogbookController";
@@ -124,3 +128,9 @@ export const getGoalController = new GetGoalController();
 export const downloadFileController = new DownloadFileController(
   downloadFileImpl
 );
+
+export const batchDeleteGoalNotificationsController =
+  new BatchDeleteGoalNotificationsController(batchDeleteGoalNotificationsImpl);
+
+export const batchUpdateGoalNotificationsController =
+  new BatchUpdateGoalNotificationsController(batchUpdateGoalNotificationsImpl);

@@ -11,8 +11,11 @@ export default class AuthenticateUserMiddleware extends Adapter {
   }
 
   async execute(req: any, res: any, next: any) {
-    const { token, timezone } = req.headers;
-    const authenticateUserDTO = { token };
+    const { token, authorization, timezone } = req.headers;
+
+    const incomingHmac = authorization ? authorization.split(" ")[1] : null;
+
+    const authenticateUserDTO = { token, incomingHmac, queryParams: req.query };
     this.dateService.timezone = timezone;
 
     try {

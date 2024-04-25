@@ -140,6 +140,22 @@ class LogbookAccessControl extends AccessControl {
       },
       deny: {},
     },
+    BOT: {
+      inherits: "",
+      allow: {
+        goalNotifications: [
+          {
+            operation: Operation.UPDATE,
+            condition: this.pass,
+          },
+          {
+            operation: Operation.DELETE,
+            condition: this.pass,
+          },
+        ],
+      },
+      deny: {},
+    },
   };
 
   constructor() {

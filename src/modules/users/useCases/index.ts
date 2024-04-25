@@ -1,4 +1,5 @@
 import { OAuth2Client } from "google-auth-library";
+import crypto from "crypto";
 import { securityServiceImpl } from "../infrastructure/services";
 import {
   expoNotificationTokenRepoImpl,
@@ -48,7 +49,8 @@ export const verifyUserImpl = new VerifyUserImpl(
 export const authenticateUserImpl = new AuthenticateUserImpl(
   userRepoImpl,
   securityServiceImpl,
-  uuidServiceImpl
+  uuidServiceImpl,
+  crypto
 );
 
 export const sendVerificationImpl = new SendVerificationImpl(

@@ -13,6 +13,8 @@ import {
   rewardRepoImpl,
 } from "../infrastructure/repositories";
 import { goalNotificationServiceImpl } from "../infrastructure/services";
+import { BatchDeleteGoalNotificationsImpl } from "./batchDeleteGoalNotifications";
+import { BatchUpdateGoalNotificationsImpl } from "./batchUpdateGoalNotifications";
 import { CreateCategoryImpl } from "./createCategory";
 import { CreateFileImpl } from "./createFile";
 import { CreateGoalImpl } from "./createGoal";
@@ -171,3 +173,9 @@ export const updateRewardImpl = new UpdateRewardImpl(
 export const getFileImpl = new GetFileImpl(fileRepoImpl);
 
 export const downloadFileImpl = new DownloadFileImpl(fileServiceImpl);
+
+export const batchUpdateGoalNotificationsImpl =
+  new BatchUpdateGoalNotificationsImpl(goalNotificationRepoImpl);
+
+export const batchDeleteGoalNotificationsImpl =
+  new BatchDeleteGoalNotificationsImpl(goalNotificationRepoImpl);

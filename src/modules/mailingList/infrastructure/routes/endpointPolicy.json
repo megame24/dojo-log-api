@@ -1,7 +1,9 @@
 {
   "ADMIN": {
     "inherits": "USER",
-    "allow": {},
+    "allow": {
+      "/mailing-list/subscribers": ["POST"]
+    },
     "deny": {}
   },
   "USER": {
@@ -12,8 +14,7 @@
   "GUEST": {
     "inherits": "",
     "allow": {
-      "/mailing-list": ["POST", "PUT"],
-      "/mailing-list/subscribers": ["POST"]
+      "/mailing-list": ["POST", "PUT"]
     },
     "deny": {}
   }

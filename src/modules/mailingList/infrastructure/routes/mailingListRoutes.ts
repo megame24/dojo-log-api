@@ -13,11 +13,11 @@ import { mailingListAccessControl } from "../../accessControl";
 import { Operation } from "../../../shared/accessControl";
 import { sendSubscribedToMailingListEmailMiddleware } from "../../adapters/middleware";
 
-const userRouter = express.Router();
+const mailingListRouter = express.Router();
 
 // apply cors to these endpoints
 
-userRouter.post(
+mailingListRouter.post(
   "",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   accessControlMiddleware.executeWrapper({
@@ -30,7 +30,7 @@ userRouter.post(
   sendSubscribedToMailingListEmailMiddleware.execute
 );
 
-userRouter.put(
+mailingListRouter.put(
   "",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   accessControlMiddleware.executeWrapper({
@@ -42,7 +42,7 @@ userRouter.put(
   unsubscribeFromMailingListController.execute
 );
 
-userRouter.post(
+mailingListRouter.post(
   "/subscribers",
   endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
   accessControlMiddleware.executeWrapper({
@@ -54,4 +54,4 @@ userRouter.post(
   sendMailToAllSubscribersController.execute
 );
 
-export default userRouter;
+export default mailingListRouter;
