@@ -3,6 +3,7 @@ import {
   createExpoNotificationTokenImpl,
   deleteAccountImpl,
   forgotPasswordImpl,
+  getExpoNotificationTokensImpl,
   googleSignInVerifyImpl,
   loginUserImpl,
   registerUserImpl,
@@ -23,6 +24,7 @@ import GoogleSignInVerifyController from "./googleSignInVerifyController";
 import ChangePasswordController from "./changePasswordController";
 import DeleteAccountController from "./deleteAccountController";
 import CreateExpoNotificationTokenController from "./createExpoNotificationTokenController";
+import GetExpoNotificationTokensController from "./getExpoNotificationTokensController";
 
 export const registerUserController = new RegisterUserController(
   registerUserImpl
@@ -64,3 +66,6 @@ export const deleteAccountController = new DeleteAccountController(
 
 export const createExpoNotificationTokenController =
   new CreateExpoNotificationTokenController(createExpoNotificationTokenImpl);
+
+export const getExpoNotificationTokensController =
+  new GetExpoNotificationTokensController(getExpoNotificationTokensImpl);

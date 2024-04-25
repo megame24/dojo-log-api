@@ -8,6 +8,7 @@ export interface ExpoNotificationTokenRepo {
     token: string,
     userId: string
   ) => Promise<ExpoNotificationToken | null>;
+  getAll: () => Promise<ExpoNotificationToken[]>;
 }
 
 export class ExpoNotificationTokenRepoImpl
@@ -17,6 +18,33 @@ export class ExpoNotificationTokenRepoImpl
     private ExpoNotificationTokenModel: any,
     private uuidService: UUIDService
   ) {}
+
+  async getAll(): Promise<ExpoNotificationToken[]> {
+    try {
+      const expoNotificationTokensData =
+        await this.ExpoNotificationTokenModel.findAll();
+
+      return expoNotificationTokensData.map(
+        (expoNotificationTokenData: any) => {
+          const expoNotificationTokenProps = {
+            id: expoNotificationTokenData.id,
+            userId: expoNotificationTokenData.userId,
+            token: expoNotificationTokenData.token,
+          };
+
+          return ExpoNotificationToken.create(
+            expoNotificationTokenProps,
+            this.uuidService
+          );
+        }
+      );
+    } catch (error: any) {
+      throw AppError.internalServerError(
+        "Error getting all expoNotificationTokens",
+        error
+      );
+    }
+  }
 
   async create(expoNotificationToken: ExpoNotificationToken) {
     try {

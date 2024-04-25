@@ -16,6 +16,7 @@ import {
   changePasswordController,
   deleteAccountController,
   createExpoNotificationTokenController,
+  getExpoNotificationTokensController,
 } from "../../adapters/controllers";
 import { sendVerificationMiddleware } from "../../adapters/middleware";
 import endpointPolicy from "./endpointPolicy.json";
@@ -171,6 +172,18 @@ userRouter.post(
     resourcesForAccessCheck: [{ name: "user", getResource: getUserImpl }],
   }),
   createExpoNotificationTokenController.execute
+);
+
+userRouter.get(
+  "/expo-notification-token",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: userAccessControl,
+    operation: Operation.GET_MANY,
+    resourceType: "expoNotificationToken",
+    resourcesForAccessCheck: [],
+  }),
+  getExpoNotificationTokensController.execute
 );
 
 export default userRouter;

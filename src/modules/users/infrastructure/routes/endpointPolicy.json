@@ -1,7 +1,9 @@
 {
   "ADMIN": {
     "inherits": "USER",
-    "allow": {},
+    "allow": {
+      "/users/expo-notification-token": ["GET"]
+    },
     "deny": {}
   },
   "USER": {
