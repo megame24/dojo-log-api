@@ -25,6 +25,7 @@ import { GoogleSignInVerifyImpl } from "./googleSignInVerify";
 import { ChangePasswordImpl } from "./changePassword";
 import { DeleteAccountImpl } from "./deleteAccount";
 import { CreateExpoNotificationTokenImpl } from "./createExpoNotificationToken";
+import { GetExpoNotificationTokensImpl } from "./getExpoNotificationTokens";
 
 const client = new OAuth2Client();
 
@@ -106,3 +107,7 @@ export const createExpoNotificationTokenImpl =
     expoNotificationTokenRepoImpl,
     uuidServiceImpl
   );
+
+export const getExpoNotificationTokensImpl = new GetExpoNotificationTokensImpl(
+  expoNotificationTokenRepoImpl
+);

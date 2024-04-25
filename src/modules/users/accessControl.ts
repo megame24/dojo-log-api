@@ -12,7 +12,14 @@ class UserAccessControl extends AccessControl {
   private policy: any = {
     ADMIN: {
       inherits: Role.USER,
-      allow: {},
+      allow: {
+        expoNotificationToken: [
+          {
+            operation: Operation.GET_MANY,
+            condition: this.pass,
+          },
+        ],
+      },
       deny: {},
     },
     USER: {
