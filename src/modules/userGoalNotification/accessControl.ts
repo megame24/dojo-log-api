@@ -8,35 +8,14 @@ import { Role } from "../users/entities/user";
 // TODO: write a documentation for this!!!!
 // TODO: make everything private access for first release!
 
-class MailingListAccessControl extends AccessControl {
+class UserGoalNotificationAccessControl extends AccessControl {
   private policy: any = {
-    ADMIN: {
-      inherits: Role.USER,
-      allow: {
-        subscribers: [
-          {
-            operation: Operation.CREATE,
-            condition: this.pass,
-          },
-        ],
-      },
-      deny: {},
-    },
-    USER: {
-      inherits: Role.GUEST,
-      allow: {},
-      deny: {},
-    },
-    GUEST: {
+    BOT: {
       inherits: "",
       allow: {
-        mailingList: [
+        userGoalNotifications: [
           {
-            operation: Operation.CREATE,
-            condition: this.pass,
-          },
-          {
-            operation: Operation.UPDATE,
+            operation: Operation.GET_MANY,
             condition: this.pass,
           },
         ],
@@ -58,4 +37,5 @@ class MailingListAccessControl extends AccessControl {
   }
 }
 
-export const mailingListAccessControl = new MailingListAccessControl();
+export const userGoalNotificationAccessControl =
+  new UserGoalNotificationAccessControl();

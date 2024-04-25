@@ -33,5 +33,13 @@
       "/logbooks/:logbookId/logs": ["GET"]
     },
     "deny": {}
+  },
+  "BOT": {
+    "inherits": "",
+    "allow": {
+      "/goal-notifications/batch-update": ["PUT"],
+      "/goal-notifications/batch-delete": ["PUT"]
+    },
+    "deny": {}
   }
 }

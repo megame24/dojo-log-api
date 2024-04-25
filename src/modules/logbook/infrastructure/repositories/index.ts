@@ -58,6 +58,5 @@ export const logbookRepoImpl = new LogbookRepoImpl(
 export const fileRepoImpl = new FileRepoImpl(File, uuidServiceImpl);
 
 export const goalNotificationRepoImpl = new GoalNotificationRepoImpl(
-  GoalNotification,
-  uuidServiceImpl
+  GoalNotification
 );
