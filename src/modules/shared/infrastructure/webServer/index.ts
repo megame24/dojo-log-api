@@ -16,7 +16,14 @@ app.use(express.json());
 
 app.use(cors()); // make this more restrictive!!!!!
 
-if (!IS_PRODUCTION) app.use(morgan("dev"));
+app.use(
+  morgan("combined", {
+    skip: function (req, res) {
+      // This condition checks if the request is a GET request to the /health path
+      return req.path === "/health" && req.method === "GET";
+    },
+  })
+);
 
 app.use(appRouter);
 
@@ -32,7 +39,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 // error handler
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
-  if (!IS_PRODUCTION) console.log(error); // explore a better logger
+  console.log(error); // explore a better logger
 
   if (error instanceof AppError) {
     return res.status(error.statusCode).json({ message: error.message });

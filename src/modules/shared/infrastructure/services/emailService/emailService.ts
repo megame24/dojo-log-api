@@ -53,7 +53,7 @@ export class EmailServiceImpl implements EmailService {
     ];
 
     try {
-      const lambdaFunctionName = "sendEmailFunction";
+      const lambdaFunctionName = <string>process.env.SEND_EMAIL_LAMBDA_NAME;
       return await this.lambdaFunctionsService.invokeLambda(
         lambdaFunctionName,
         payload

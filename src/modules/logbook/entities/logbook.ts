@@ -35,9 +35,9 @@ export default class Logbook extends Entity {
   private static colors: any = {
     primary: "#2980B9",
     borderGray: "rgba(0,0,0,0.1)",
-    primary25Per: "rgba(41, 128, 185, 0.25)",
-    primary50Per: "rgba(41, 128, 185, 0.5)",
-    primary75Per: "rgba(41, 128, 185, 0.75)",
+    primary25Per: "#cadfee",
+    primary50Per: "#94c0dc",
+    primary75Per: "#5fa0cb",
   };
 
   private constructor(private props: LogbookProps, uuidService: UUIDService) {
@@ -158,9 +158,9 @@ export default class Logbook extends Entity {
     if (!durationInMinutes) return this.colors.borderGray;
     const totalHours = durationInMinutes / 60;
     let color = this.colors.primary25Per;
-    if (totalHours >= 2) color = this.colors.primary50Per;
-    if (totalHours >= 6) color = this.colors.primary75Per;
-    if (totalHours >= 12) color = this.colors.primary;
+    if (totalHours >= 1) color = this.colors.primary50Per;
+    if (totalHours >= 3) color = this.colors.primary75Per;
+    if (totalHours >= 5) color = this.colors.primary;
     return color;
   }
 

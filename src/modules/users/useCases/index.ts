@@ -1,4 +1,3 @@
-import { OAuth2Client } from "google-auth-library";
 import crypto from "crypto";
 import { securityServiceImpl } from "../infrastructure/services";
 import {
@@ -15,6 +14,7 @@ import { SendVerificationImpl } from "./sendVerification";
 import {
   emailServiceImpl,
   fileServiceImpl,
+  lambdaFunctionsServiceImpl,
   uuidServiceImpl,
 } from "../../shared/infrastructure/services";
 import { ForgotPasswordImpl } from "./forgotPassword";
@@ -26,8 +26,6 @@ import { ChangePasswordImpl } from "./changePassword";
 import { DeleteAccountImpl } from "./deleteAccount";
 import { CreateExpoNotificationTokenImpl } from "./createExpoNotificationToken";
 import { GetExpoNotificationTokensImpl } from "./getExpoNotificationTokens";
-
-const client = new OAuth2Client();
 
 export const registerUserImpl = new RegisterUserImpl(
   securityServiceImpl,
@@ -89,7 +87,7 @@ export const googleSignInVerifyImpl = new GoogleSignInVerifyImpl(
   securityServiceImpl,
   uuidServiceImpl,
   userRepoImpl,
-  client
+  lambdaFunctionsServiceImpl
 );
 
 export const changePasswordImpl = new ChangePasswordImpl(
