@@ -1,3 +1,4 @@
+import { LambdaFunctionsService } from "../../shared/infrastructure/services/lambdaFunctionsService";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 import UseCase from "../../shared/useCases/useCase";
 import User, { Role } from "../entities/user";
@@ -28,23 +29,19 @@ export class GoogleSignInVerifyImpl implements GoogleSignInVerify {
     private securityService: SecurityService,
     private uuidService: UUIDService,
     private userRepo: UserRepo,
-    private verifyClient: any
+    private lambdaFunctionsService: LambdaFunctionsService
   ) {}
 
   async execute(
     googleSignInVerifyDTO: GoogleSignInVerifyDTO
   ): Promise<GoogleSignInVerifyReturnType> {
     const { idToken } = googleSignInVerifyDTO;
-    const ticket = await this.verifyClient.verifyIdToken({
-      idToken,
-      audience: [
-        process.env.IOS_CLIENT_ID,
-        process.env.ANDROID_CLIENT_ID,
-        process.env.WEB_CLIENT_ID,
-      ],
-    });
-    const payload = ticket.getPayload();
-    const { email, name } = payload;
+
+    const payload = await this.lambdaFunctionsService.invokeLambda(
+      <string>process.env.GOOGLE_SIGN_IN_SERVICE_LAMBDA_NAME,
+      { idToken }
+    );
+    const { email, name } = payload.body;
 
     let user = await this.userRepo.getUserByEmail(email);
 
@@ -72,6 +69,7 @@ export class GoogleSignInVerifyImpl implements GoogleSignInVerify {
       role: user.role,
       name: user.name,
       email: user.email,
+      expoNotificationTokens: user.expoNotificationTokens,
     });
     return { authToken, user };
   }

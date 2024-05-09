@@ -27,7 +27,8 @@ export class LambdaFunctionsServiceImpl implements LambdaFunctionsService {
       const decodedPayload = JSON.parse(
         new TextDecoder("utf-8").decode(data.Payload)
       );
-      console.log("Lambda invoke successful:", decodedPayload);
+      console.log("Lambda invoke successful");
+      return decodedPayload;
     } catch (err) {
       console.error("Error invoking Lambda function:", err);
       throw err;
