@@ -43,14 +43,17 @@ export class EmailServiceImpl implements EmailService {
     rawContent: string,
     subject: string
   ) {
-    const payload = [
-      {
-        recipientEmails,
-        htmlContent,
-        rawContent,
-        subject,
-      },
-    ];
+    const payload = {
+      content: [
+        {
+          recipientEmails,
+          htmlContent,
+          rawContent,
+          subject,
+        },
+      ],
+      sender: `${process.env.AWS_SES_SENDER_NAME} ${process.env.AWS_SES_SENDER_EMAIL}`,
+    };
 
     try {
       const lambdaFunctionName = <string>process.env.SEND_EMAIL_LAMBDA_NAME;
