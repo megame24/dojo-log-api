@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cors()); // make this more restrictive!!!!!
 
 app.use(
-  morgan("combined", {
+  morgan("dev", {
     skip: function (req, res) {
       // This condition checks if the request is a GET request to the /health path
       return req.path === "/health" && req.method === "GET";

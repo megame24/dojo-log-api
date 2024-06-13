@@ -14,7 +14,9 @@ export class GoalNotificationServiceImpl implements GoalNotificationService {
     let notificationDate = this.dateService.addTimeToDate(today, 7, "d");
 
     if (new Date(notificationDate) > new Date(goalDueDate)) {
-      notificationDate = goalDueDate;
+      const goalDueDateInLocalDate: any =
+        this.dateService.convertDateStringToDate(goalDueDate, true);
+      notificationDate = goalDueDateInLocalDate.$d;
     }
 
     return notificationDate;
