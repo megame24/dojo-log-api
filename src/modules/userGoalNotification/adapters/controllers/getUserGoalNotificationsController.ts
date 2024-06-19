@@ -26,6 +26,7 @@ export default class GetUserGoalNotificationsController extends Adapter {
           notificationId: userGoalNotification.notificationId,
           goalId: userGoalNotification.goalId,
           notificationDate: userGoalNotification.notificationDate,
+          finalNotificationDate: userGoalNotification.finalNotificationDate,
           expoNotificationTokens: userGoalNotification.expoNotificationTokens,
         })
       );

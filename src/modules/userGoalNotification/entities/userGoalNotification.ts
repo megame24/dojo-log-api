@@ -12,6 +12,7 @@ export interface UserGoalNotificationProps {
   notificationId: string;
   goalId: string;
   notificationDate: Date;
+  finalNotificationDate: Date;
   expoNotificationTokens?: string[];
 }
 
@@ -63,6 +64,10 @@ export default class UserGoalNotification extends Entity {
     return this.props.notificationDate;
   }
 
+  get finalNotificationDate(): Date {
+    return this.props.notificationDate;
+  }
+
   get expoNotificationTokens(): string[] | undefined {
     return this.props.expoNotificationTokens;
   }
@@ -105,6 +110,10 @@ export default class UserGoalNotification extends Entity {
     );
     this.validateProp(
       { key: "notificationDate", value: props.notificationDate },
+      this.isRequiredValidation
+    );
+    this.validateProp(
+      { key: "finalNotificationDate", value: props.finalNotificationDate },
       this.isRequiredValidation
     );
 

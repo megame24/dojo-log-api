@@ -20,6 +20,7 @@ import {
   updateLogController,
   createLogController,
   getGoalController,
+  saveLogbookNotificationsController,
 } from "../../adapters/controllers";
 import {
   getGoalImpl,
@@ -212,6 +213,20 @@ logbookRouter.put(
   }),
   updateGoalController.execute,
   updateLogbookMiddleware.execute
+);
+
+logbookRouter.put(
+  "/:logbookId/notifications",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.UPDATE,
+    resourceType: "logbookNotifications",
+    resourcesForAccessCheck: [
+      { name: "logbook", getResource: getLiteLogbookImpl },
+    ],
+  }),
+  saveLogbookNotificationsController.execute
 );
 
 export default logbookRouter;

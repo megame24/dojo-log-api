@@ -89,12 +89,13 @@ export class CreateGoalImpl implements CreateGoal {
   }
 
   async createGoalNotification(goal: Goal) {
-    const notificationDate =
+    const { notificationDate, finalNotificationDate } =
       this.goalNotificationService.getGoalNotificationDate(goal);
 
     const goalNotificationProps = {
       goalId: <string>goal.id,
       notificationDate,
+      finalNotificationDate,
     };
 
     const goalNotification = GoalNotification.create(

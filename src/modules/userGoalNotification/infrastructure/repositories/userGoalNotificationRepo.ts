@@ -22,6 +22,7 @@ export class UserGoalNotificationRepoImpl implements UserGoalNotificationRepo {
           "GoalNotifications".id AS "notificationId", 
           "GoalNotifications"."goalId", 
           "GoalNotifications"."notificationDate",
+          "GoalNotifications"."finalNotificationDate",
           ARRAY_AGG("ExpoNotificationTokens"."token") AS "expoNotificationTokens"
         FROM 
           "GoalNotifications" 
@@ -53,6 +54,7 @@ export class UserGoalNotificationRepoImpl implements UserGoalNotificationRepo {
           notificationId: element.notificationId,
           goalId: element.goalId,
           notificationDate: element.notificationDate,
+          finalNotificationDate: element.finalNotificationDate,
           expoNotificationTokens: element.expoNotificationTokens,
         };
 

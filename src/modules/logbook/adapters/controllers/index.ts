@@ -24,6 +24,7 @@ import {
   getLiteLogbookImpl,
   batchDeleteGoalNotificationsImpl,
   batchUpdateGoalNotificationsImpl,
+  saveLogbookNotificationsImpl,
 } from "../../useCases";
 import BatchDeleteGoalNotificationsController from "./batchDeleteGoalNotificationsController";
 import BatchUpdateGoalNotificationsController from "./batchUpdateGoalNotificationsController";
@@ -45,6 +46,7 @@ import GetLogbookController from "./getLogbookController";
 import GetLogbooksController from "./getLogbooksController";
 import GetLogsController from "./getLogsController";
 import GetRewardsController from "./getRewardsController";
+import SaveLogbookNotificationsController from "./saveLogbookNotificationsController";
 import UpdateCategoryController from "./updateCategoryController";
 import UpdateGoalController from "./updateGoalController";
 import UpdateLogbookController from "./updateLogbookController";
@@ -134,3 +136,6 @@ export const batchDeleteGoalNotificationsController =
 
 export const batchUpdateGoalNotificationsController =
   new BatchUpdateGoalNotificationsController(batchUpdateGoalNotificationsImpl);
+
+export const saveLogbookNotificationsController =
+  new SaveLogbookNotificationsController(saveLogbookNotificationsImpl);

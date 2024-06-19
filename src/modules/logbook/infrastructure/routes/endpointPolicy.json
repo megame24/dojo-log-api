@@ -20,6 +20,7 @@
       "/logbooks/:logbookId/goals": ["POST"],
       "/logbooks/:logbookId/goals/:goalId": ["PUT", "GET"],
       "/logbooks/earliestLogbookYear": ["GET"],
+      "/logbooks/:logbookId/notifications": ["PUT"],
       "/files/:fileId": ["DELETE"],
       "/files/:fileId/download": ["GET"]
     },

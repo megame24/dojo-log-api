@@ -22,6 +22,15 @@ export interface DateService {
   getDay: (date: Date | string, convertToLocalTime: boolean) => number;
   getMonth: (date: Date | string, convertToLocalTime: boolean) => number;
   getEndOfDay: (date: Date) => Date;
+  setTimeOnDate: (
+    date: Date,
+    hour: number,
+    minute: number,
+    second: number,
+    convertToLocalTime: boolean
+  ) => any;
+  convertDateToUTC: (date: any) => any;
+  getHour: (date: any) => number;
 }
 
 export class DateServiceImpl implements DateService {
@@ -47,6 +56,28 @@ export class DateServiceImpl implements DateService {
   ];
 
   constructor(private dayjs: any) {}
+
+  setTimeOnDate(
+    date: Date,
+    hour: number,
+    minute: number,
+    second: number,
+    convertToLocalTime: boolean
+  ): Date {
+    const validDate: any = this.convertDateStringToDate(
+      date,
+      convertToLocalTime
+    );
+    return validDate.hour(hour).minute(minute).second(second);
+  }
+
+  convertDateToUTC(date: any) {
+    return date.utc();
+  }
+
+  getHour(date: any): number {
+    return date.hour();
+  }
 
   getDayOfYear(date: Date | string): number {
     const validDate: any = this.convertDateStringToDate(date, true);

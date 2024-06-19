@@ -115,6 +115,12 @@ class LogbookAccessControl extends AccessControl {
             condition: this.pass,
           },
         ],
+        logbookNotifications: [
+          {
+            operation: Operation.UPDATE,
+            condition: this.privateAccess,
+          },
+        ],
       },
       deny: {},
     },

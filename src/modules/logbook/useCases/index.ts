@@ -8,6 +8,7 @@ import {
   fileRepoImpl,
   goalNotificationRepoImpl,
   goalRepoImpl,
+  logbookNotificationsRepoImpl,
   logbookRepoImpl,
   logRepoImpl,
   rewardRepoImpl,
@@ -40,6 +41,7 @@ import { GetLogbooksImpl } from "./getLogbooks";
 import { GetLogsImpl } from "./getLogs";
 import { GetRewardImpl } from "./getReward";
 import { GetRewardsImpl } from "./getRewards";
+import { SaveLogbookNotificationsImpl } from "./saveLogbookNotifications";
 import { UpdateCategoryImpl } from "./updateCategory";
 import { UpdateGoalImpl } from "./updateGoal";
 import { UpdateLogImpl } from "./updateLog";
@@ -51,11 +53,17 @@ export const createCategoryImpl = new CreateCategoryImpl(
   uuidServiceImpl
 );
 
+export const saveLogbookNotificationsImpl = new SaveLogbookNotificationsImpl(
+  uuidServiceImpl,
+  logbookNotificationsRepoImpl
+);
+
 export const createLogbookImpl = new CreateLogbookImpl(
   logbookRepoImpl,
   categoryRepoImpl,
   uuidServiceImpl,
-  dateServiceImpl
+  dateServiceImpl,
+  saveLogbookNotificationsImpl
 );
 
 export const getLiteLogbookImpl = new GetLiteLogbookImpl(logbookRepoImpl);

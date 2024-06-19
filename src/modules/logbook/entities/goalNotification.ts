@@ -5,6 +5,7 @@ export interface GoalNotificationProps {
   id?: string;
   goalId: string;
   notificationDate: Date;
+  finalNotificationDate: Date;
 }
 
 export default class GoalNotification extends Entity {
@@ -27,6 +28,10 @@ export default class GoalNotification extends Entity {
     return this.props.notificationDate;
   }
 
+  get finalNotificationDate(): Date {
+    return this.props.notificationDate;
+  }
+
   static create(
     props: GoalNotificationProps,
     uuidService: UUIDService
@@ -38,6 +43,11 @@ export default class GoalNotification extends Entity {
 
     this.validateProp(
       { key: "notification date", value: props.notificationDate },
+      this.isRequiredValidation
+    );
+
+    this.validateProp(
+      { key: "finalNotificationDate", value: props.finalNotificationDate },
       this.isRequiredValidation
     );
 
