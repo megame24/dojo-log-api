@@ -82,4 +82,7 @@ export class MockDateService implements DateService {
   getDay = jest.fn();
   getMonth = jest.fn();
   getEndOfDay = jest.fn();
+  setTimeOnDate = jest.fn();
+  convertDateToUTC = jest.fn();
+  getHour = jest.fn();
 }
