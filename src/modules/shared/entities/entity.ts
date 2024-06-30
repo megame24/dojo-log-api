@@ -58,6 +58,15 @@ export default abstract class Entity {
     return Entity.validValidationResult;
   }
 
+  protected static validateNumber(prop: {
+    key: string;
+    value: any;
+  }): ValidationResult {
+    if (isNaN(prop.value))
+      return { isValid: false, message: `${prop.key} is not a valid number` };
+    return Entity.validValidationResult;
+  }
+
   protected static isRequiredValidation(prop: {
     key: string;
     value: any;

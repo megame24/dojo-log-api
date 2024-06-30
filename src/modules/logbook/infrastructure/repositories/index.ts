@@ -64,5 +64,6 @@ export const goalNotificationRepoImpl = new GoalNotificationRepoImpl(
 );
 
 export const logbookNotificationsRepoImpl = new LogbookNotificationRepoImpl(
-  LogbookNotification
+  LogbookNotification,
+  uuidServiceImpl
 );

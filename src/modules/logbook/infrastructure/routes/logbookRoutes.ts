@@ -21,6 +21,7 @@ import {
   createLogController,
   getGoalController,
   saveLogbookNotificationsController,
+  getLogbookNotificationController,
 } from "../../adapters/controllers";
 import {
   getGoalImpl,
@@ -227,6 +228,20 @@ logbookRouter.put(
     ],
   }),
   saveLogbookNotificationsController.execute
+);
+
+logbookRouter.get(
+  "/:logbookId/notifications",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.GET_ONE,
+    resourceType: "logbookNotifications",
+    resourcesForAccessCheck: [
+      { name: "logbook", getResource: getLiteLogbookImpl },
+    ],
+  }),
+  getLogbookNotificationController.execute
 );
 
 export default logbookRouter;

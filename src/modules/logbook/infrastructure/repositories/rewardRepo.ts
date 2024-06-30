@@ -91,7 +91,7 @@ export class RewardRepoImpl implements RewardRepo {
       }));
 
       await this.RewardModel.bulkCreate(rewardsProps, {
-        updateOnDuplicate: ["id"],
+        updateOnDuplicate: ["id", "name", "description"],
       });
     } catch (error: any) {
       throw AppError.internalServerError("Error creating Rewards", error);

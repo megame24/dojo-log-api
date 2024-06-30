@@ -4,7 +4,6 @@ import UseCase from "../../shared/useCases/useCase";
 import User from "../../users/entities/user";
 import Logbook, { Visibility } from "../entities/logbook";
 import { CategoryRepo } from "../infrastructure/repositories/categoryRepo";
-import { LogbookNotificationRepo } from "../infrastructure/repositories/logbookNotificationRepo";
 import { LogbookRepo } from "../infrastructure/repositories/logbookRepo";
 import { SaveLogbookNotifications } from "./saveLogbookNotifications";
 
@@ -78,8 +77,14 @@ export class CreateLogbookImpl implements CreateLogbook {
         {
           logbookId,
           title: "Progress check-in 🔄",
-          body: `Made any progress on ${logbook.name}? Log your progress now!`,
-          days: [0, 1, 2, 3, 4, 5, 6],
+          body: `Made any progress on ${logbook.name}? Tap here to log your progress!`,
+          days: {
+            1: { label: "Mon", id: 1 },
+            2: { label: "Tue", id: 2 },
+            3: { label: "Wed", id: 3 },
+            4: { label: "Thur", id: 4 },
+            5: { label: "Fri", id: 5 },
+          },
           hour: utcHours,
         },
       ],

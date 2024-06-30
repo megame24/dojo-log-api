@@ -120,6 +120,10 @@ class LogbookAccessControl extends AccessControl {
             operation: Operation.UPDATE,
             condition: this.privateAccess,
           },
+          {
+            operation: Operation.GET_ONE,
+            condition: this.privateAccess,
+          },
         ],
       },
       deny: {},

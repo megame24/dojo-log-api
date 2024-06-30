@@ -37,6 +37,7 @@ import { GetLiteLogbookImpl } from "./getLiteLogbook";
 import { GetLiteRewardsImpl } from "./getLiteRewards";
 import { GetLogImpl } from "./getLog";
 import { GetLogbookImpl } from "./getLogbook";
+import { GetLogbookNotificationImpl } from "./getLogbookNotification";
 import { GetLogbooksImpl } from "./getLogbooks";
 import { GetLogsImpl } from "./getLogs";
 import { GetRewardImpl } from "./getReward";
@@ -187,3 +188,7 @@ export const batchUpdateGoalNotificationsImpl =
 
 export const batchDeleteGoalNotificationsImpl =
   new BatchDeleteGoalNotificationsImpl(goalNotificationRepoImpl);
+
+export const getLogbookNotificationImpl = new GetLogbookNotificationImpl(
+  logbookNotificationsRepoImpl
+);

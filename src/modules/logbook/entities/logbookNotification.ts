@@ -6,7 +6,7 @@ export interface LogbookNotificationProps {
   logbookId: string;
   title?: string;
   body?: string;
-  days: number[];
+  days: any;
   hour: number;
 }
 
@@ -51,10 +51,7 @@ export default class LogbookNotification extends Entity {
       this.isRequiredValidation
     );
 
-    this.validateProp(
-      { key: "hour", value: props.hour },
-      this.isRequiredValidation
-    );
+    this.validateProp({ key: "hour", value: props.hour }, this.validateNumber);
 
     return new LogbookNotification(props, uuidService);
   }
