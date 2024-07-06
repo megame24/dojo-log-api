@@ -1,7 +1,7 @@
 import { Visibility } from "../../logbook/entities/logbook";
 import { FileService } from "../../shared/infrastructure/services/fileService";
 import UseCase from "../../shared/useCases/useCase";
-import User from "../entities/user";
+import User, { Role } from "../entities/user";
 import { UserRepo } from "../infrastructure/repositories/userRepository";
 
 interface DeleteAccountDTO {
@@ -17,6 +17,7 @@ export class DeleteAccountImpl implements DeleteAccount {
 
   async execute(deleteAccountDTO: DeleteAccountDTO) {
     const { user } = deleteAccountDTO;
+    if (user.role === Role.ADMIN) return;
 
     await this.userRepo.delete(user);
     await this.fileService.deleteAllUserFiles(

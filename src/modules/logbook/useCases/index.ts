@@ -26,6 +26,7 @@ import { DeleteCategoryImpl } from "./deleteCategory";
 import { DeleteFileImpl } from "./deleteFile";
 import { DeleteLogImpl } from "./deleteLog";
 import { DeleteLogbookImpl } from "./deleteLogbook";
+import { DeleteLogbookNotificationsImpl } from "./deleteLogbookNotifications";
 import { DeleteRewardImpl } from "./deleteReward";
 import { DownloadFileImpl } from "./downloadFile";
 import { GetCategoriesImpl } from "./getCategories";
@@ -192,3 +193,6 @@ export const batchDeleteGoalNotificationsImpl =
 export const getLogbookNotificationImpl = new GetLogbookNotificationImpl(
   logbookNotificationsRepoImpl
 );
+
+export const deleteLogbookNotificationsImpl =
+  new DeleteLogbookNotificationsImpl(logbookNotificationsRepoImpl);

@@ -7,7 +7,8 @@ export default class CreateLogbookController extends Adapter {
   }
 
   async execute(req: any, res: any, next: any) {
-    const { name, description, visibility, categoryId } = req.body;
+    const { name, description, visibility, categoryId, enableReminder } =
+      req.body;
 
     const createLogbookDTO = {
       name,
@@ -15,6 +16,7 @@ export default class CreateLogbookController extends Adapter {
       visibility,
       categoryId,
       userId: req.user.id, // this might be gotten from a diff param in the future
+      enableReminder,
       user: req.user,
     };
 

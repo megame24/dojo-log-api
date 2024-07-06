@@ -3,7 +3,7 @@ import { authenticateUserMiddleware } from "../../../users/adapters/middleware";
 import userModuleRouter from "../../../users/infrastructure/routes";
 import logbookModuleRouter from "../../../logbook/infrastructure/routes";
 import mailingListModuleRouter from "../../../mailingList/infrastructure/routes";
-import userGoalNotificationModuleRouter from "../../../userGoalNotification/infrastructure/routes";
+import userGoalNotificationModuleRouter from "../../../userNotification/infrastructure/routes";
 
 // TODO: Version routes!!!!
 

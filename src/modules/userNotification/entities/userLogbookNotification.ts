@@ -1,21 +1,22 @@
 import Entity from "../../shared/entities/entity";
 import { UUIDService } from "../../shared/infrastructure/services/uuidService";
 
-// REVISIT THIS ENTITY, NEED TO BREAK OUT DAYS INTO IT'S OWN TABLE!!!!!!!!!!!!!!!!!!!!!
-// for faster queries and notifications
-
-export interface LogbookNotificationProps {
+export interface UserLogbookNotificationProps {
   id?: string;
+  name: string;
+  userId: string;
   logbookId: string;
+  notificationId: string;
   title: string;
   body: string;
   days: any;
   hour: number;
+  expoNotificationTokens?: string[];
 }
 
-export default class LogbookNotification extends Entity {
+export default class UserLogbookNotification extends Entity {
   private constructor(
-    private props: LogbookNotificationProps,
+    private props: UserLogbookNotificationProps,
     uuidService: UUIDService
   ) {
     super(props, uuidService);
@@ -25,15 +26,27 @@ export default class LogbookNotification extends Entity {
     return this.props.id;
   }
 
+  get name(): string {
+    return this.props.name;
+  }
+
+  get userId(): string {
+    return this.props.userId;
+  }
+
   get logbookId(): string {
     return this.props.logbookId;
   }
 
-  get title(): string {
+  get notificationId(): string {
+    return this.props.notificationId;
+  }
+
+  get title(): string | undefined {
     return this.props.title;
   }
 
-  get body(): string {
+  get body(): string | undefined {
     return this.props.body;
   }
 
@@ -45,12 +58,28 @@ export default class LogbookNotification extends Entity {
     return this.props.hour;
   }
 
+  get expoNotificationTokens(): string[] | undefined {
+    return this.props.expoNotificationTokens;
+  }
+
   static create(
-    props: LogbookNotificationProps,
+    props: UserLogbookNotificationProps,
     uuidService: UUIDService
-  ): LogbookNotification {
+  ): UserLogbookNotification {
+    this.validateProp(
+      { key: "name", value: props.name },
+      this.isRequiredValidation
+    );
+    this.validateProp(
+      { key: "userId", value: props.userId },
+      this.isRequiredValidation
+    );
     this.validateProp(
       { key: "logbookId", value: props.logbookId },
+      this.isRequiredValidation
+    );
+    this.validateProp(
+      { key: "notificationId", value: props.notificationId },
       this.isRequiredValidation
     );
     this.validateProp(
@@ -61,10 +90,8 @@ export default class LogbookNotification extends Entity {
       { key: "body", value: props.body },
       this.isRequiredValidation
     );
-    // write a custom validation for days!!
-
     this.validateProp({ key: "hour", value: props.hour }, this.validateNumber);
 
-    return new LogbookNotification(props, uuidService);
+    return new UserLogbookNotification(props, uuidService);
   }
 }
