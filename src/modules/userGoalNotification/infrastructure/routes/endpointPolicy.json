@@ -1,9 +1,0 @@
-{
-  "BOT": {
-    "inherits": "",
-    "allow": {
-      "/user-goal-notifications": ["GET"]
-    },
-    "deny": {}
-  }
-}

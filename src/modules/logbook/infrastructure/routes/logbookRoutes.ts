@@ -22,6 +22,7 @@ import {
   getGoalController,
   saveLogbookNotificationsController,
   getLogbookNotificationController,
+  deleteLogbookNotificationsController,
 } from "../../adapters/controllers";
 import {
   getGoalImpl,
@@ -242,6 +243,20 @@ logbookRouter.get(
     ],
   }),
   getLogbookNotificationController.execute
+);
+
+logbookRouter.delete(
+  "/:logbookId/notifications",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: logbookAccessControl,
+    operation: Operation.DELETE,
+    resourceType: "logbookNotifications",
+    resourcesForAccessCheck: [
+      { name: "logbook", getResource: getLiteLogbookImpl },
+    ],
+  }),
+  deleteLogbookNotificationsController.execute
 );
 
 export default logbookRouter;

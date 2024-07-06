@@ -13,6 +13,7 @@ interface CreateLogbookDTO {
   description?: string;
   visibility: Visibility;
   categoryId?: string;
+  enableReminder: boolean;
   user: User;
 }
 
@@ -31,8 +32,15 @@ export class CreateLogbookImpl implements CreateLogbook {
   ) {}
 
   async execute(createLogbookDTO: CreateLogbookDTO): Promise<Logbook> {
-    const { userId, name, description, visibility, categoryId, user } =
-      createLogbookDTO;
+    const {
+      userId,
+      name,
+      description,
+      visibility,
+      categoryId,
+      enableReminder,
+      user,
+    } = createLogbookDTO;
 
     let category;
     if (categoryId) {
@@ -53,7 +61,9 @@ export class CreateLogbookImpl implements CreateLogbook {
     );
 
     await this.logbookRepo.create(logbook, user);
-    await this.createLogbookNotifications(logbook);
+
+    if (enableReminder) await this.createLogbookNotifications(logbook);
+
     return logbook;
   }
 
@@ -79,11 +89,13 @@ export class CreateLogbookImpl implements CreateLogbook {
           title: "Progress check-in 🔄",
           body: `Made any progress on ${logbook.name}? Tap here to log your progress!`,
           days: {
+            0: { label: "Sun", id: 0 },
             1: { label: "Mon", id: 1 },
             2: { label: "Tue", id: 2 },
             3: { label: "Wed", id: 3 },
             4: { label: "Thur", id: 4 },
             5: { label: "Fri", id: 5 },
+            6: { label: "Sat", id: 6 },
           },
           hour: utcHours,
         },

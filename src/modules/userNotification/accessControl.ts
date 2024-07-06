@@ -8,12 +8,18 @@ import { Role } from "../users/entities/user";
 // TODO: write a documentation for this!!!!
 // TODO: make everything private access for first release!
 
-class UserGoalNotificationAccessControl extends AccessControl {
+class UserNotificationAccessControl extends AccessControl {
   private policy: any = {
     BOT: {
       inherits: "",
       allow: {
         userGoalNotifications: [
+          {
+            operation: Operation.GET_MANY,
+            condition: this.pass,
+          },
+        ],
+        userLogbookNotifications: [
           {
             operation: Operation.GET_MANY,
             condition: this.pass,
@@ -37,5 +43,5 @@ class UserGoalNotificationAccessControl extends AccessControl {
   }
 }
 
-export const userGoalNotificationAccessControl =
-  new UserGoalNotificationAccessControl();
+export const userNotificationAccessControl =
+  new UserNotificationAccessControl();
