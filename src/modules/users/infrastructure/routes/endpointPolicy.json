@@ -31,7 +31,8 @@
       "/users/login": ["POST"],
       "/users/forgot-password": ["POST"],
       "/users/:userId/reset-password": ["PUT"],
-      "/users/google-sign-in-verify": ["POST"]
+      "/users/google-sign-in-verify": ["POST"],
+      "/users/apple-sign-in-verify": ["POST"]
     },
     "deny": {}
   }
