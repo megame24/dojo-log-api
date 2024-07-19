@@ -29,7 +29,7 @@ export default class GoalNotification extends Entity {
   }
 
   get finalNotificationDate(): Date {
-    return this.props.notificationDate;
+    return this.props.finalNotificationDate;
   }
 
   static create(
