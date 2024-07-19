@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import appleSignin from "apple-signin-auth";
 import { securityServiceImpl } from "../infrastructure/services";
 import {
   expoNotificationTokenRepoImpl,
@@ -26,6 +27,7 @@ import { ChangePasswordImpl } from "./changePassword";
 import { DeleteAccountImpl } from "./deleteAccount";
 import { CreateExpoNotificationTokenImpl } from "./createExpoNotificationToken";
 import { GetExpoNotificationTokensImpl } from "./getExpoNotificationTokens";
+import { AppleSignInVerifyImpl } from "./appleSignInVerify";
 
 export const registerUserImpl = new RegisterUserImpl(
   securityServiceImpl,
@@ -88,6 +90,14 @@ export const googleSignInVerifyImpl = new GoogleSignInVerifyImpl(
   uuidServiceImpl,
   userRepoImpl,
   lambdaFunctionsServiceImpl
+);
+
+export const appleSignInVerifyImpl = new AppleSignInVerifyImpl(
+  securityServiceImpl,
+  uuidServiceImpl,
+  userRepoImpl,
+  lambdaFunctionsServiceImpl,
+  appleSignin
 );
 
 export const changePasswordImpl = new ChangePasswordImpl(

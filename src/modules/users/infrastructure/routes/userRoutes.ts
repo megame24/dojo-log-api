@@ -17,6 +17,7 @@ import {
   deleteAccountController,
   createExpoNotificationTokenController,
   getExpoNotificationTokensController,
+  appleSignInVerifyController,
 } from "../../adapters/controllers";
 import { sendVerificationMiddleware } from "../../adapters/middleware";
 import endpointPolicy from "./endpointPolicy.json";
@@ -63,6 +64,19 @@ userRouter.post(
     resourcesForAccessCheck: [],
   }),
   googleSignInVerifyController.execute,
+  addMailToMailingListMiddleware.execute
+);
+
+userRouter.post(
+  "/apple-sign-in-verify",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: userAccessControl,
+    operation: Operation.CREATE,
+    resourceType: "appleSignInVerify",
+    resourcesForAccessCheck: [],
+  }),
+  appleSignInVerifyController.execute,
   addMailToMailingListMiddleware.execute
 );
 

@@ -120,6 +120,12 @@ class UserAccessControl extends AccessControl {
             condition: this.pass,
           },
         ],
+        appleSignInVerify: [
+          {
+            operation: Operation.CREATE,
+            condition: this.pass,
+          },
+        ],
         forgotPassword: [
           {
             operation: Operation.CREATE,
