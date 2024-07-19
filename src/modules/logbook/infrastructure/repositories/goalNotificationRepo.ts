@@ -16,6 +16,7 @@ export class GoalNotificationRepoImpl implements GoalNotificationRepo {
         id: goalNotification.id,
         goalId: goalNotification.goalId,
         notificationDate: goalNotification.notificationDate,
+        finalNotificationDate: goalNotification.finalNotificationDate,
       };
 
       await this.GoalNotificationModel.create(goalNotificationProps);
