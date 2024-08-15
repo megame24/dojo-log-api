@@ -18,6 +18,10 @@ class MailingListAccessControl extends AccessControl {
             operation: Operation.CREATE,
             condition: this.pass,
           },
+          {
+            operation: Operation.GET_MANY,
+            condition: this.pass,
+          },
         ],
       },
       deny: {},

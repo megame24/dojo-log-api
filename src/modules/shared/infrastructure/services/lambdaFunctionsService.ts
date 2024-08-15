@@ -1,7 +1,7 @@
 import { TextDecoder, TextEncoder } from "util";
 
 export interface LambdaFunctionsService {
-  invokeLambda: (functionName: string, payload: any) => Promise<any>;
+  invokeLambda: (functionName: string, payload?: any) => Promise<any>;
 }
 
 export class LambdaFunctionsServiceImpl implements LambdaFunctionsService {

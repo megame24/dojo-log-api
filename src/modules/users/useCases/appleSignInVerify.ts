@@ -27,8 +27,7 @@ export class AppleSignInVerifyImpl implements AppleSignInVerify {
     private securityService: SecurityService,
     private uuidService: UUIDService,
     private userRepo: UserRepo,
-    private lambdaFunctionsService: LambdaFunctionsService,
-    private appleSignin: any
+    private lambdaFunctionsService: LambdaFunctionsService
   ) {}
 
   async execute(
@@ -36,16 +35,11 @@ export class AppleSignInVerifyImpl implements AppleSignInVerify {
   ): Promise<AppleSignInVerifyReturnType> {
     const { idToken, appleUserFullName } = appleSignInVerifyDTO;
 
-    // const payload = await this.lambdaFunctionsService.invokeLambda(
-    //   <string>process.env.APPLE_SIGN_IN_SERVICE_LAMBDA_NAME,
-    //   { idToken }
-    // );
-    const payload = await this.appleSignin.verifyIdToken(idToken, {
-      audience: process.env.APPLE_CLIENT_ID,
-      ignoreExpiration: true,
-    });
-    console.log(payload);
-    const { email } = payload;
+    const payload = await this.lambdaFunctionsService.invokeLambda(
+      <string>process.env.APPLE_SIGN_IN_SERVICE_LAMBDA_NAME,
+      { idToken }
+    );
+    const { email } = payload.body;
 
     let name = appleUserFullName;
     if (!appleUserFullName) {

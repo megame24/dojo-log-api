@@ -1,5 +1,4 @@
 import crypto from "crypto";
-import appleSignin from "apple-signin-auth";
 import { securityServiceImpl } from "../infrastructure/services";
 import {
   expoNotificationTokenRepoImpl,
@@ -96,8 +95,7 @@ export const appleSignInVerifyImpl = new AppleSignInVerifyImpl(
   securityServiceImpl,
   uuidServiceImpl,
   userRepoImpl,
-  lambdaFunctionsServiceImpl,
-  appleSignin
+  lambdaFunctionsServiceImpl
 );
 
 export const changePasswordImpl = new ChangePasswordImpl(

@@ -5,6 +5,7 @@ import {
 } from "../../../shared/adapters/middleware";
 import {
   addMailToMailingListController,
+  getAllSubscribersEmailsController,
   sendMailToAllSubscribersController,
   unsubscribeFromMailingListController,
 } from "../../adapters/controllers";
@@ -52,6 +53,18 @@ mailingListRouter.post(
     resourcesForAccessCheck: [],
   }),
   sendMailToAllSubscribersController.execute
+);
+
+mailingListRouter.get(
+  "/subscribers",
+  endpointPermissionsMiddleware.executeWrapper(endpointPolicy),
+  accessControlMiddleware.executeWrapper({
+    accessControl: mailingListAccessControl,
+    operation: Operation.GET_MANY,
+    resourceType: "subscribers",
+    resourcesForAccessCheck: [],
+  }),
+  getAllSubscribersEmailsController.execute
 );
 
 export default mailingListRouter;

@@ -65,7 +65,7 @@ export default class UserGoalNotification extends Entity {
   }
 
   get finalNotificationDate(): Date {
-    return this.props.notificationDate;
+    return this.props.finalNotificationDate;
   }
 
   get expoNotificationTokens(): string[] | undefined {
