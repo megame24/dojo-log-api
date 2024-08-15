@@ -1,9 +1,11 @@
 import {
   addMailToMailingListImpl,
+  getAllSubscribersEmailsImpl,
   sendMailToAllSubscribersImpl,
   unsubscribeFromMailingListImpl,
 } from "../../useCases";
 import AddMailToMailingListController from "./addMailToMailingListController";
+import GetAllSubscribersEmailsController from "./getAllSubscribersEmailsController";
 import SendMailToAllSubscribersController from "./sendMailToAllSubscribersController";
 import UnsubscribeFromMailingListController from "./unsubscribeFromMailingListController";
 
@@ -15,3 +17,6 @@ export const unsubscribeFromMailingListController =
 
 export const sendMailToAllSubscribersController =
   new SendMailToAllSubscribersController(sendMailToAllSubscribersImpl);
+
+export const getAllSubscribersEmailsController =
+  new GetAllSubscribersEmailsController(getAllSubscribersEmailsImpl);

@@ -274,11 +274,9 @@ export default class Logbook extends Entity {
 
     const heatmap = this.createHeatmap(props, dateService);
 
-    const yearHeatmapDisplay = this.createYearHeatmapDisplay(
-      heatmap,
-      props,
-      dateService
-    );
+    const yearHeatmapDisplay = props.year
+      ? this.createYearHeatmapDisplay(heatmap, props, dateService)
+      : [];
 
     return new Logbook({ ...props, heatmap, yearHeatmapDisplay }, uuidService);
   }
